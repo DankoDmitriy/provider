@@ -1,0 +1,25 @@
+package com.danko.provider.controller.command.impl.common;
+
+import com.danko.provider.controller.Router;
+import com.danko.provider.controller.command.Command;
+import com.danko.provider.exception.CommandException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import static com.danko.provider.controller.command.PageUrl.*;
+
+public class LogoutCommand implements Command {
+    @Override
+    public Router execute(HttpServletRequest request) throws CommandException {
+        Router router = new Router();
+        router.setRouteType(Router.RouteType.REDIRECT);
+//        FIXME - Опредилиться я хочу на главную страницу отправлять, которая так же переправит на форму логина
+//        FIXME - или принудительно менуя один редирект с index.jsp отправить на форму логина.
+        router.setPageUrl(request.getContextPath());
+//        router.setPageUrl(request.getContextPath() + LOGIN_PAGE);
+        HttpSession session = request.getSession();
+        session.invalidate();
+        return router;
+    }
+}

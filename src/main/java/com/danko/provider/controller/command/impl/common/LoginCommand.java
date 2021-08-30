@@ -1,0 +1,71 @@
+package com.danko.provider.controller.command.impl.common;
+
+import com.danko.provider.controller.Router;
+import com.danko.provider.controller.command.ActionFactory;
+import com.danko.provider.controller.command.Command;
+import com.danko.provider.domain.entity.AccountTransaction;
+import com.danko.provider.domain.entity.Tariff;
+import com.danko.provider.domain.entity.User;
+import com.danko.provider.domain.entity.UserRole;
+import com.danko.provider.domain.service.AccountTransactionService;
+import com.danko.provider.domain.service.ServiceProvider;
+import com.danko.provider.domain.service.TariffService;
+import com.danko.provider.domain.service.UserService;
+import com.danko.provider.exception.CommandException;
+import com.danko.provider.exception.ServiceException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import java.util.List;
+import java.util.Optional;
+
+import static com.danko.provider.controller.command.ParamName.LOGIN_FORM_NAME;
+import static com.danko.provider.controller.command.ParamName.LOGIN_FORM_PASSWORD;
+
+import static com.danko.provider.controller.command.PageUrl.*;
+import static com.danko.provider.controller.command.SessionAttribute.*;
+import static com.danko.provider.controller.command.RequestAttribute.*;
+
+public class LoginCommand implements Command {
+    private static Logger logger = LogManager.getLogger();
+    private static UserService userService = ServiceProvider.getInstance().getUserService();
+    private static TariffService tariffService = ServiceProvider.getInstance().getTariffService();
+    private static AccountTransactionService accountTransactionService = ServiceProvider.getInstance().getAccountTransactionService();
+
+    @Override
+    public Router execute(HttpServletRequest request) throws CommandException {
+        Router router = new Router();
+        HttpSession session = request.getSession();
+
+        String name = request.getParameter(LOGIN_FORM_NAME);
+        String password = request.getParameter(LOGIN_FORM_PASSWORD);
+
+//        TODO Валидация логина и пароля. что бы не обращаться в ДБ
+        try {
+            Optional<User> optionalUser = userService.findByNameAndPassword(name, password);
+            if (optionalUser.isPresent()) {
+
+                User user = optionalUser.get();
+                Optional<Tariff> tariffOptional = tariffService.findById(user.getTariffId());
+                user.setTariff(tariffOptional.get());
+
+                session.setAttribute(USER, user);
+                session.setAttribute(IS_LOGIN_ERROR, false);
+
+                router.setPageUrl(HOME_PAGE);
+            } else {
+                session.setAttribute(IS_LOGIN_ERROR, true);
+                router.setRouteType(Router.RouteType.REDIRECT);
+                router.setPageUrl(request.getContextPath());
+            }
+            return router;
+        } catch (ServiceException e) {
+            logger.log(Level.WARN, "Logon process has not finished: {}", e);
+            throw new CommandException("Logon process has not finished.", e);
+        }
+    }
+}

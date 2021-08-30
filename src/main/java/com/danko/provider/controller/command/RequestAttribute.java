@@ -1,0 +1,17 @@
+package com.danko.provider.controller.command;
+
+public final class RequestAttribute {
+    //    User personal Attributes
+    public static final String USER_PERSONAL_TRANSACTIONS_LIMIT = "transactions";
+    public static final String USER_PERSONAL_TRANSACTIONS_ALL = "transactionsAll";
+    public static final String USER_PERSONAL_MESSAGE_ERROR = "errorMessage";
+    public static final String NEW_PASSWORD = "newPassword";
+    public static final String USER_TARIFF_LIST = "tariffs";
+
+    //    Activation attribute
+    public static final String ACTIVATION_CODE = "activationCode";
+
+
+    private RequestAttribute() {
+    }
+}

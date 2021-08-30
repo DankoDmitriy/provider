@@ -1,0 +1,9 @@
+2021-08-25 15:13:18 [main] [SendMail] [50] ERROR com.danko.provider.util.EmailSender - Email can`t send: {}
+javax.mail.AuthenticationFailedException: failed to connect, no password specified?
+	at javax.mail.Service.connect(Service.java:400) ~[javax.mail-1.6.2.jar:1.6.2]
+	at javax.mail.Service.connect(Service.java:246) ~[javax.mail-1.6.2.jar:1.6.2]
+	at javax.mail.Service.connect(Service.java:195) ~[javax.mail-1.6.2.jar:1.6.2]
+	at javax.mail.Transport.send0(Transport.java:254) ~[javax.mail-1.6.2.jar:1.6.2]
+	at javax.mail.Transport.send(Transport.java:124) ~[javax.mail-1.6.2.jar:1.6.2]
+	at com.danko.provider.util.EmailSender.SendMail(EmailSender.java:47) [classes/:?]
+	at com.danko.provider.Main._Main.main(_Main.java:10) [classes/:?]
