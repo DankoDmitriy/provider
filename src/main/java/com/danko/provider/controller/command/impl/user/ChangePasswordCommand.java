@@ -10,7 +10,7 @@ import com.danko.provider.exception.ServiceException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import validator.InputDataValidator;
+import com.danko.provider.validator.InputDataValidator;
 
 import static com.danko.provider.controller.command.ParamName.USER_CHANGE_PASSWORD_NEW_PASSWORD;
 import static com.danko.provider.controller.command.PageUrl.*;

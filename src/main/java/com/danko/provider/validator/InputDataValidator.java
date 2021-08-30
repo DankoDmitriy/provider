@@ -1,4 +1,4 @@
-package validator;
+package com.danko.provider.validator;
 
 public final class InputDataValidator {
     private static final String LOGIN_NAME_REGEX = "[A-Za-z][0-9a-zA-Z]{7,45}";
