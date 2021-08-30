@@ -6,7 +6,7 @@ gen/
 .gradle/
 local.properties
 mailSender.properties
-bin
+bin/
 .mvn/
 webdefault.xml
 index.html
