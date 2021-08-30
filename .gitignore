@@ -5,12 +5,19 @@ out/
 gen/
 .gradle/
 local.properties
+mailSender.properties
+bin/
+.mvn/
+webdefault.xml
+index.html
 
 ### IntelliJ
 .idea/
 *.iml
 *.ipr
 *.iws
+mvnw
+mvnw.cmd
 
 ### Eclipse
 .settings/
