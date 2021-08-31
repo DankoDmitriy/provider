@@ -1,12 +1,9 @@
 package com.danko.provider.controller.command.impl.common;
 
 import com.danko.provider.controller.Router;
-import com.danko.provider.controller.command.ActionFactory;
 import com.danko.provider.controller.command.Command;
-import com.danko.provider.domain.entity.AccountTransaction;
 import com.danko.provider.domain.entity.Tariff;
 import com.danko.provider.domain.entity.User;
-import com.danko.provider.domain.entity.UserRole;
 import com.danko.provider.domain.service.AccountTransactionService;
 import com.danko.provider.domain.service.ServiceProvider;
 import com.danko.provider.domain.service.TariffService;
@@ -20,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import java.util.List;
 import java.util.Optional;
 
 import static com.danko.provider.controller.command.ParamName.LOGIN_FORM_NAME;
@@ -28,7 +24,6 @@ import static com.danko.provider.controller.command.ParamName.LOGIN_FORM_PASSWOR
 
 import static com.danko.provider.controller.command.PageUrl.*;
 import static com.danko.provider.controller.command.SessionAttribute.*;
-import static com.danko.provider.controller.command.RequestAttribute.*;
 
 public class LoginCommand implements Command {
     private static Logger logger = LogManager.getLogger();
@@ -53,7 +48,7 @@ public class LoginCommand implements Command {
                 Optional<Tariff> tariffOptional = tariffService.findById(user.getTariffId());
                 user.setTariff(tariffOptional.get());
 
-                session.setAttribute(USER, user);
+                session.setAttribute(SESSION_USER, user);
                 session.setAttribute(IS_LOGIN_ERROR, false);
 
                 router.setPageUrl(HOME_PAGE);

@@ -11,6 +11,7 @@ public final class CommandName {
     public static final String COMMAND_USER_CHANGE_PASSWORD = "USER_CHANGE_PASSWORD";
     public static final String COMMAND_USER_CHANGE_TARIFF = "USER_CHANGE_TARIFF";
     public static final String COMMAND_USER_TARIFF_LIST = "USER_TARIFF_LIST";
+    public static final String COMMAND_CHANGE_LOCAL = "LOCAL";
 
     private CommandName() {
     }

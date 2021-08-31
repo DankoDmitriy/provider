@@ -1,5 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.local}" scope="session"/>
+<fmt:setBundle basename="local.pagecontent"/>
+
 
 <%--HEADER--%>
 <%@include file="../../../WEB-INF/parts/user/header.jsp" %>
@@ -25,7 +29,7 @@
                     <input type="hidden" name="command" value="USER_CHANGE_PASSWORD">
                     <div class="row mb-3">
                         <div class="col-sm-3">
-                            <h6 class="mb-0">New password:</h6>
+                            <h6 class="mb-0"><fmt:message key="label.user.changePassword.newPassword"/></h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
                             <input type="password" class="form-control" name="password">
@@ -35,10 +39,11 @@
                     <div class="row">
                         <div class="col-sm-3"></div>
                         <div class="col-sm-9 text-secondary">
-                            <input type="submit" class="btn btn-primary px-4" value="Change password">
+                            <input type="submit" class="btn btn-primary px-4" value="<fmt:message key="label.user.changePassword.changeButton"/>">
                         </div>
                     </div>
                 </form>
+                <fmt:message key="label.user.changePassword.msg"/>
 
             </div>
         </div>

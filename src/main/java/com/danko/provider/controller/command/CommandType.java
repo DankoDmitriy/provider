@@ -1,6 +1,7 @@
 package com.danko.provider.controller.command;
 
 import com.danko.provider.controller.command.impl.admin.UserListCommand;
+import com.danko.provider.controller.command.impl.common.ChangeLocalCommand;
 import com.danko.provider.controller.command.impl.common.HomeCommand;
 import com.danko.provider.controller.command.impl.common.LoginCommand;
 import com.danko.provider.controller.command.impl.common.LogoutCommand;
@@ -15,6 +16,7 @@ public enum CommandType {
     USER_CHANGE_PASSWORD(new ChangePasswordCommand()),
     USER_CHANGE_TARIFF(new ChangeTariffCommand()),
     USER_TARIFF_LIST(new TariffListCommand()),
+    LOCAL(new ChangeLocalCommand()),
     HOME(new HomeCommand());
     //    Дефлотная комманда добавить.
     private Command command;

@@ -1,27 +1,30 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.local}" scope="session"/>
+<fmt:setBundle basename="local.pagecontent"/>
+
 <!-- Breadcrumb -->
 <nav aria-label="breadcrumb" class="main-breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
             <a href="${pageContext.request.contextPath}/controller?command=HOME">
-                Home
+                <fmt:message key="label.user.navbar.home"/>
             </a></li>
 
         <%--                Menu for actions--%>
         <li class="breadcrumb-item">
             <a href="${pageContext.request.contextPath}/controller?command=PERSONAL_FINANCE_OPERATIONS">
-                Finance
+                <fmt:message key="label.user.navbar.finance"/>
             </a></li>
         <li class="breadcrumb-item">
             <a href="${pageContext.request.contextPath}/controller?command=USER_TARIFF_LIST">
-                Tariffs
+                <fmt:message key="label.user.navbar.tariffs"/>
             </a></li>
-        <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}">Actions</a></li>
-        <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}">Tickets</a></li>
         <li class="breadcrumb-item">
             <a href="${pageContext.request.contextPath}/controller?command=logout">
-                Logout
+                <fmt:message key="label.user.navbar.logout"/>
             </a></li>
     </ol>
-
 </nav>
 <!-- /Breadcrumb -->

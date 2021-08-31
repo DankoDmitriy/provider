@@ -1,5 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.local}" scope="session"/>
+<fmt:setBundle basename="local.pagecontent"/>
 
 <%--HEADER--%>
 <%@include file="../../../WEB-INF/parts/user/header.jsp" %>
@@ -27,21 +30,21 @@
                             <h6 class="mb-0">${tariff.description}:</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            Max speed - ${tariff.maxSpeed} Mbit\s:</br>
-                            Min speed- ${tariff.minSpeed} Mbit\s:</br>
-                            Traffic - <c:out value="${tariff.traffic/1024}"/> GB</br>
-                            Price - ${tariff.price} $</br>
-                            Period ${tariff.period}</br>
+                            <fmt:message key="label.user.tariffs.information.maxSpeed"/> ${tariff.maxSpeed} Mbit\s:</br>
+                            <fmt:message key="label.user.tariffs.information.minSpeed"/> ${tariff.minSpeed} Mbit\s:</br>
+                            <fmt:message key="label.user.tariffs.information.traffic"/> - <c:out value="${tariff.traffic/1024}"/> GB</br>
+                            <fmt:message key="label.user.tariffs.information.price"/> - ${tariff.price} $</br>
+                            <fmt:message key="label.user.tariffs.information.writeOf"/> ${tariff.period}</br>
                             <div align="right">
 
                                 <c:if test="${tariff.tariffId != sessionScope.user.tariff.tariffId}">
                                     <a class="btn btn-info "
                                        href="/provider_war_exploded/controller?command=USER_CHANGE_TARIFF&tariffId=${tariff.tariffId}">
-                                        Connect this tariff</a>
+                                        <fmt:message key="label.user.tariffs.information.connect"/></a>
                                 </c:if>
 
                                 <c:if test="${tariff.tariffId == sessionScope.user.tariff.tariffId}">
-                                    <b> This is your tariff</b>
+                                    <b> <fmt:message key="label.user.tariffs.information.activeTariff"/></b>
                                 </c:if>
                             </div>
                         </div>

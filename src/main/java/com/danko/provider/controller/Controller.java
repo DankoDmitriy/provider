@@ -39,14 +39,7 @@ public class Controller extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        Забираем параметр действия.
-        System.out.println("************CONTROLLER START***********");
         String commandString = req.getParameter(COMMAND);
-//        FIXME-DEL LOG
-        logger.log(Level.DEBUG, "COMMAND = " + commandString);
-        System.out.println("COMMAND = " + commandString);
-        System.out.println("**************");
-
         Command command = ActionFactory.getCommand(commandString);
         try {
             Router router = command.execute(req);
@@ -58,7 +51,6 @@ public class Controller extends HttpServlet {
             logger.log(Level.ERROR, "Internal error: {}", e);
         }
     }
-
     @Override
     public void destroy() {
         ConnectionPool.getInstance().destroyConnectionPool();

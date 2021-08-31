@@ -33,7 +33,7 @@ public class HomeCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(USER);
+        User user = (User) session.getAttribute(SESSION_USER);
         try {
             switch (user.getRole()) {
                 case USER:

@@ -15,7 +15,7 @@ import com.danko.provider.validator.InputDataValidator;
 import static com.danko.provider.controller.command.ParamName.USER_CHANGE_PASSWORD_NEW_PASSWORD;
 import static com.danko.provider.controller.command.PageUrl.*;
 import static com.danko.provider.controller.command.RequestAttribute.*;
-import static com.danko.provider.controller.command.SessionAttribute.USER;
+import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -28,7 +28,7 @@ public class ChangePasswordCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(USER);
+        User user = (User) session.getAttribute(SESSION_USER);
         String password = request.getParameter(USER_CHANGE_PASSWORD_NEW_PASSWORD);
         boolean updateResult = true;
 //TODO - Подумать как сделать красиво...

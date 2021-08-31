@@ -8,21 +8,19 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import static com.danko.provider.controller.command.SessionAttribute.USER;
+import static com.danko.provider.controller.command.SessionAttribute.*;
 
 @WebListener
 public class HttpSessionListenerImpl implements HttpSessionListener {
 
     @Override
     public void sessionCreated(HttpSessionEvent sessionEvent) {
-//        FIXME - тут добавить локализацию.
         HttpSession session = sessionEvent.getSession();
-//        FIXME -DEL IT
-        System.out.println("********  HttpSessionListener ********");
-        User user = (User) session.getAttribute(USER);
+        User user = (User) session.getAttribute(SESSION_USER);
         if (user == null) {
             user = User.builder().setRole(UserRole.GUEST).build();
-            session.setAttribute(USER, user);
+            session.setAttribute(SESSION_USER, user);
+            session.setAttribute(SESSION_LOCAL, DEFAULT_LOCAL);
         }
     }
 }

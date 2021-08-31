@@ -13,3 +13,7 @@
 <body>
 <div class="container">
     <div class="main-body">
+        <div align="right">
+            <a href="${pageContext.request.contextPath}/controller?command=LOCAL&newLocal=en_EN">En</a>
+            <a href="${pageContext.request.contextPath}/controller?command=LOCAL&newLocal=ru_RU">Rus</a>
+        </div>

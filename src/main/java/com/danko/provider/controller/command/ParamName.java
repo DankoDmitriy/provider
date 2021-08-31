@@ -16,6 +16,9 @@ public final class ParamName {
     //    User change tariff form parameters
     public static final String USER_CHANGE_TARIFF_NEW_TARIFF_ID = "tariffId";
 
+    //  User change locale
+    public static final String USER_CHANGE_LOCAL = "newLocal";
+
 
     private ParamName() {
     }

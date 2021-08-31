@@ -1,5 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.local}" scope="session"/>
+<fmt:setBundle basename="local.pagecontent"/>
 
 <%--HEADER--%>
 <%@include file="../../../WEB-INF/parts/user/header.jsp" %>
@@ -22,7 +25,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-3">
-                        <h6 class="mb-0">Full name</h6>
+                        <h6 class="mb-0"><fmt:message key="label.user.profile.personal.information.fullName"/></h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
                         ${sessionScope.user.lastName} ${sessionScope.user.firstName} ${sessionScope.user.patronymic}
@@ -32,7 +35,7 @@
 
                 <div class="row">
                     <div class="col-sm-3">
-                        <h6 class="mb-0">Email</h6>
+                        <h6 class="mb-0"><fmt:message key="label.user.profile.personal.information.email"/></h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
                         ${sessionScope.user.email}
@@ -42,7 +45,8 @@
 
                 <div class="row">
                     <div class="col-sm-3">
-                        <h6 class="mb-0">Contract number:</h6>
+                        <h6 class="mb-0"><fmt:message
+                                key="label.user.profile.personal.information.contractNumber"/></h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
                         ${sessionScope.user.contractNumber}
@@ -52,7 +56,7 @@
 
                 <div class="row">
                     <div class="col-sm-3">
-                        <h6 class="mb-0">Contract date:</h6>
+                        <h6 class="mb-0"><fmt:message key="label.user.profile.personal.information.contractDate"/></h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
                         ${sessionScope.user.contractDate}
@@ -62,7 +66,7 @@
 
                 <div class="row">
                     <div class="col-sm-3">
-                        <h6 class="mb-0">Traffic:</h6>
+                        <h6 class="mb-0"><fmt:message key="label.user.profile.personal.information.traffic"/></h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
                         <c:out value="${sessionScope.user.traffic/1024}"/> GB
@@ -72,7 +76,7 @@
 
                 <div class="row">
                     <div class="col-sm-3">
-                        <h6 class="mb-0">Access data:</h6>
+                        <h6 class="mb-0"><fmt:message key="label.user.profile.personal.information.userName"/></h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
                         ${sessionScope.user.name}
@@ -83,8 +87,8 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <a class="btn btn-info "
-                           href="/provider_war_exploded/controller?command=USER_CHANGE_PASSWORD">Change
-                            password</a>
+                           href="/provider_war_exploded/controller?command=USER_CHANGE_PASSWORD">
+                            <fmt:message key="label.user.profile.personal.information.changePassword"/></a>
                     </div>
                 </div>
             </div>
@@ -96,41 +100,47 @@
             <div class="col-sm-6 mb-3">
                 <div class="card h-100">
                     <div class="card-body">
-                        <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">Tariff
-                            Information</i>
+                        <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">
+                            <fmt:message key="label.user.profile.tariff.information.inf"/></i>
                             ${sessionScope.user.tariff.description}</h6>
 
-                        <small>Max speed: ${sessionScope.user.tariff.maxSpeed} Mbit\sec</small>
+                        <small><fmt:message key="label.user.profile.tariff.information.maxSpeed"/>
+                            ${sessionScope.user.tariff.maxSpeed} Mbit\sec</small>
                         <div class="progress mb-3" style="height: 5px">
                             <div class="progress-bar bg-primary" role="progressbar" style="width: 100%"
                                  aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
 
-                        <small>Min speed: ${sessionScope.user.tariff.minSpeed} Mbit\sec</small>
+                        <small><fmt:message key="label.user.profile.tariff.information.minSpeed"/>
+                            ${sessionScope.user.tariff.minSpeed} Mbit\sec</small>
                         <div class="progress mb-3" style="height: 5px">
                             <div class="progress-bar bg-primary" role="progressbar" style="width: 100%"
                                  aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
 
-                        <small>Traffic: <c:out value="${sessionScope.user.tariff.traffic/1024}"/> GB</small>
+                        <small><fmt:message key="label.user.profile.tariff.information.traffic"/>
+                            <c:out value="${sessionScope.user.tariff.traffic/1024}"/> GB</small>
                         <div class="progress mb-3" style="height: 5px">
                             <div class="progress-bar bg-primary" role="progressbar" style="width: 100%"
                                  aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
 
-                        <small>Price: ${sessionScope.user.tariff.price} $</small>
+                        <small><fmt:message key="label.user.profile.tariff.information.price"/>
+                            ${sessionScope.user.tariff.price} $</small>
                         <div class="progress mb-3" style="height: 5px">
                             <div class="progress-bar bg-primary" role="progressbar" style="width: 100%"
                                  aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
 
-                        <small>Status: ${sessionScope.user.tariff.status} </small>
+                        <small><fmt:message key="label.user.profile.tariff.information.status"/>
+                            ${sessionScope.user.tariff.status} </small>
                         <div class="progress mb-3" style="height: 5px">
                             <div class="progress-bar bg-primary" role="progressbar" style="width: 100%"
                                  aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
 
-                        <small>Periodicity Write Off: ${sessionScope.user.tariff.period} </small>
+                        <small><fmt:message key="label.user.profile.tariff.information.writeOf"/>
+                            ${sessionScope.user.tariff.period} </small>
                         <div class="progress mb-3" style="height: 5px">
                             <div class="progress-bar bg-primary" role="progressbar" style="width: 100%"
                                  aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
@@ -145,7 +155,7 @@
                 <div class="card h-100">
                     <div class="card-body">
                         <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">
-                            Last finance operations </i></h6>
+                            <fmt:message key="label.user.profile.last.transactions.title"/> </i></h6>
 
                         <c:forEach items="${transactions}" var="transaction">
                             <small>${transaction.type}: <b>${transaction.sum}$</b> ${transaction.date}</small>
@@ -158,7 +168,7 @@
                             <div class="col-sm-12">
                                 <a class="btn btn-info "
                                    href="${pageContext.request.contextPath}/controller?command=PERSONAL_FINANCE_OPERATIONS">
-                                    All finance operations</a>
+                                    <fmt:message key="label.user.profile.last.transactions.button"/></a>
                             </div>
                         </div>
                     </div>

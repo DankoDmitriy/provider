@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 
 import static com.danko.provider.controller.command.PageUrl.HOME_PAGE;
 import static com.danko.provider.controller.command.ParamName.USER_CHANGE_TARIFF_NEW_TARIFF_ID;
-import static com.danko.provider.controller.command.SessionAttribute.USER;
+import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
 
 public class ChangeTariffCommand implements Command {
     private static Logger logger = LogManager.getLogger();
@@ -30,13 +30,13 @@ public class ChangeTariffCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(USER);
+        User user = (User) session.getAttribute(SESSION_USER);
         long newTariffId = Long.valueOf(request.getParameter(USER_CHANGE_TARIFF_NEW_TARIFF_ID));
         try {
             BigDecimal newUserTraffic = userService.updateTariffPlan(user.getUserId(), newTariffId);
             user.setTariff(tariffService.findById(newTariffId).get());
             user.setTraffic(newUserTraffic);
-            session.setAttribute(USER, user);
+            session.setAttribute(SESSION_USER, user);
             router.setPageUrl(HOME_PAGE);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Tariff has not been updated: {}", e);
