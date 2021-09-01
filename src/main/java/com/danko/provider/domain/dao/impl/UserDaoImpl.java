@@ -161,10 +161,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean updateActivationCodeStatus(String activateCode, int status, UserStatus userStatus) throws DaoException {
+    public boolean updateActivationCodeStatus(String activateCode, UserStatus userStatus) throws DaoException {
         boolean result;
         result = jdbcTemplate.executeUpdateQuery(SQL_UPDATE_ACTIVATION_CODE_STATUS,
-                status,
+                true,
                 userStatus.name(),
                 activateCode);
         return result;

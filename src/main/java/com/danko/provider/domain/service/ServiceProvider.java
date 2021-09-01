@@ -1,6 +1,7 @@
 package com.danko.provider.domain.service;
 
 import com.danko.provider.domain.service.impl.AccountTransactionServiceImpl;
+import com.danko.provider.domain.service.impl.EmailServiceImpl;
 import com.danko.provider.domain.service.impl.TariffServiceImpl;
 import com.danko.provider.domain.service.impl.UserServiceImpl;
 
@@ -12,6 +13,7 @@ public class ServiceProvider {
     private UserService userService = new UserServiceImpl();
     private TariffService tariffService = new TariffServiceImpl();
     private AccountTransactionService accountTransactionService = new AccountTransactionServiceImpl();
+    private EmailService emailService = new EmailServiceImpl();
 
     private ServiceProvider() {
     }
@@ -35,5 +37,9 @@ public class ServiceProvider {
 
     public AccountTransactionService getAccountTransactionService() {
         return accountTransactionService;
+    }
+
+    public EmailService getEmailService() {
+        return emailService;
     }
 }

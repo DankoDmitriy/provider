@@ -12,7 +12,7 @@ public interface UserDao extends BaseDao<Long, User> {
 
     boolean updatePassword(long userId, String password, String newActivateCode, UserStatus userStatus) throws DaoException;
 
-    boolean updateActivationCodeStatus(String activateCode, int status, UserStatus userStatus) throws DaoException;
+    boolean updateActivationCodeStatus(String activateCode, UserStatus userStatus) throws DaoException;
 
     boolean verificationOfActivationCode(String activateCode) throws DaoException;
 

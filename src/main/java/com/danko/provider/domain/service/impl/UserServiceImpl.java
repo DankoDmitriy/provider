@@ -6,13 +6,16 @@ import com.danko.provider.domain.entity.Tariff;
 import com.danko.provider.domain.entity.TariffStatus;
 import com.danko.provider.domain.entity.User;
 import com.danko.provider.domain.entity.UserStatus;
+import com.danko.provider.domain.service.EmailService;
 import com.danko.provider.domain.service.ServiceProvider;
 import com.danko.provider.domain.service.TariffService;
 import com.danko.provider.domain.service.UserService;
 import com.danko.provider.util.EmailSender;
+import com.danko.provider.util.UrlUtil;
 import com.danko.provider.util.UserUtil;
 import com.danko.provider.exception.DaoException;
 import com.danko.provider.exception.ServiceException;
+import com.danko.provider.validator.InputDataValidator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,25 +56,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updatePassword(long userId, String password, String email) throws ServiceException {
+    public boolean updatePassword(long userId, String password, String email, String contextPath, String requestUrl) throws ServiceException {
         try {
-//            FIXME - Урл надо вынести в отдельный конфиг. - тернантный оператор в реутрне на 2 команды сразу.
-            String activationUrl = "http://localhost:8080/provider_war_exploded/controller?command=ACTIVATION&activationCode=";
             boolean result = true;
-            String passwordHash = UserUtil.hashString(password);
-            String newActivateCode = UserUtil.generationOfActivationCode();
-
-            StringBuilder mailText = new StringBuilder("You are changing password. ");
-            mailText.append("To continue working, activate your account. ");
-            mailText.append("To activate, follow the link: ");
-            mailText.append(activationUrl);
-            mailText.append(newActivateCode);
-            mailText.append(" If you haven't changed your password, just ignore this email. Thanks.");
-//            TODO Почтовик в отдельный сервис. Текст письма в почтовик. Пароль меняем даже без письма. Урлу активацию в УРЛЫ.
-//            TODO сюда все проверки на валидность данных. Кнопочка продублировать письмо в личном кабинете.
-            EmailSender emailSender = new EmailSender(email, "You are changing password", mailText.toString());
-            if (emailSender.SendMail()) {
+            if (password != null && InputDataValidator.newUserPasswordValid(password)) {
+                String passwordHash = UserUtil.hashString(password);
+                String newActivateCode = UserUtil.generationOfActivationCode();
                 result = userDao.updatePassword(userId, passwordHash, newActivateCode, UserStatus.WAIT_ACTIVATE);
+
+                EmailService emailService = ServiceProvider.getInstance().getEmailService();
+                String domain = UrlUtil.requestUrlToDomain(requestUrl) + contextPath;
+                emailService.sendActivateMail(email, domain, newActivateCode);
+            } else {
+                throw new ServiceException("Input password is not correct.");
             }
             return result;
         } catch (DaoException e) {
@@ -81,9 +78,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateActivationCodeStatus(String activateCode, int status, UserStatus userStatus) throws ServiceException {
+    public boolean updateActivationCodeStatus(String activateCode, UserStatus userStatus) throws ServiceException {
         try {
-            return userDao.updateActivationCodeStatus(activateCode, status, userStatus);
+            if (verificationOfActivationCode(activateCode)) {
+                return userDao.updateActivationCodeStatus(activateCode, userStatus);
+            }
+            return false;
         } catch (DaoException e) {
             logger.log(Level.ERROR, "Activation code status has not been updated: {}", e);
             throw new ServiceException("Activation code status has not been updated.", e);

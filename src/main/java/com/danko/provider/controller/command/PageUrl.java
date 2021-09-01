@@ -7,6 +7,7 @@ public final class PageUrl {
     public static final String LOGIN_PAGE = "/jsp/pages/login.jsp";
     public static final String HOME_PAGE = "/controller?command=home";
     public static final String LOGOUT_PAGE = "/controller?command=logout";
+    public static final String ACTIVATE_PAGE = "/controller?command=ACTIVATION&activationCode=";
 
     // USER_PERSONALS_PAGES
     public static final String USER_PROFILE_PAGE = "/jsp/pages/user/profile.jsp";
