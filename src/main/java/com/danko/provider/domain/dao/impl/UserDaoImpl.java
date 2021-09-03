@@ -5,7 +5,7 @@ import com.danko.provider.domain.dao.JdbcTemplate;
 import com.danko.provider.domain.dao.UserDao;
 import com.danko.provider.domain.entity.User;
 import com.danko.provider.domain.entity.UserStatus;
-import com.danko.provider.domain.mapper.impl.UserResultSetHandler;
+import com.danko.provider.domain.dao.mapper.impl.UserResultSetHandler;
 import com.danko.provider.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

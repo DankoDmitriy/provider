@@ -56,10 +56,16 @@
 
                 <div class="row">
                     <div class="col-sm-3">
-                        <h6 class="mb-0"><fmt:message key="label.user.profile.personal.information.contractDate"/></h6>
+                        <h6 class="mb-0">
+                            <fmt:message key="label.user.profile.personal.information.contractDate"/>
+                        </h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                        ${sessionScope.user.contractDate}
+                        <%--                        ${sessionScope.user.contractDate}--%>
+                        <%--<fmt:formatDate value="${sessionScope.user.contractDate}" pattern="dd-MM-yyyy"/>--%>
+                        <fmt:parseDate value="${sessionScope.user.contractDate}" pattern="yyyy-MM-dd"
+                                       var="parsedDateTime" type="both"/>
+                        <fmt:formatDate pattern="dd.MM.yyyy" value="${parsedDateTime}"/>
                     </div>
                 </div>
                 <hr>
@@ -158,7 +164,13 @@
                             <fmt:message key="label.user.profile.last.transactions.title"/> </i></h6>
 
                         <c:forEach items="${transactions}" var="transaction">
-                            <small>${transaction.type}: <b>${transaction.sum}$</b> ${transaction.date}</small>
+                            <small>
+                                    ${transaction.type}:
+                                <b>${transaction.sum}$</b>
+                                <fmt:parseDate value="${transaction.date}" pattern="yyyy-MM-dd'T'HH:mm"
+                                               var="parsedDateTime" type="both"/>
+                                <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedDateTime}"/>
+                            </small>
                             <div class="progress mb-3" style="height: 5px">
                                 <div class="progress-bar bg-primary" role="progressbar" style="width: 0%"
                                      aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>

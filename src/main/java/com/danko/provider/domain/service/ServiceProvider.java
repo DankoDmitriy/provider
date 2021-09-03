@@ -1,9 +1,6 @@
 package com.danko.provider.domain.service;
 
-import com.danko.provider.domain.service.impl.AccountTransactionServiceImpl;
-import com.danko.provider.domain.service.impl.EmailServiceImpl;
-import com.danko.provider.domain.service.impl.TariffServiceImpl;
-import com.danko.provider.domain.service.impl.UserServiceImpl;
+import com.danko.provider.domain.service.impl.*;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -14,6 +11,7 @@ public class ServiceProvider {
     private TariffService tariffService = new TariffServiceImpl();
     private AccountTransactionService accountTransactionService = new AccountTransactionServiceImpl();
     private EmailService emailService = new EmailServiceImpl();
+    private UserActionService userActionService = new UserActionServiceImpl();
 
     private ServiceProvider() {
     }
@@ -41,5 +39,9 @@ public class ServiceProvider {
 
     public EmailService getEmailService() {
         return emailService;
+    }
+
+    public UserActionService getUserActionService() {
+        return userActionService;
     }
 }

@@ -27,10 +27,15 @@
                 <c:forEach items="${transactionsAll}" var="transaction">
                     <div class="row">
                         <div class="col-sm-3">
-                            <h6 class="mb-0"><small><fmt:message key="label.user.allFinanceOperations.title"/></small></h6>
+                            <h6 class="mb-0"><small><fmt:message key="label.user.allFinanceOperations.title"/></small>
+                            </h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                                ${transaction.type}: <b>${transaction.sum}$</b> ${transaction.date}
+                                ${transaction.type}:
+                            <b>${transaction.sum}$</b>
+                            <fmt:parseDate value="${transaction.date}" pattern="yyyy-MM-dd'T'HH:mm"
+                                           var="parsedDateTime" type="both"/>
+                            <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedDateTime}"/>
                         </div>
                     </div>
                     <hr>

@@ -2,14 +2,8 @@ package com.danko.provider.domain.service.impl;
 
 import com.danko.provider.domain.dao.UserDao;
 import com.danko.provider.domain.dao.impl.UserDaoImpl;
-import com.danko.provider.domain.entity.Tariff;
-import com.danko.provider.domain.entity.TariffStatus;
-import com.danko.provider.domain.entity.User;
-import com.danko.provider.domain.entity.UserStatus;
-import com.danko.provider.domain.service.EmailService;
-import com.danko.provider.domain.service.ServiceProvider;
-import com.danko.provider.domain.service.TariffService;
-import com.danko.provider.domain.service.UserService;
+import com.danko.provider.domain.entity.*;
+import com.danko.provider.domain.service.*;
 import com.danko.provider.util.EmailSender;
 import com.danko.provider.util.UrlUtil;
 import com.danko.provider.util.UserUtil;
@@ -21,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,17 +51,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updatePassword(long userId, String password, String email, String contextPath, String requestUrl) throws ServiceException {
+    public boolean updatePassword(long userId, String password, String email, String contextPath, String requestUrl, long tariffId) throws ServiceException {
         try {
             boolean result = true;
             if (password != null && InputDataValidator.newUserPasswordValid(password)) {
                 String passwordHash = UserUtil.hashString(password);
                 String newActivateCode = UserUtil.generationOfActivationCode();
                 result = userDao.updatePassword(userId, passwordHash, newActivateCode, UserStatus.WAIT_ACTIVATE);
+//                FIXME - Коммент убрать. или перевести.
+//Добавляет запись о изминении пароля в список действий пользователя.
+                UserActionService userActionService = ServiceProvider.getInstance().getUserActionService();
+                UserAction userAction = UserAction.builder().
+                        setActionType(UserAction.ActionType.CHANGE_PASSWORD)
+                        .setDateTime(LocalDateTime.now()).build();
+                userActionService.add(userAction, userId, tariffId);
 
                 EmailService emailService = ServiceProvider.getInstance().getEmailService();
                 String domain = UrlUtil.requestUrlToDomain(requestUrl) + contextPath;
-                emailService.sendActivateMail(email, domain, newActivateCode);
+//                TODO - Расскомментировать отправку почты. Убрарно что бы не спамить самому себе.
+//                emailService.sendActivateMail(email, domain, newActivateCode);
             } else {
                 throw new ServiceException("Input password is not correct.");
             }
@@ -114,6 +117,13 @@ public class UserServiceImpl implements UserService {
                     if (tariff.getStatus().equals(TariffStatus.ACTIVE) & user.getStatus().equals(UserStatus.ACTIVE)) {
                         newUserTraffic = tariff.getTraffic().add(user.getTraffic());
                         userDao.updateTariffAndTrafficValue(userId, tariffId, newUserTraffic);
+//                FIXME - Коммент убрать. или перевести.
+//Добавляет запись о изминении пароля в список действий пользователя.
+                        UserActionService userActionService = ServiceProvider.getInstance().getUserActionService();
+                        UserAction userAction = UserAction.builder().
+                                setActionType(UserAction.ActionType.CHANGE_TARIFF)
+                                .setDateTime(LocalDateTime.now()).build();
+                        userActionService.add(userAction, userId, tariffId);
                     }
                 }
             }

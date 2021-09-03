@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
+//FIXME - переименовать и тип в сервис и.т.д.
 public class UserUtil {
     private static Logger logger = LogManager.getLogger();
 
@@ -20,11 +21,11 @@ public class UserUtil {
         MessageDigest messageDigest = null;
         byte[] bytesPass = null;
         try {
-            messageDigest = MessageDigest.getInstance("MD5");
-            messageDigest.update(s.getBytes("utf8"));
+            messageDigest = MessageDigest.getInstance("MD5"); //в константу
+            messageDigest.update(s.getBytes("utf8")); //в константу
             bytesPass = messageDigest.digest();
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            logger.log(Level.ERROR, "hashcode not generated {}" + e.getMessage());
+            logger.log(Level.ERROR, "hashcode not generated {}" + e);
         }
         BigInteger bigInteger = new BigInteger(1, bytesPass);
         String resHes = bigInteger.toString(16);

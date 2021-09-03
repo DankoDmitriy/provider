@@ -1,9 +1,9 @@
-package com.danko.provider.domain.mapper.impl;
+package com.danko.provider.domain.dao.mapper.impl;
 
 import com.danko.provider.domain.entity.PeriodicityWriteOff;
 import com.danko.provider.domain.entity.Tariff;
 import com.danko.provider.domain.entity.TariffStatus;
-import com.danko.provider.domain.mapper.ResultSetHandler;
+import com.danko.provider.domain.dao.mapper.ResultSetHandler;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;

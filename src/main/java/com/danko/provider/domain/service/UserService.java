@@ -13,7 +13,7 @@ public interface UserService {
 
     Optional<User> findByNameAndPassword(String name, String password) throws ServiceException;
 
-    boolean updatePassword(long userId, String password, String email, String contextPath, String requestUrl) throws ServiceException;
+    boolean updatePassword(long userId, String password, String email, String contextPath, String requestUrl, long tariffId) throws ServiceException;
 
     boolean updateActivationCodeStatus(String activateCode, UserStatus userStatus) throws ServiceException;
 

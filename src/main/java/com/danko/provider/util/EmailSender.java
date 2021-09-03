@@ -27,7 +27,7 @@ public class EmailSender {
         this.mailText = mailText;
     }
 
-    public boolean SendMail() {
+    public boolean sendMail() {
         boolean result = true;
         if (readEmailProperties(emailProperties)) {
             try {

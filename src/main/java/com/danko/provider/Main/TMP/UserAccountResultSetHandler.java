@@ -1,7 +1,6 @@
-package com.danko.provider.domain.mapper.impl;
+package com.danko.provider.Main.TMP;
 
-import com.danko.provider.domain.entity.UserAccount;
-import com.danko.provider.domain.mapper.ResultSetHandler;
+import com.danko.provider.domain.dao.mapper.ResultSetHandler;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;

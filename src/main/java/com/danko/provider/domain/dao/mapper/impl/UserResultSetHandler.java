@@ -1,23 +1,12 @@
-package com.danko.provider.domain.mapper.impl;
+package com.danko.provider.domain.dao.mapper.impl;
 
-import com.danko.provider.domain.dao.TariffDao;
-import com.danko.provider.domain.dao.impl.TariffDaoImpl;
 import com.danko.provider.domain.entity.*;
-import com.danko.provider.domain.mapper.ResultSetHandler;
-import com.danko.provider.domain.service.ServiceProvider;
-import com.danko.provider.domain.service.TariffService;
-import com.danko.provider.domain.service.UserService;
-import com.danko.provider.exception.DaoException;
-import com.danko.provider.exception.ServiceException;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.danko.provider.domain.dao.mapper.ResultSetHandler;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import static com.danko.provider.domain.dao.ColumnName.*;
 

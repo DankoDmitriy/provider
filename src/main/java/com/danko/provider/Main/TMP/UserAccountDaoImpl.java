@@ -1,10 +1,7 @@
-package com.danko.provider.domain.dao.impl;
+package com.danko.provider.Main.TMP;
 
 import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.domain.dao.JdbcTemplate;
-import com.danko.provider.domain.dao.UserAccountDao;
-import com.danko.provider.domain.entity.UserAccount;
-import com.danko.provider.domain.mapper.impl.UserAccountResultSetHandler;
 import com.danko.provider.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

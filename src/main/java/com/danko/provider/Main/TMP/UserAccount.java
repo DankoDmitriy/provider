@@ -1,4 +1,6 @@
-package com.danko.provider.domain.entity;
+package com.danko.provider.Main.TMP;
+
+import com.danko.provider.domain.entity.AbstractEntity;
 
 import java.math.BigDecimal;
 

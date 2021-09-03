@@ -36,7 +36,7 @@ public class ChangePasswordCommand implements Command {
 
         if (newPassword != null) {
             try {
-                updateResult = userService.updatePassword(user.getUserId(), newPassword, user.getEmail(), contextPath, requestUrl);
+                updateResult = userService.updatePassword(user.getUserId(), newPassword, user.getEmail(), contextPath, requestUrl, user.getTariffId());
             } catch (ServiceException e) {
                 logger.log(Level.WARN, "Password has not been updated: {}", e);
                 router.setPageUrl(USER_CHANGE_PASSWORD_PAGE);

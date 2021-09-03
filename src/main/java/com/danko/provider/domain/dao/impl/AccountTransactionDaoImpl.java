@@ -4,12 +4,11 @@ import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.domain.dao.AccountTransactionDao;
 import com.danko.provider.domain.dao.JdbcTemplate;
 import com.danko.provider.domain.entity.AccountTransaction;
-import com.danko.provider.domain.mapper.impl.AccountTransactionResultSetHandler;
+import com.danko.provider.domain.dao.mapper.impl.AccountTransactionResultSetHandler;
 import com.danko.provider.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 

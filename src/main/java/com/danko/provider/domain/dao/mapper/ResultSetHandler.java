@@ -1,4 +1,4 @@
-package com.danko.provider.domain.mapper;
+package com.danko.provider.domain.dao.mapper;
 
 import com.danko.provider.domain.entity.AbstractEntity;
 

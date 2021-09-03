@@ -5,7 +5,7 @@ import com.danko.provider.domain.dao.JdbcTemplate;
 import com.danko.provider.domain.dao.TariffDao;
 import com.danko.provider.domain.entity.Tariff;
 import com.danko.provider.domain.entity.TariffStatus;
-import com.danko.provider.domain.mapper.impl.TariffResultSetHandler;
+import com.danko.provider.domain.dao.mapper.impl.TariffResultSetHandler;
 import com.danko.provider.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

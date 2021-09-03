@@ -1,9 +1,12 @@
 package com.danko.provider.Main;
 
+import cn.hutool.core.date.DateTime;
 import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.domain.dao.TariffDao;
+import com.danko.provider.domain.dao.UserActionDao;
 import com.danko.provider.domain.dao.UserDao;
 import com.danko.provider.domain.dao.impl.TariffDaoImpl;
+import com.danko.provider.domain.dao.impl.UserActionDaoImpl;
 import com.danko.provider.domain.dao.impl.UserDaoImpl;
 import com.danko.provider.domain.entity.*;
 import com.danko.provider.util.EmailSender;
@@ -71,13 +74,13 @@ public class _Main {
 //        todo - tariff dao
 
         //      TODO - FOUND ALL
-        TariffDao tariffDao = new TariffDaoImpl();
-        List<Tariff> list = tariffDao.findAll();
-        list.forEach(tariffF -> System.out.println(tariffF));
-
-
-        list = tariffDao.findAllByStatus(TariffStatus.ACTIVE);
-        list.forEach(tariffF -> System.out.println(tariffF));
+//        TariffDao tariffDao = new TariffDaoImpl();
+//        List<Tariff> list = tariffDao.findAll();
+//        list.forEach(tariffF -> System.out.println(tariffF));
+//
+//
+//        list = tariffDao.findAllByStatus(TariffStatus.ACTIVE);
+//        list.forEach(tariffF -> System.out.println(tariffF));
 //
 //        //      TODO - FOUND BY ID
 //        Optional<Tariff> optionalTariff = tariffDao.findById(2L);
@@ -142,6 +145,24 @@ public class _Main {
 //        accountTransactionDao.update(transaction);
 //        accountTransactionOptional = accountTransactionDao.findById(2l);
 //        System.out.println(accountTransactionOptional.get());
+
+
+//        TODO - USER ACTIONS
+        UserActionDao userActionDao = new UserActionDaoImpl();
+        List<UserAction> list = userActionDao.findAll();
+        list.forEach(userAction -> System.out.println(userAction));
+
+        list = userActionDao.findAllByUserId(3l);
+        list.forEach(userAction -> System.out.println(userAction));
+
+//        UserAction userAction2 = UserAction.builder().
+//                setActionType(UserAction.ActionType.CHANGE_TARIFF)
+//                .setDateTime(LocalDateTime.now()).buid();
+//        userActionDao.add(userAction2, 3l, 2l);
+//
+//        System.out.println("***********************");
+//        list = userActionDao.findAllByUserId(3l);
+//        list.forEach(userAction -> System.out.println(userAction));
 
 
         connectionPool.destroyConnectionPool();
