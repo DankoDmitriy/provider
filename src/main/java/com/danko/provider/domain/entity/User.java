@@ -12,7 +12,6 @@ public class User extends AbstractEntity {
     private LocalDateTime contractDate;
     private BigDecimal balance;
     private String name;
-    private String password;
     private String email;
     private String activationCode;
     private boolean activationCodeUsed;
@@ -87,14 +86,6 @@ public class User extends AbstractEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {
@@ -179,7 +170,6 @@ public class User extends AbstractEntity {
         if (contractDate != null ? !contractDate.equals(user.contractDate) : user.contractDate != null) return false;
         if (balance != null ? !balance.equals(user.balance) : user.balance != null) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
         if (activationCode != null ? !activationCode.equals(user.activationCode) : user.activationCode != null)
             return false;
@@ -199,7 +189,6 @@ public class User extends AbstractEntity {
         result = 31 * result + (contractDate != null ? contractDate.hashCode() : 0);
         result = 31 * result + (balance != null ? balance.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (activationCode != null ? activationCode.hashCode() : 0);
         result = 31 * result + (activationCodeUsed ? 1 : 0);
@@ -222,7 +211,6 @@ public class User extends AbstractEntity {
         sb.append(", contractDate=").append(contractDate);
         sb.append(", balance=").append(balance);
         sb.append(", name='").append(name).append('\'');
-        sb.append(", password='").append(password).append('\'');
         sb.append(", email='").append(email).append('\'');
         sb.append(", activationCode='").append(activationCode).append('\'');
         sb.append(", activationCodeUsed=").append(activationCodeUsed);
@@ -283,11 +271,6 @@ public class User extends AbstractEntity {
 
         public Builder setName(String name) {
             user.setName(name);
-            return this;
-        }
-
-        public Builder setPassword(String password) {
-            user.setPassword(password);
             return this;
         }
 

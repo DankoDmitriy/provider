@@ -127,8 +127,51 @@ public class UserServiceImpl implements UserService {
             }
         } catch (DaoException e) {
             logger.log(Level.ERROR, "Tariff has not been updated: {}", e);
-            throw new ServiceException("Tariff has not been updated:.", e);
+            throw new ServiceException("Tariff has not been updated.", e);
         }
         return newUserTraffic;
+    }
+
+    @Override
+    public BigDecimal activatePaymentCard(String cardNumber, String cardPin, long userId, BigDecimal userBalance, long tariffId) throws ServiceException {
+        BigDecimal newUserBalance;
+        PaymentCardService paymentCardService = ServiceProvider.getInstance().getPaymentCardService();
+
+        Optional<PaymentCard> paymentCardOptional = paymentCardService.findByCardNumberAndPin(cardNumber, cardPin);
+        if (!paymentCardOptional.isEmpty()) {
+            PaymentCard paymentCard = paymentCardOptional.get();
+            if (paymentCard.getCardStatus().equals(PaymentCard.CardStatus.NOT_USED)) {
+                paymentCard.setCardStatus(PaymentCard.CardStatus.USED);
+
+                LocalDateTime localDateTimeNow = LocalDateTime.now();
+
+                UserAction userAction = UserAction.builder().
+                        setActionType(UserAction.ActionType.CARD_ACTIVATE)
+                        .setDateTime(localDateTimeNow).build();
+
+                AccountTransaction accountTransaction = AccountTransaction.builder()
+                        .setSum(paymentCard.getAmount())
+                        .setDate(localDateTimeNow)
+                        .setUserId(userId)
+                        .setType(TransactionType.REFILL).build();
+
+                paymentCard.setActivationDate(localDateTimeNow);
+
+                newUserBalance = userBalance.add(paymentCard.getAmount());
+
+                try {
+                    userDao.balanceReplenishment(userId, newUserBalance, tariffId, paymentCard, userAction, accountTransaction);
+                } catch (DaoException e) {
+                    logger.log(Level.ERROR, "Balance has not been replenished: {}", e);
+                    throw new ServiceException("Balance has not been replenished.", e);
+                }
+
+            } else {
+                throw new ServiceException("Balance has not been replenished.");
+            }
+        } else {
+            throw new ServiceException("Balance has not been replenished.");
+        }
+        return newUserBalance;
     }
 }

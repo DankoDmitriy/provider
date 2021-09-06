@@ -4,17 +4,45 @@ import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.domain.dao.UserActionDao;
 import com.danko.provider.domain.dao.impl.UserActionDaoImpl;
 import com.danko.provider.domain.entity.UserAction;
+import com.danko.provider.util.PasswordHasher;
 
+import java.sql.Connection;
+import java.sql.Savepoint;
 import java.util.List;
 
 public class _Main {
     public static void main(String[] args) throws Exception {
 
-//        EmailSender emailSender = new EmailSender("danko.dima@gmail.com", "Test email", "Test email from my java module");
-//        emailSender.SendMail();
+//        System.out.println(PasswordHasher.hashString("000001"));
+//        System.out.println(PasswordHasher.hashString("000002"));
+//        System.out.println(PasswordHasher.hashString("000003"));
+//        System.out.println(PasswordHasher.hashString("000004"));
+//        System.out.println(PasswordHasher.hashString("000005"));
+//        System.out.println(PasswordHasher.hashString("000006"));
+//
+//        System.out.println(PasswordHasher.hashString("1"));
+
+
 
 //        todo - проверка userDao
         ConnectionPool connectionPool = ConnectionPool.getInstance();
+
+
+//         TODO - делаем транзацию.
+//        1. выключить auto-commit у connection.setAutoCommit(false)
+//        2. Описываем действия, которые должны быть выполнены обязательно на данном connection. и выполняем их.
+//        2.1. Необходимо сделать точку возврата. releaseSavepoint.
+//        3. Затем если все ок. мы должны сделать соммит для фиксации изминений в БД. connection.commit();
+//        4. Если выволнение было с ошибками. необходимо сделать откат. connection.rollback();
+//        5. Выключить auto-commit у connection.setAutoCommit(true)
+//        6. Вернуть коннекшен в пул. В нашей ситуации просто его закрыть. т.к. он в оболочке прокси.
+
+//        Connection connection = connectionPool.getConnection();
+//        connection.setAutoCommit(false);
+////        statement.executeUpdate(SQL);
+//        Savepoint savepointOne = connection.setSavepoint("SavepointOne");
+//        connection.commit();
+//        connection.releaseSavepoint(savepointOne);
 
 //        UserDao userDao = new UserDaoImpl();
 //////        TODO - Found ALL USERS

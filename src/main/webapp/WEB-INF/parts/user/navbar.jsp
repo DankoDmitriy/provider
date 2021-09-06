@@ -26,6 +26,10 @@
                 <fmt:message key="label.user.navbar.actions"/>
             </a></li>
         <li class="breadcrumb-item">
+            <a href="${pageContext.request.contextPath}/controller?command=pay">
+                <fmt:message key="label.user.navbar.pay"/>
+            </a></li>
+        <li class="breadcrumb-item">
             <a href="${pageContext.request.contextPath}/controller?command=logout">
                 <fmt:message key="label.user.navbar.logout"/>
             </a></li>

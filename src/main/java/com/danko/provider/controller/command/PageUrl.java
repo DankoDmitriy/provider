@@ -15,7 +15,7 @@ public final class PageUrl {
     public static final String USER_CHANGE_PASSWORD_PAGE = "/jsp/pages/user/change_password.jsp";
     public static final String USER_TARIFFS_LIST = "/jsp/pages/user/tariffs.jsp";
     public static final String USER_ACTIONS_PAGE = "/jsp/pages/user/actions.jsp";
-
+    public static final String USER_ACTIVATE_PAYMENT_CARD = "/jsp/pages/user/payment_card.jsp";
 
     private PageUrl() {
     }

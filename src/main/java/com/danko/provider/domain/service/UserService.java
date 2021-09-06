@@ -20,4 +20,6 @@ public interface UserService {
     boolean verificationOfActivationCode(String activateCode) throws ServiceException;
 
     BigDecimal updateTariffPlan(long userId, long tariffId) throws ServiceException;
+
+    BigDecimal activatePaymentCard(String cardNumber, String cardPin, long userId, BigDecimal userBalance, long tariffId) throws ServiceException;
 }

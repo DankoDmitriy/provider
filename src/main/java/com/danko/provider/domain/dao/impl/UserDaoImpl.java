@@ -3,15 +3,16 @@ package com.danko.provider.domain.dao.impl;
 import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.domain.dao.JdbcTemplate;
 import com.danko.provider.domain.dao.UserDao;
-import com.danko.provider.domain.entity.User;
-import com.danko.provider.domain.entity.UserStatus;
+import com.danko.provider.domain.entity.*;
 import com.danko.provider.domain.dao.mapper.impl.UserResultSetHandler;
 import com.danko.provider.exception.DaoException;
+import com.danko.provider.exception.DatabaseConnectionException;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,7 +72,7 @@ public class UserDaoImpl implements UserDao {
 
     private static final String SQL_UPDATE_USER = """
             UPDATE USERS SET
-            first_name=?, last_name=?, patronymic=?, contract_number=?, contract_date=?, balance=?, name=?, password=?, email=?, activation_code=?, 
+            first_name=?, last_name=?, patronymic=?, contract_number=?, contract_date=?, balance=?, name=?, email=?, activation_code=?, 
             activation_code_used=?, traffic=?, user_roles_role_id=(select role_id from user_roles where role=?), 
             user_statuses_status_id=(select status_id from user_statuses where status=?),
             tariffs_tariff_id=?
@@ -206,6 +207,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public long add(User user) throws DaoException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public long add(User user, String password) throws DaoException {
         long generatedId = jdbcTemplate.executeInsertQuery(SQL_ADD_USER,
                 user.getFirstName(),
                 user.getLastName(),
@@ -214,7 +220,7 @@ public class UserDaoImpl implements UserDao {
                 Timestamp.valueOf(user.getContractDate()),
                 user.getBalance(),
                 user.getName(),
-                user.getPassword(),
+                password,
                 user.getEmail(),
                 user.getActivationCode(),
                 user.isActivationCodeUsed(),
@@ -234,5 +240,104 @@ public class UserDaoImpl implements UserDao {
                 traffic,
                 userId);
         return result;
+    }
+
+
+    private static final String SQL_ADD_ACTION = """
+            INSERT INTO actions 
+            (date, users_user_id, tariffs_tariff_id, action_type_type_id )
+            VALUES (?,?,?,
+            (select action_type_id from action_type where type=?)
+            )
+            """;
+
+    private static final String SQL_UPDATE_BALANCE = """
+            UPDATE USERS SET
+            balance=?
+            WHERE 
+            user_id=?
+            """;
+
+    private static final String SQL_ADD_ACCOUNT_TRANSACTION = """
+            INSERT INTO account_transactions 
+            (sum,  date, users_user_id, transaction_type_type_id)
+            VALUES (?,?,?,
+            (select type_id from transaction_type where type=?))
+            """;
+
+    private static final String SQL_ACTIVATE_PAYMENT_CARD = """
+            UPDATE express_payment_cards SET
+            users_user_id=?, activation_date=?,
+            card_status_card_status_id=(select card_status_id from card_status where status=?)
+            WHERE 
+            card_id=?
+            """;
+
+    @Override
+    public void balanceReplenishment(long userId, BigDecimal userBalance, long tariffId, PaymentCard paymentCard, UserAction userAction, AccountTransaction accountTransaction) throws DaoException {
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        Connection connection = null;
+        Savepoint savepoint = null;
+        try {
+            connection = connectionPool.getConnection();
+
+            connection.setAutoCommit(false);
+            savepoint = connection.setSavepoint("savepoint");
+//            TODO - Первая транзакция. Добавляем действие.
+            PreparedStatement addActionStatement = connection.prepareStatement(SQL_ADD_ACTION);
+            setParametersInPreparedStatement(addActionStatement,
+                    userAction.getDateTime(),
+                    userId,
+                    tariffId,
+                    userAction.getActionType().name()
+            );
+            addActionStatement.executeUpdate();
+//            TODO - Вторая транзакция. Увеличиваем баланс пользователя.
+            PreparedStatement updateBalanceStatement = connection.prepareStatement(SQL_UPDATE_BALANCE);
+            setParametersInPreparedStatement(updateBalanceStatement, userBalance, userId);
+            updateBalanceStatement.executeUpdate();
+//            TODO - Третья транзакция транзакция. Добавляем списание или пополнение в архив пользователя по фин. операциям.
+            PreparedStatement addFinanceTransactionStatement = connection.prepareStatement(SQL_ADD_ACCOUNT_TRANSACTION);
+            setParametersInPreparedStatement(addFinanceTransactionStatement,
+                    accountTransaction.getSum(),
+                    accountTransaction.getDate(),
+                    accountTransaction.getUserId(),
+                    accountTransaction.getType().name()
+            );
+            addFinanceTransactionStatement.executeUpdate();
+//            TODO - Четвертая транзакция транзакция. "Гасим" карту.
+            PreparedStatement activatePaymentCard = connection.prepareStatement(SQL_ACTIVATE_PAYMENT_CARD);
+            setParametersInPreparedStatement(activatePaymentCard,
+                    userId,
+                    paymentCard.getActivationDate(),
+                    paymentCard.getCardStatus().name(),
+                    paymentCard.getCardId()
+            );
+            activatePaymentCard.executeUpdate();
+
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (SQLException | DatabaseConnectionException e) {
+            try {
+                connection.rollback(savepoint);
+            } catch (SQLException e1) {
+                logger.log(Level.ERROR, "Error...Message: {}", e1.getMessage());
+            }
+            logger.log(Level.ERROR, "Error...Message: {}", e.getMessage());
+            throw new DaoException(e);
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+                connection.close();
+            } catch (SQLException e2) {
+                logger.log(Level.ERROR, "Error...Message: {}", e2.getMessage());
+            }
+        }
+    }
+
+    private void setParametersInPreparedStatement(PreparedStatement statement, Object... parameters) throws SQLException {
+        for (int i = 1; i <= parameters.length; i++) {
+            statement.setObject(i, parameters[i - 1]);
+        }
     }
 }

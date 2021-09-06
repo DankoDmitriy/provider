@@ -18,6 +18,7 @@ public enum CommandType {
     USER_TARIFF_LIST(new TariffListCommand()),
     LOCAL(new ChangeLocalCommand()),
     USER_ACTION_LIST(new ActionCommand()),
+    PAY(new PayCommand()),
     HOME(new HomeCommand());
     //    Дефлотная комманда добавить.
     private Command command;

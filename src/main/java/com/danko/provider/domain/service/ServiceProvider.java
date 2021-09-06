@@ -12,6 +12,7 @@ public class ServiceProvider {
     private AccountTransactionService accountTransactionService = new AccountTransactionServiceImpl();
     private EmailService emailService = new EmailServiceImpl();
     private UserActionService userActionService = new UserActionServiceImpl();
+    private PaymentCardService paymentCardService = new PaymentCardServiceImpl();
 
     private ServiceProvider() {
     }
@@ -43,5 +44,9 @@ public class ServiceProvider {
 
     public UserActionService getUserActionService() {
         return userActionService;
+    }
+
+    public PaymentCardService getPaymentCardService() {
+        return paymentCardService;
     }
 }
