@@ -4,9 +4,9 @@ import com.danko.provider.domain.dao.UserDao;
 import com.danko.provider.domain.dao.impl.UserDaoImpl;
 import com.danko.provider.domain.entity.*;
 import com.danko.provider.domain.service.*;
-import com.danko.provider.util.EmailSender;
+import com.danko.provider.util.UniqueStringGenerator;
 import com.danko.provider.util.UrlUtil;
-import com.danko.provider.util.UserUtil;
+import com.danko.provider.util.PasswordHasher;
 import com.danko.provider.exception.DaoException;
 import com.danko.provider.exception.ServiceException;
 import com.danko.provider.validator.InputDataValidator;
@@ -22,7 +22,6 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private static Logger logger = LogManager.getLogger();
     private UserDao userDao = new UserDaoImpl();
-//    private TariffService tariffService = ServiceProvider.getInstance().getTariffService();
 
     @Override
     public List<User> findAllUsers() throws ServiceException {
@@ -41,7 +40,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> optionalUser = Optional.empty();
         try {
             //TODO - ADD CHECK FOR VALIDATION LOGIN AND PASSWORD
-            String passwordHash = UserUtil.hashString(password);
+            String passwordHash = PasswordHasher.hashString(password);
             optionalUser = userDao.findByNameAndPassword(name, passwordHash);
             return optionalUser;
         } catch (DaoException e) {
@@ -54,12 +53,12 @@ public class UserServiceImpl implements UserService {
     public boolean updatePassword(long userId, String password, String email, String contextPath, String requestUrl, long tariffId) throws ServiceException {
         try {
             boolean result = true;
-            if (password != null && InputDataValidator.newUserPasswordValid(password)) {
-                String passwordHash = UserUtil.hashString(password);
-                String newActivateCode = UserUtil.generationOfActivationCode();
+            InputDataValidator inputDataValidator = InputDataValidator.getInstance();
+            if (password != null && inputDataValidator.newUserPasswordValid(password)) {
+                String passwordHash = PasswordHasher.hashString(password);
+                String newActivateCode = UniqueStringGenerator.generationUniqueString();
                 result = userDao.updatePassword(userId, passwordHash, newActivateCode, UserStatus.WAIT_ACTIVATE);
-//                FIXME - Коммент убрать. или перевести.
-//Добавляет запись о изминении пароля в список действий пользователя.
+
                 UserActionService userActionService = ServiceProvider.getInstance().getUserActionService();
                 UserAction userAction = UserAction.builder().
                         setActionType(UserAction.ActionType.CHANGE_PASSWORD)
@@ -117,8 +116,7 @@ public class UserServiceImpl implements UserService {
                     if (tariff.getStatus().equals(TariffStatus.ACTIVE) & user.getStatus().equals(UserStatus.ACTIVE)) {
                         newUserTraffic = tariff.getTraffic().add(user.getTraffic());
                         userDao.updateTariffAndTrafficValue(userId, tariffId, newUserTraffic);
-//                FIXME - Коммент убрать. или перевести.
-//Добавляет запись о изминении пароля в список действий пользователя.
+
                         UserActionService userActionService = ServiceProvider.getInstance().getUserActionService();
                         UserAction userAction = UserAction.builder().
                                 setActionType(UserAction.ActionType.CHANGE_TARIFF)

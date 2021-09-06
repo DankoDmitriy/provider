@@ -7,9 +7,6 @@ public class UserAction extends AbstractEntity {
     private LocalDateTime dateTime;
     private ActionType actionType;
     private String tariffName;
-//    FIXME - данные поля удалить.
-//    private long UserId;
-//    private long tariffId;
 
     public enum ActionType {
         CHANGE_PASSWORD,

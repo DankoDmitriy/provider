@@ -39,7 +39,6 @@ public class LoginCommand implements Command {
         String name = request.getParameter(LOGIN_FORM_NAME);
         String password = request.getParameter(LOGIN_FORM_PASSWORD);
 
-//        TODO Валидация логина и пароля. что бы не обращаться в ДБ
         try {
             Optional<User> optionalUser = userService.findByNameAndPassword(name, password);
             if (optionalUser.isPresent()) {

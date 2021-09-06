@@ -1,18 +1,10 @@
 package com.danko.provider.Main;
 
-import cn.hutool.core.date.DateTime;
 import com.danko.provider.connection.ConnectionPool;
-import com.danko.provider.domain.dao.TariffDao;
 import com.danko.provider.domain.dao.UserActionDao;
-import com.danko.provider.domain.dao.UserDao;
-import com.danko.provider.domain.dao.impl.TariffDaoImpl;
 import com.danko.provider.domain.dao.impl.UserActionDaoImpl;
-import com.danko.provider.domain.dao.impl.UserDaoImpl;
-import com.danko.provider.domain.entity.*;
-import com.danko.provider.util.EmailSender;
+import com.danko.provider.domain.entity.UserAction;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class _Main {
@@ -148,12 +140,12 @@ public class _Main {
 
 
 //        TODO - USER ACTIONS
-        UserActionDao userActionDao = new UserActionDaoImpl();
-        List<UserAction> list = userActionDao.findAll();
-        list.forEach(userAction -> System.out.println(userAction));
-
-        list = userActionDao.findAllByUserId(3l);
-        list.forEach(userAction -> System.out.println(userAction));
+//        UserActionDao userActionDao = new UserActionDaoImpl();
+//        List<UserAction> list = userActionDao.findAll();
+//        list.forEach(userAction -> System.out.println(userAction));
+//
+//        list = userActionDao.findAllByUserId(3l);
+//        list.forEach(userAction -> System.out.println(userAction));
 
 //        UserAction userAction2 = UserAction.builder().
 //                setActionType(UserAction.ActionType.CHANGE_TARIFF)

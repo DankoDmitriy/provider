@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.danko.provider.domain.dao.ColumnName.*;
+import static com.danko.provider.Main.TMP.ColumnNameTMP.*;
 
 public class UserAccountResultSetHandler implements ResultSetHandler<UserAccount> {
     @Override

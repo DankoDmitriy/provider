@@ -1,9 +1,7 @@
 package com.danko.provider.controller;
 
-import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.controller.command.ActionFactory;
 import com.danko.provider.controller.command.Command;
-import com.danko.provider.domain.service.ServiceProvider;
 import com.danko.provider.exception.CommandException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -18,14 +16,12 @@ import java.io.IOException;
 
 import static com.danko.provider.controller.command.ParamName.COMMAND;
 
-@WebServlet(value = "/controller")
+@WebServlet(name = "controller", urlPatterns = "/controller")
 public class Controller extends HttpServlet {
     private static Logger logger = LogManager.getLogger();
 
     @Override
     public void init() throws ServletException {
-        ConnectionPool.getInstance();
-        ServiceProvider.getInstance();
     }
 
     @Override
@@ -51,8 +47,8 @@ public class Controller extends HttpServlet {
             logger.log(Level.ERROR, "Internal error: {}", e);
         }
     }
+
     @Override
     public void destroy() {
-        ConnectionPool.getInstance().destroyConnectionPool();
     }
 }

@@ -43,6 +43,7 @@ public class ChangePasswordCommand implements Command {
                 request.setAttribute(USER_PERSONAL_MESSAGE_ERROR, e.getMessage());
             }
             if (updateResult) {
+//                FIXME - del this comment
 //              END SESSION. ANd RETURN TO LOGIN PAGE.
                 router.setPageUrl(request.getContextPath() + LOGOUT_PAGE);
                 router.setRouteType(Router.RouteType.REDIRECT);

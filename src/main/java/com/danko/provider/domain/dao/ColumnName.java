@@ -63,12 +63,6 @@ public final class ColumnName {
     public static final String PERIODICITY_WRITE_OFF_ID = "write_off_id";
     public static final String PERIODICITY_PERIOD = "period";
 
-    //    Table: "user_accounts"
-    //    TODO - DELETE
-    public static final String ACCOUNT_ACCOUNT_ID = "account_id";
-    public static final String ACCOUNT_BALANCE = "balance";
-    public static final String ACCOUNT_USER_ID = "users_user_id";
-
     //    Table: "transaction_type"
     public static final String TRANSACTION_TYPE_TYPE_ID = "type_id";
     public static final String TRANSACTION_TYPE_TYPE = "type";

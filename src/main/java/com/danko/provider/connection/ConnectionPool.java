@@ -89,7 +89,6 @@ public class ConnectionPool {
             try {
                 connection = freeConnections.take();
                 try {
-//                   FIXME- isValid -  спутан метод. - было isClose. проверить. оставив на длительный срок запущенным.
                     if (connection.isClosed()) {
                         connection = new Connection(ConnectionFactory.createConnection());
                     }

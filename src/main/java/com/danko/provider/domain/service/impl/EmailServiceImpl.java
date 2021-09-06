@@ -1,9 +1,7 @@
 package com.danko.provider.domain.service.impl;
 
-import cn.hutool.extra.mail.MailException;
 import com.danko.provider.domain.service.EmailService;
 import com.danko.provider.exception.ServiceException;
-import com.danko.provider.util.EmailSender;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,7 +26,7 @@ public class EmailServiceImpl implements EmailService {
 
     public EmailServiceImpl() {
         try {
-            InputStream inputStream = EmailSender.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE_PATH);
+            InputStream inputStream = EmailServiceImpl.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE_PATH);
             emailProperties.load(inputStream);
             user = emailProperties.getProperty(USER);
             password = emailProperties.getProperty(PASSWORD);

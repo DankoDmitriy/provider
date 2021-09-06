@@ -14,10 +14,7 @@ public class LogoutCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
         router.setRouteType(Router.RouteType.REDIRECT);
-//        FIXME - Опредилиться я хочу на главную страницу отправлять, которая так же переправит на форму логина
-//        FIXME - или принудительно менуя один редирект с index.jsp отправить на форму логина.
         router.setPageUrl(request.getContextPath());
-//        router.setPageUrl(request.getContextPath() + LOGIN_PAGE);
         HttpSession session = request.getSession();
         session.invalidate();
         return router;

@@ -22,7 +22,6 @@ public class ChangeLocalCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(SESSION_USER);
         String newLocal = request.getParameter(USER_CHANGE_LOCAL);
         if (newLocal.equals(ENGLISH_LOCAL) || newLocal.equals(DEFAULT_LOCAL)) {
             session.setAttribute(SESSION_LOCAL, newLocal);
