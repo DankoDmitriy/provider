@@ -43,9 +43,9 @@ public class HomeCommand implements Command {
                     break;
                 case ADMIN:
 //       TODO - подумать куда будет уходить админ.
-                    router.setPageUrl(ADMIN_USERS_LIST_PAGE);
-                    List<User> users = userService.findAllUsers();
-                    request.setAttribute("users", users);
+                    router.setPageUrl(ADMIN_MAIN_PAGE);
+//                    List<User> users = userService.findAllUsers();
+//                    request.setAttribute("users", users);
                     break;
                 default:
                     router.setRouteType(Router.RouteType.REDIRECT);

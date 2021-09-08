@@ -24,6 +24,8 @@ public class TariffDaoImpl implements TariffDao {
             tariff_statuses AS ts ON tariffs.tariff_statuses_status_id = ts.status_id
             JOIN
             periodicity_write_off AS pwo ON tariffs.periodicity_write_off_write_off_id = pwo.write_off_id
+            ORDER BY
+            tariff_statuses_status_id
             """;
 
     private static final String SQL_FIND_TARIFF_BY_ID = """

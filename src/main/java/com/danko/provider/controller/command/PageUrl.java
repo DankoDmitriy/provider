@@ -2,7 +2,11 @@ package com.danko.provider.controller.command;
 
 public final class PageUrl {
     //    Administrator URLS
-    public static final String ADMIN_USERS_LIST_PAGE = "/jsp/pages/admin/users_list.jsp";
+    public static final String ADMIN_USERS_LIST_PAGE = "/jsp/pages/admin/admin_users_list.jsp";
+
+    public static final String ADMIN_TARIFFS_LIST_PAGE = "/jsp/pages/admin/admin_tariffs_list.jsp";
+
+    public static final String ADMIN_MAIN_PAGE = "/jsp/pages/admin/admin_main.jsp";
     //    Commons pages
     public static final String LOGIN_PAGE = "/jsp/pages/login.jsp";
     public static final String HOME_PAGE = "/controller?command=home";

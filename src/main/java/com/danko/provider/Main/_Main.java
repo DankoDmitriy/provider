@@ -13,6 +13,12 @@ import java.util.List;
 public class _Main {
     public static void main(String[] args) throws Exception {
 
+//TODO - это для транзакшион менеджера.
+//        ThreadLocal<Connection> connectionThreadLocal = new ThreadLocal<>();
+//        connectionThreadLocal.set(ConnectionPool.getInstance().getConnection());
+//        connectionThreadLocal.remove();
+
+
 //        System.out.println(PasswordHasher.hashString("000001"));
 //        System.out.println(PasswordHasher.hashString("000002"));
 //        System.out.println(PasswordHasher.hashString("000003"));
@@ -21,7 +27,6 @@ public class _Main {
 //        System.out.println(PasswordHasher.hashString("000006"));
 //
 //        System.out.println(PasswordHasher.hashString("1"));
-
 
 
 //        todo - проверка userDao

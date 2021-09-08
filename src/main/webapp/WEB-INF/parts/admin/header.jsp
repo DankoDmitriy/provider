@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <title>DankoBill</title>
-    <link rel="stylesheet" href="/static/style.css">
+<%--    <link rel="stylesheet" href="/static/style.css">--%>
     <!-- Bootstrap CSS -->
 <%--    <#--Указание браузеру, по учету плотноси пикселей на экране устройства.  Делать крупнее шрифты и.т.д. в зависисмости от устройства-->--%>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">

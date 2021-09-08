@@ -24,7 +24,25 @@
         <div class="card mb-3">
             <div class="card-body">
 
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">${user.tariff.description}:</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <fmt:message key="label.user.tariffs.information.maxSpeed"/> ${user.tariff.maxSpeed} Mbit\s:</br>
+                        <fmt:message key="label.user.tariffs.information.minSpeed"/> ${user.tariff.minSpeed} Mbit\s:</br>
+                        <fmt:message key="label.user.tariffs.information.traffic"/> - <c:out value="${user.tariff.traffic/1024}"/> GB</br>
+                        <fmt:message key="label.user.tariffs.information.price"/> - ${user.tariff.price} $</br>
+                        <fmt:message key="label.user.tariffs.information.writeOf"/> ${user.tariff.period}</br>
+                        <div align="right">
+                                <b> <fmt:message key="label.user.tariffs.information.activeTariff"/></b>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+
                 <c:forEach items="${tariffs}" var="tariff">
+                    <c:if test="${tariff.tariffId != sessionScope.user.tariff.tariffId}">
                     <div class="row">
                         <div class="col-sm-3">
                             <h6 class="mb-0">${tariff.description}:</h6>
@@ -36,20 +54,14 @@
                             <fmt:message key="label.user.tariffs.information.price"/> - ${tariff.price} $</br>
                             <fmt:message key="label.user.tariffs.information.writeOf"/> ${tariff.period}</br>
                             <div align="right">
-
-                                <c:if test="${tariff.tariffId != sessionScope.user.tariff.tariffId}">
                                     <a class="btn btn-info "
                                        href="/provider_war_exploded/controller?command=USER_CHANGE_TARIFF&tariffId=${tariff.tariffId}">
                                         <fmt:message key="label.user.tariffs.information.connect"/></a>
-                                </c:if>
-
-                                <c:if test="${tariff.tariffId == sessionScope.user.tariff.tariffId}">
-                                    <b> <fmt:message key="label.user.tariffs.information.activeTariff"/></b>
-                                </c:if>
                             </div>
                         </div>
                     </div>
                     <hr>
+                    </c:if>
                 </c:forEach>
 
             </div>

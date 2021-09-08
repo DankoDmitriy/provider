@@ -4,6 +4,7 @@ import com.danko.provider.domain.entity.*;
 import com.danko.provider.exception.DaoException;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 public interface UserDao extends BaseDao<Long, User> {
@@ -21,5 +22,6 @@ public interface UserDao extends BaseDao<Long, User> {
 
     void balanceReplenishment(long userId, BigDecimal userBalance, long tariffId, PaymentCard paymentCard, UserAction userAction, AccountTransaction accountTransaction) throws DaoException;
 
+    List<User> findAllByRole(UserRole role) throws DaoException;
 
 }

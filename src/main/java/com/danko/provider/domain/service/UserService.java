@@ -1,15 +1,19 @@
 package com.danko.provider.domain.service;
 
 import com.danko.provider.domain.entity.User;
+import com.danko.provider.domain.entity.UserRole;
 import com.danko.provider.domain.entity.UserStatus;
 import com.danko.provider.exception.ServiceException;
 
+import javax.management.relation.Role;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
     List<User> findAllUsers() throws ServiceException;
+
+    List<User> findAllUsersByRole(UserRole role) throws ServiceException;
 
     Optional<User> findByNameAndPassword(String name, String password) throws ServiceException;
 

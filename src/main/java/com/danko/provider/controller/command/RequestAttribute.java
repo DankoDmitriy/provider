@@ -12,6 +12,12 @@ public final class RequestAttribute {
     //    Activation attribute
     public static final String ACTIVATION_CODE = "activationCode";
 
+    //    Admin attributes
+    //    Admin users List Page
+    public static final String ADMIN_USERS_LIST = "users";
+    //    Admin users List Page
+    public static final String ADMIN_TARIFFS_LIST = "tariffs";
+
 
     private RequestAttribute() {
     }

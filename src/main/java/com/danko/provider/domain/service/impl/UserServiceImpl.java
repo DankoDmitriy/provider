@@ -1,5 +1,6 @@
 package com.danko.provider.domain.service.impl;
 
+import com.danko.provider.domain.dao.TransactionManager;
 import com.danko.provider.domain.dao.UserDao;
 import com.danko.provider.domain.dao.impl.UserDaoImpl;
 import com.danko.provider.domain.entity.*;
@@ -28,6 +29,18 @@ public class UserServiceImpl implements UserService {
         List<User> list;
         try {
             list = userDao.findAll();
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "Could not find all users in database: {}", e);
+            throw new ServiceException("Could not find all users in database.", e);
+        }
+        return list;
+    }
+
+    @Override
+    public List<User> findAllUsersByRole(UserRole role) throws ServiceException {
+        List<User> list;
+        try {
+            list = userDao.findAllByRole(role);
         } catch (DaoException e) {
             logger.log(Level.ERROR, "Could not find all users in database: {}", e);
             throw new ServiceException("Could not find all users in database.", e);
@@ -136,7 +149,6 @@ public class UserServiceImpl implements UserService {
     public BigDecimal activatePaymentCard(String cardNumber, String cardPin, long userId, BigDecimal userBalance, long tariffId) throws ServiceException {
         BigDecimal newUserBalance;
         PaymentCardService paymentCardService = ServiceProvider.getInstance().getPaymentCardService();
-
         Optional<PaymentCard> paymentCardOptional = paymentCardService.findByCardNumberAndPin(cardNumber, cardPin);
         if (!paymentCardOptional.isEmpty()) {
             PaymentCard paymentCard = paymentCardOptional.get();

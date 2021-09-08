@@ -19,9 +19,16 @@ public final class ParamName {
     //  User change locale
     public static final String USER_CHANGE_LOCAL = "newLocal";
 
-    //    Pay page.
+    //   User Pay page.
     public static final String CARD_NUMBER = "cardNumber";
     public static final String CARD_PIN = "cardPin";
+
+
+    //   Admin Users_list page.
+    public static final String USER_ID = "user_id";
+
+    //   Admin Tariffs_list page.
+    public static final String TARIFF_ID = "tariff_id";
 
     private ParamName() {
     }

@@ -45,9 +45,9 @@ public class Controller extends HttpServlet {
             }
         } catch (CommandException e) {
             logger.log(Level.ERROR, "Internal error: {}", e);
+//            FIXME -  resp.sendRedirect(ERROR_500_PAGE);
         }
     }
-
     @Override
     public void destroy() {
     }
