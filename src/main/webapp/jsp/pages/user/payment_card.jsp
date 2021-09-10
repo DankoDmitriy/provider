@@ -29,7 +29,7 @@
                 </c:if>
 
 
-                <form action="/provider_war_exploded/controller" method="post">
+                <form action="${pageContext.request.contextPath}/controller" method="post">
                     <input type="hidden" name="command" value="PAY">
                     <div class="row mb-3">
 

@@ -30,6 +30,14 @@ public final class ParamName {
     //   Admin Tariffs_list page.
     public static final String TARIFF_ID = "tariff_id";
 
+    //   Admin User add page.
+    public static final String USER_ADD_FIRST_NAME = "first_name";
+    public static final String USER_ADD_LAST_NAME = "last_name";
+    public static final String USER_ADD_PATRONYMIC = "patronymic";
+    public static final String USER_ADD_CONTRACT_DATE = "contract_date";
+    public static final String USER_ADD_TARIFF_ID = "tariff_id";
+    public static final String USER_ADD_E_MAIL = "e_mail";
+
     private ParamName() {
     }
 }

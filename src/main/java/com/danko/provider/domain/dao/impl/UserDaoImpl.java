@@ -20,8 +20,8 @@ public class UserDaoImpl implements UserDao {
     private static Logger logger = LogManager.getLogger();
     private static final String SQL_FIND_ALL_USERS = """
             SELECT
-            user_id, first_name, last_name, patronymic, contract_number, contract_date, balance, name, email, activation_code, 
-            activation_code_used, traffic, ur.role, us.status, tariffs_tariff_id
+            user_id, first_name, last_name, patronymic, contract_number, contract_date, balance, name, email, 
+            traffic, ur.role, us.status, tariffs_tariff_id
             FROM
             users
             JOIN
@@ -32,8 +32,8 @@ public class UserDaoImpl implements UserDao {
 
     private static final String SQL_FIND_ALL_USERS_BY_ROLE = """
             SELECT
-            user_id, first_name, last_name, patronymic, contract_number, contract_date, balance, name, email, activation_code, 
-            activation_code_used, traffic, ur.role, us.status, tariffs_tariff_id
+            user_id, first_name, last_name, patronymic, contract_number, contract_date, balance, name, email, 
+            traffic, ur.role, us.status, tariffs_tariff_id
             FROM
             users
             JOIN
@@ -48,8 +48,8 @@ public class UserDaoImpl implements UserDao {
 
     private static final String SQL_FIND_USER_BY_ID = """
             SELECT
-            user_id, first_name, last_name, patronymic, contract_number, contract_date, balance, name, email, activation_code, 
-            activation_code_used, traffic, ur.role, us.status, tariffs_tariff_id
+            user_id, first_name, last_name, patronymic, contract_number, contract_date, balance, name, email, 
+            traffic, ur.role, us.status, tariffs_tariff_id
             FROM
             users
             JOIN
@@ -61,8 +61,8 @@ public class UserDaoImpl implements UserDao {
             """;
     private static final String SQL_FIND_USER_BY_NAME_AND_PASSWORD = """
             SELECT
-            user_id, first_name, last_name, patronymic, contract_number, contract_date, balance, name, email, activation_code, 
-            activation_code_used,  traffic, ur.role, us.status, tariffs_tariff_id
+            user_id, first_name, last_name, patronymic, contract_number, contract_date, balance, name, email, 
+            traffic, ur.role, us.status, tariffs_tariff_id
             FROM
             users
             JOIN
@@ -88,8 +88,8 @@ public class UserDaoImpl implements UserDao {
 
     private static final String SQL_UPDATE_USER = """
             UPDATE USERS SET
-            first_name=?, last_name=?, patronymic=?, contract_number=?, contract_date=?, balance=?, name=?, email=?, activation_code=?, 
-            activation_code_used=?, traffic=?, user_roles_role_id=(select role_id from user_roles where role=?), 
+            first_name=?, last_name=?, patronymic=?, contract_number=?, contract_date=?, balance=?, name=?, email=?, 
+            traffic=?, user_roles_role_id=(select role_id from user_roles where role=?), 
             user_statuses_status_id=(select status_id from user_statuses where status=?),
             tariffs_tariff_id=?
             WHERE 
@@ -98,8 +98,8 @@ public class UserDaoImpl implements UserDao {
 
     private static final String SQL_VERIFICATION_OF_ACTIVATION_CODE = """
             SELECT
-            user_id, first_name, last_name, patronymic, contract_number, contract_date, balance, name, email, activation_code, 
-            activation_code_used, traffic, ur.role, us.status, tariffs_tariff_id
+            user_id, first_name, last_name, patronymic, contract_number, contract_date, balance, name, email, 
+            traffic, ur.role, us.status, tariffs_tariff_id
             FROM
             users
             JOIN
@@ -109,7 +109,7 @@ public class UserDaoImpl implements UserDao {
             WHERE
             activation_code=? 
             AND 
-            user_id>0
+            activation_code_used=0
             """;
 
     private static final String SQL_UPDATE_ACTIVATION_CODE_STATUS = """
@@ -199,10 +199,7 @@ public class UserDaoImpl implements UserDao {
         boolean result = true;
         Optional<User> optionalUser = jdbcTemplate.executeSelectQueryForSingleResult(SQL_VERIFICATION_OF_ACTIVATION_CODE, activateCode);
         if (!optionalUser.isEmpty()) {
-            User user = optionalUser.get();
-            if (user.isActivationCodeUsed()) {
-                result = false;
-            }
+            result = false;
         }
         return result;
     }
@@ -219,7 +216,6 @@ public class UserDaoImpl implements UserDao {
                 user.getBalance(),
                 user.getName(),
                 user.getEmail(),
-                user.getActivationCode(),
                 user.getTraffic(),
                 user.getRole().getRole(),
                 user.getStatus().getStatus(),
@@ -234,7 +230,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public long add(User user, String password) throws DaoException {
+    public long add(User user, String password, String activationCode) throws DaoException {
         long generatedId = jdbcTemplate.executeInsertQuery(SQL_ADD_USER,
                 user.getFirstName(),
                 user.getLastName(),
@@ -245,8 +241,8 @@ public class UserDaoImpl implements UserDao {
                 user.getName(),
                 password,
                 user.getEmail(),
-                user.getActivationCode(),
-                user.isActivationCodeUsed(),
+                activationCode,
+                0,
                 user.getTraffic(),
                 user.getRole().getRole(),
                 user.getStatus().getStatus(),

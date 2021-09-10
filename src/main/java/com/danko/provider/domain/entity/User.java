@@ -13,8 +13,6 @@ public class User extends AbstractEntity {
     private BigDecimal balance;
     private String name;
     private String email;
-    private String activationCode;
-    private boolean activationCodeUsed;
     private BigDecimal traffic;
     private UserRole role;
     private UserStatus status;
@@ -96,14 +94,6 @@ public class User extends AbstractEntity {
         this.email = email;
     }
 
-    public String getActivationCode() {
-        return activationCode;
-    }
-
-    public void setActivationCode(String activationCode) {
-        this.activationCode = activationCode;
-    }
-
     public UserRole getRole() {
         return role;
     }
@@ -118,14 +108,6 @@ public class User extends AbstractEntity {
 
     public void setStatus(UserStatus status) {
         this.status = status;
-    }
-
-    public boolean isActivationCodeUsed() {
-        return activationCodeUsed;
-    }
-
-    public void setActivationCodeUsed(boolean activationCodeUsed) {
-        this.activationCodeUsed = activationCodeUsed;
     }
 
     public BigDecimal getTraffic() {
@@ -160,7 +142,6 @@ public class User extends AbstractEntity {
         User user = (User) o;
 
         if (userId != user.userId) return false;
-        if (activationCodeUsed != user.activationCodeUsed) return false;
         if (tariffId != user.tariffId) return false;
         if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
         if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
@@ -171,8 +152,6 @@ public class User extends AbstractEntity {
         if (balance != null ? !balance.equals(user.balance) : user.balance != null) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (activationCode != null ? !activationCode.equals(user.activationCode) : user.activationCode != null)
-            return false;
         if (traffic != null ? !traffic.equals(user.traffic) : user.traffic != null) return false;
         if (role != user.role) return false;
         if (status != user.status) return false;
@@ -190,8 +169,6 @@ public class User extends AbstractEntity {
         result = 31 * result + (balance != null ? balance.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (activationCode != null ? activationCode.hashCode() : 0);
-        result = 31 * result + (activationCodeUsed ? 1 : 0);
         result = 31 * result + (traffic != null ? traffic.hashCode() : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
@@ -212,8 +189,6 @@ public class User extends AbstractEntity {
         sb.append(", balance=").append(balance);
         sb.append(", name='").append(name).append('\'');
         sb.append(", email='").append(email).append('\'');
-        sb.append(", activationCode='").append(activationCode).append('\'');
-        sb.append(", activationCodeUsed=").append(activationCodeUsed);
         sb.append(", traffic=").append(traffic);
         sb.append(", role=").append(role);
         sb.append(", status=").append(status);
@@ -279,10 +254,10 @@ public class User extends AbstractEntity {
             return this;
         }
 
-        public Builder setActivationCode(String activationCode) {
-            user.setActivationCode(activationCode);
-            return this;
-        }
+//        public Builder setActivationCode(String activationCode) {
+//            user.setActivationCode(activationCode);
+//            return this;
+//        }
 
         public Builder setRole(UserRole role) {
             user.setRole(role);
@@ -294,10 +269,10 @@ public class User extends AbstractEntity {
             return this;
         }
 
-        public Builder setActivationCodeUsed(boolean activationCodeUsed) {
-            user.setActivationCodeUsed(activationCodeUsed);
-            return this;
-        }
+//        public Builder setActivationCodeUsed(boolean activationCodeUsed) {
+//            user.setActivationCodeUsed(activationCodeUsed);
+//            return this;
+//        }
 
         public Builder setTraffic(BigDecimal traffic) {
             user.setTraffic(traffic);

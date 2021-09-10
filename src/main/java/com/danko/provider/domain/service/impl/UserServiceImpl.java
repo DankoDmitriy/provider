@@ -1,10 +1,12 @@
 package com.danko.provider.domain.service.impl;
 
-import com.danko.provider.domain.dao.TransactionManager;
+import com.danko.provider.domain.dao.TariffDao;
 import com.danko.provider.domain.dao.UserDao;
+import com.danko.provider.domain.dao.impl.TariffDaoImpl;
 import com.danko.provider.domain.dao.impl.UserDaoImpl;
 import com.danko.provider.domain.entity.*;
 import com.danko.provider.domain.service.*;
+import com.danko.provider.util.PasswordAndContractGenerator;
 import com.danko.provider.util.UniqueStringGenerator;
 import com.danko.provider.util.UrlUtil;
 import com.danko.provider.util.PasswordHasher;
@@ -16,13 +18,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
     private static Logger logger = LogManager.getLogger();
+    private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
+    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
     private UserDao userDao = new UserDaoImpl();
+    private TariffDao tariffDao = new TariffDaoImpl();
 
     @Override
     public List<User> findAllUsers() throws ServiceException {
@@ -67,7 +74,7 @@ public class UserServiceImpl implements UserService {
         try {
             boolean result = true;
             InputDataValidator inputDataValidator = InputDataValidator.getInstance();
-            if (password != null && inputDataValidator.newUserPasswordValid(password)) {
+            if (password != null && inputDataValidator.isPasswordValid(password)) {
                 String passwordHash = PasswordHasher.hashString(password);
                 String newActivateCode = UniqueStringGenerator.generationUniqueString();
                 result = userDao.updatePassword(userId, passwordHash, newActivateCode, UserStatus.WAIT_ACTIVATE);
@@ -185,5 +192,69 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException("Balance has not been replenished.");
         }
         return newUserBalance;
+    }
+
+    @Override
+    public Optional<TransferObject> addUser(String firstName,
+                                            String lastName,
+                                            String patronymic,
+                                            String contractDate,
+                                            String tariffId,
+                                            String email) throws ServiceException {
+
+        InputDataValidator inputDataValidator = InputDataValidator.getInstance();
+
+        if (inputDataValidator.isFirstNameValid(firstName) &&
+                inputDataValidator.isLastNameValid(lastName) &&
+                inputDataValidator.isPatronymic(patronymic) &&
+                inputDataValidator.isEmailValid(email)) {
+
+            PasswordAndContractGenerator strGenerator = new PasswordAndContractGenerator.Builder()
+                    .useDigits(true)
+                    .useLower(true)
+                    .useUpper(true)
+                    .build();
+
+            String password = strGenerator.generate(10);
+            String passwordHash = PasswordHasher.hashString(password);
+            String userName = strGenerator.generate(5);
+            String contractNumber = strGenerator.generate(15);
+
+            LocalDate contractDateLocalDate = LocalDate.parse(contractDate, dateTimeFormatter);
+            LocalDateTime contractDateLocalDateTime = contractDateLocalDate.atStartOfDay();
+
+            try {
+                Optional<Tariff> optionalTariff = tariffDao.findById(Long.valueOf(tariffId));
+                Tariff tariff = optionalTariff.get();
+
+                User user = User.builder()
+                        .setFirstName(firstName)
+                        .setLastName(lastName)
+                        .setPatronymic(patronymic)
+                        .setContractNumber(contractNumber)
+                        .setContractDate(contractDateLocalDateTime)
+                        .setBalance(new BigDecimal(0))
+                        .setTraffic(tariff.getTraffic())
+                        .setName(userName)
+                        .setEmail(email)
+                        .setTariff(tariff)
+                        .setRole(UserRole.USER)
+                        .setStatus(UserStatus.WAIT_ACTIVATE)
+                        .setTariffId(Long.valueOf(tariffId)).build();
+
+                long userId = userDao.add(user, passwordHash, UniqueStringGenerator.generationUniqueString());
+                user.setUserId(userId);
+                TransferObject newUser = new TransferObject();
+                newUser.setUser(user);
+                newUser.setPassword(password);
+                return Optional.of(newUser);
+
+            } catch (DaoException e) {
+                logger.log(Level.ERROR, "User has not added: {}", e);
+                throw new ServiceException("User has not added.", e);
+            }
+
+        }
+        return Optional.empty();
     }
 }

@@ -7,7 +7,6 @@
 <%@include file="../../../WEB-INF/parts/admin/header.jsp" %>
 <%@include file="../../../WEB-INF/parts/admin/navbar.jsp" %>
 
-<%--<jsp:useBean id="users" scope="request" type="java.util.List"/>--%>
 <div class="container mt-5">
     <table class="table">
         <thead>

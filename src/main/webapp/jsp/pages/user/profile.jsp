@@ -93,7 +93,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <a class="btn btn-info "
-                           href="{pageContext.request.contextPath}/controller?command=USER_CHANGE_PASSWORD">
+                           href="${pageContext.request.contextPath}/controller?command=USER_CHANGE_PASSWORD">
                             <fmt:message key="label.user.profile.personal.information.changePassword"/></a>
                     </div>
                 </div>

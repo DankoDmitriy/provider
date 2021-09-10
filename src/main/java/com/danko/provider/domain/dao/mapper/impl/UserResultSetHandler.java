@@ -23,11 +23,11 @@ public class UserResultSetHandler implements ResultSetHandler<User> {
         BigDecimal balance = resultSet.getBigDecimal(USER_BALANCE);
         String name = resultSet.getString(USER_NAME);
         String email = resultSet.getString(USER_EMAIL);
-        String activationCode = resultSet.getString(USER_ACTIVATION_CODE);
+//        String activationCode = resultSet.getString(USER_ACTIVATION_CODE);
         BigDecimal traffic = resultSet.getBigDecimal(USER_TRAFFIC);
         UserRole role = UserRole.valueOf(resultSet.getString(USER_ROLES_ROLE));
         UserStatus status = UserStatus.valueOf(resultSet.getString(USER_STATUSES_STATUS));
-        boolean activationCodeUsed = resultSet.getBoolean(USER_ACTIVATE_CODE_USED);
+//        boolean activationCodeUsed = resultSet.getBoolean(USER_ACTIVATE_CODE_USED);
         long tariffId = resultSet.getLong(USER_TARIFF_ID);
         Tariff tariff = null;
         User user = User.builder().setUserId(userId)
@@ -39,10 +39,10 @@ public class UserResultSetHandler implements ResultSetHandler<User> {
                 .setBalance(balance)
                 .setName(name)
                 .setEmail(email)
-                .setActivationCode(activationCode)
+//                .setActivationCode(activationCode)
                 .setRole(role)
                 .setStatus(status)
-                .setActivationCodeUsed(activationCodeUsed)
+//                .setActivationCodeUsed(activationCodeUsed)
                 .setTraffic(traffic)
                 .setTariffId(tariffId)
                 .setTariff(tariff)

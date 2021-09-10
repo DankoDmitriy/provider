@@ -15,8 +15,14 @@ public final class RequestAttribute {
     //    Admin attributes
     //    Admin users List Page
     public static final String ADMIN_USERS_LIST = "users";
-    //    Admin users List Page
+    //    Admin tariff List Page
     public static final String ADMIN_TARIFFS_LIST = "tariffs";
+
+    //    Admin ADD users Page
+    public static final String ADMIN_TARIFFS_LIST_FOR_NEW_USER = "tariffs";
+
+    //    Admin ADD users Page
+    public static final String ADMIN_NEW_USER_CARD_TRANSFER_OBJECT = "trUser";
 
 
     private RequestAttribute() {
