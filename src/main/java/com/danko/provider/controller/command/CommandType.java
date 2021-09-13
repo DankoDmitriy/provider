@@ -1,8 +1,6 @@
 package com.danko.provider.controller.command;
 
-import com.danko.provider.controller.command.impl.admin.AdminTariffsListCommand;
-import com.danko.provider.controller.command.impl.admin.AdminUserAddCommand;
-import com.danko.provider.controller.command.impl.admin.AdminUsersListCommand;
+import com.danko.provider.controller.command.impl.admin.*;
 import com.danko.provider.controller.command.impl.common.ChangeLocalCommand;
 import com.danko.provider.controller.command.impl.common.HomeCommand;
 import com.danko.provider.controller.command.impl.common.LoginCommand;
@@ -28,7 +26,10 @@ public enum CommandType {
     //    Admin
     USERS_LIST(new AdminUsersListCommand()),
     USER_ADD(new AdminUserAddCommand()),
-    TARIFF_LIST(new AdminTariffsListCommand());
+    TARIFF_LIST(new AdminTariffsListCommand()),
+    TARIFF_ADD(new AdminTariffAddCommand()),
+    EMPLOYEE_LIST(new AdminEmployeeListCommand()),
+    CARD_ADD(new AdminPaymentCardAddCommand());
 
     //    Дефлотная комманда добавить.
     private Command command;

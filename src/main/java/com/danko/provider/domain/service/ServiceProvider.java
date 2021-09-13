@@ -8,14 +8,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ServiceProvider {
     private static ServiceProvider instance;
     private static final AtomicBoolean isServiceProviderCreated = new AtomicBoolean(false);
-//    private UserService userService = new UserServiceImpl();
-//    private TariffService tariffService = new TariffServiceImpl();
-//    private AccountTransactionService accountTransactionService = new AccountTransactionServiceImpl();
-//    private UserActionService userActionService = new UserActionServiceImpl();
-//    private PaymentCardService paymentCardService = new PaymentCardServiceImpl();
-//    private EmailService emailService = new EmailServiceImpl();
-
-
     private UserService userService;
     private TariffService tariffService;
     private AccountTransactionService accountTransactionService;
@@ -36,7 +28,7 @@ public class ServiceProvider {
         this.tariffService = new TariffServiceImpl(daoProvider.getTariffDao(), transactionManager);
         this.accountTransactionService = new AccountTransactionServiceImpl(daoProvider.getAccountTransactionDao(), transactionManager);
         this.userActionService = new UserActionServiceImpl(daoProvider.getUserActionDao(), transactionManager);
-        this.paymentCardService = new PaymentCardServiceImpl(daoProvider.getPaymentCardDao(), transactionManager);
+        this.paymentCardService = new PaymentCardServiceImpl(daoProvider.getPaymentCardDao(), daoProvider.getPaymentCardSerialDao(), transactionManager);
         this.emailService = new EmailServiceImpl();
 
     }

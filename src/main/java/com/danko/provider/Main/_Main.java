@@ -3,17 +3,21 @@ package com.danko.provider.Main;
 import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.domain.dao.UserActionDao;
 import com.danko.provider.domain.dao.impl.UserActionDaoImpl;
+import com.danko.provider.domain.entity.TariffStatus;
 import com.danko.provider.domain.entity.UserAction;
 import com.danko.provider.util.PasswordHasher;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Savepoint;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class _Main {
     public static void main(String[] args) throws Exception {
@@ -24,10 +28,29 @@ public class _Main {
 //        connectionThreadLocal.remove();
 
 
+//        TODO BigDecimal
+
+        BigDecimal bigDecimal = new BigDecimal("10.09");
+        System.out.println(bigDecimal);
+
+
+//        TODO ENUM
+//
+//        Stream<TariffStatus> strinam = Arrays.stream(TariffStatus.values());
+//        strinam.forEach(status -> System.out.println(status));
+//
+//        List<TariffStatus> tariffStatuses = Arrays.asList(TariffStatus.values());
+//        tariffStatuses.forEach(status -> System.out.println(status.name()));
+
+
+
 //        TODO String format
 
-        String result = String.format("%06d", 516);
-        System.out.println(result);
+//        String result = String.format("%06d", 516);
+//        System.out.println(result);
+//        int year = LocalDateTime.now().getYear();
+//        String contractNumberAndUserName = new StringBuilder().append(year).append(String.format("%011d", 10)).toString();
+//        System.out.println(contractNumberAndUserName);
 
 
 //        System.out.println(PasswordHasher.hashString("000001"));

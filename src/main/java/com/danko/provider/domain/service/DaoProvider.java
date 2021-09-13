@@ -13,6 +13,7 @@ public class DaoProvider {
     private TariffDao tariffDao = new TariffDaoImpl();
     private UserActionDao userActionDao = new UserActionDaoImpl();
     private UserDao userDao = new UserDaoImpl();
+    private PaymentCardSerialDao paymentCardSerialDao = new PaymentCardSerialDaoImpl();
 
     private DaoProvider() {
     }
@@ -46,4 +47,7 @@ public class DaoProvider {
         return userDao;
     }
 
+    public PaymentCardSerialDao getPaymentCardSerialDao() {
+        return paymentCardSerialDao;
+    }
 }

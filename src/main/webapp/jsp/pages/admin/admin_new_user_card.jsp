@@ -42,16 +42,6 @@
 
         </tbody>
     </table>
-
-    <%--    ${trUser.user.name}--%>
-    <%--    ${trUser.user.Password}--%>
-    <%--    ${trUser.tariff.description}--%>
-    <%--    <fmt:message key="label.user.tariffs.information.maxSpeed"/> ${trUser.tariff.maxSpeed} Mbit\s:</br>--%>
-    <%--    <fmt:message key="label.user.tariffs.information.minSpeed"/> ${trUser.tariff.minSpeed} Mbit\s:</br>--%>
-    <%--    <fmt:message key="label.user.tariffs.information.traffic"/> - <c:out value="${trUser.tariff.traffic/1024}"/> GB</br>--%>
-    <%--    <fmt:message key="label.user.tariffs.information.price"/> - ${trUser.tariff.price} $</br>--%>
-    <%--    <fmt:message key="label.user.tariffs.information.writeOf"/> ${trUser.tariff.period}</br>--%>
-
 </div>
 
 

@@ -24,6 +24,13 @@ public final class RequestAttribute {
     //    Admin ADD users Page
     public static final String ADMIN_NEW_USER_CARD_TRANSFER_OBJECT = "trUser";
 
+    //    Admin ADD tariff Page
+    public static final String ADMIN_TARIFF_STATUS_LIST_FOR_NEW_TARIFF = "tariffStatuses";
+    public static final String ADMIN_TARIFF_WRITE_OFF_LIST_FOR_NEW_TARIFF = "writeOffs";
+
+    //    Admin ADD Express Payment card list generated Page
+    public static final String ADMIN_NEW_PAYMENT_CARDS_LIST = "cards";
+    public static final String ADMIN_NEW_PAYMENT_CARDS_EXPIRED_DATE = "expiredDate";
 
     private RequestAttribute() {
     }

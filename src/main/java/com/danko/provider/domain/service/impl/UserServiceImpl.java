@@ -1,11 +1,9 @@
 package com.danko.provider.domain.service.impl;
 
 import com.danko.provider.domain.dao.*;
-import com.danko.provider.domain.dao.impl.TariffDaoImpl;
-import com.danko.provider.domain.dao.impl.UserDaoImpl;
 import com.danko.provider.domain.entity.*;
 import com.danko.provider.domain.service.*;
-import com.danko.provider.util.PasswordAndContractGenerator;
+import com.danko.provider.util.PasswordGenerator;
 import com.danko.provider.util.UniqueStringGenerator;
 import com.danko.provider.util.UrlUtil;
 import com.danko.provider.util.PasswordHasher;
@@ -26,10 +24,9 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private static Logger logger = LogManager.getLogger();
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
+    private static final int CONTRACT_LENGTH = 11;
+    private static final int PASSWORD_LENGTH = 11;
     private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
-//    private UserDao userDao = new UserDaoImpl();
-//    private TariffDao tariffDao = new TariffDaoImpl();
-
     private UserDao userDao;
     private TariffDao tariffDao;
     private UserActionDao userActionDao;
@@ -239,7 +236,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public BigDecimal activatePaymentCard(String cardNumber, String cardPin, long userId, BigDecimal userBalance, long tariffId) throws ServiceException {
         BigDecimal newUserBalance;
-//        PaymentCardService paymentCardService = ServiceProvider.getInstance().getPaymentCardService();
         try {
             transactionManager.startTransaction();
 
@@ -308,26 +304,22 @@ public class UserServiceImpl implements UserService {
                                             String email) throws ServiceException {
 
         InputDataValidator inputDataValidator = InputDataValidator.getInstance();
-
         if (inputDataValidator.isFirstNameValid(firstName) &&
                 inputDataValidator.isLastNameValid(lastName) &&
                 inputDataValidator.isPatronymic(patronymic) &&
                 inputDataValidator.isEmailValid(email)) {
 
-            PasswordAndContractGenerator strGenerator = new PasswordAndContractGenerator.Builder()
+            PasswordGenerator strGenerator = new PasswordGenerator.Builder()
                     .useDigits(true)
                     .useLower(true)
                     .useUpper(true)
                     .build();
 
-            String password = strGenerator.generate(10);
+            String password = strGenerator.generate(PASSWORD_LENGTH);
             String passwordHash = PasswordHasher.hashString(password);
-            String userName = strGenerator.generate(5);
-            String contractNumber = strGenerator.generate(15);
 
             LocalDate contractDateLocalDate = LocalDate.parse(contractDate, dateTimeFormatter);
             LocalDateTime contractDateLocalDateTime = contractDateLocalDate.atStartOfDay();
-
             try {
                 transactionManager.startTransaction();
 
@@ -338,11 +330,9 @@ public class UserServiceImpl implements UserService {
                         .setFirstName(firstName)
                         .setLastName(lastName)
                         .setPatronymic(patronymic)
-                        .setContractNumber(contractNumber)
                         .setContractDate(contractDateLocalDateTime)
                         .setBalance(new BigDecimal(0))
                         .setTraffic(tariff.getTraffic())
-                        .setName(userName)
                         .setEmail(email)
                         .setTariff(tariff)
                         .setRole(UserRole.USER)
@@ -351,12 +341,22 @@ public class UserServiceImpl implements UserService {
 
                 long userId = userDao.add(user, passwordHash, UniqueStringGenerator.generationUniqueString());
                 user.setUserId(userId);
+
+                String contractNumberAndUserName = new StringBuilder()
+                        .append(contractDateLocalDateTime.getYear())
+                        .append(String.format("%0" + CONTRACT_LENGTH + "d", userId))
+                        .toString();
+
+                userDao.updateContractNumberAndUserName(userId, contractNumberAndUserName, contractNumberAndUserName);
+                user.setContractNumber(contractNumberAndUserName);
+                user.setName(contractNumberAndUserName);
+
                 TransferObject newUser = new TransferObject();
                 newUser.setUser(user);
                 newUser.setPassword(password);
+
                 transactionManager.commit();
                 return Optional.of(newUser);
-
             } catch (DaoException e) {
                 logger.log(Level.ERROR, "User has not added: {}", e);
                 try {

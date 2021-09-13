@@ -26,17 +26,13 @@ public class JdbcTemplate<T extends AbstractEntity> {
     public List<T> executeSelectQuery(String sqlQuery, Object... parameters) throws DaoException {
         List<T> list = new ArrayList<>();
         Connection connection = transactionManager.getConnection();
-        try (
-//          Connection connection = connectionPool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sqlQuery);) {
+        try (PreparedStatement statement = connection.prepareStatement(sqlQuery);) {
             setParametersInPreparedStatement(statement, parameters);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 T entity = resultSetHandler.resultToObject(resultSet);
                 list.add(entity);
             }
-
-//        } catch (SQLException | DatabaseConnectionException e) {
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Error...Message: {}", e.getMessage());
             throw new DaoException(e);
@@ -56,12 +52,9 @@ public class JdbcTemplate<T extends AbstractEntity> {
     public boolean executeUpdateQuery(String sqlQuery, Object... parameters) throws DaoException {
         int result = 0;
         Connection connection = transactionManager.getConnection();
-        try (
-//                Connection connection = connectionPool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             setParametersInPreparedStatement(statement, parameters);
             result = statement.executeUpdate();
-//        } catch (SQLException | DatabaseConnectionException e) {
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Error...Message: {}", e.getMessage());
             throw new DaoException(e);
@@ -72,15 +65,12 @@ public class JdbcTemplate<T extends AbstractEntity> {
     public long executeInsertQuery(String sqlQuery, Object... parameters) throws DaoException {
         long generatedId = 0;
         Connection connection = transactionManager.getConnection();
-        try (
-//                Connection connection = connectionPool.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS);) {
+        try (PreparedStatement statement = connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS);) {
             setParametersInPreparedStatement(statement, parameters);
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
             generatedId = resultSet.getLong(1);
-//        } catch (SQLException | DatabaseConnectionException e) {
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Error...Message: {}", e.getMessage());
             throw new DaoException(e);

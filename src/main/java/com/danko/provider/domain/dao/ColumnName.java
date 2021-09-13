@@ -18,6 +18,7 @@ public final class ColumnName {
     public static final String TABLE_ACTIONS = "actions";
     public static final String TABLE_CARD_STATUS = "card_status";
     public static final String TABLE_EXPRESS_PAYMENT_CARDS = "express_payment_cards";
+    public static final String TABLE_EXPRESS_PAYMENT_CARDS_SERIALS = "express_payment_cards_series";
 
     //    Table: "users"
     public static final String USER_ID = "user_id";
@@ -98,6 +99,10 @@ public final class ColumnName {
     public static final String PAYMENT_CARD_ACTIVATION_DATE = "activation_date";
     public static final String PAYMENT_CARD_STATUS_ID = "card_status_card_status_id";
     public static final String PAYMENT_CARD_USER_ID = "users_user_id";
+
+    //    Table: "express_payment_cards_series"
+    public static final String PAYMENT_CARD_SERIAL_ID = "series_id";
+    public static final String PAYMENT_CARD_SERIAL_SERIAL = "series";
 
 
 }

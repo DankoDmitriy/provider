@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public final class PasswordAndContractGenerator {
+public final class PasswordGenerator {
     private static final String LOWER = "abcdefghijklmnopqrstuvwxyz";
     private static final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String DIGITS = "0123456789";
@@ -13,11 +13,11 @@ public final class PasswordAndContractGenerator {
     private boolean useUpper;
     private boolean useDigits;
 
-    private PasswordAndContractGenerator() {
+    private PasswordGenerator() {
         throw new UnsupportedOperationException("Empty constructor is not supported.");
     }
 
-    private PasswordAndContractGenerator(Builder builder) {
+    private PasswordGenerator(Builder builder) {
         this.useLower = builder.useLower;
         this.useUpper = builder.useUpper;
         this.useDigits = builder.useDigits;
@@ -49,8 +49,8 @@ public final class PasswordAndContractGenerator {
             return this;
         }
 
-        public PasswordAndContractGenerator build() {
-            return new PasswordAndContractGenerator(this);
+        public PasswordGenerator build() {
+            return new PasswordGenerator(this);
         }
     }
 

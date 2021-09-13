@@ -3,12 +3,24 @@ package com.danko.provider.controller.command;
 public final class PageUrl {
     //    Administrator URLS
     public static final String ADMIN_USERS_LIST_PAGE = "/jsp/pages/admin/admin_users_list.jsp";
+    public static final String ADMIN_USERS_LIST_PAGE_REDIRECT = "/controller?command=USERS_LIST";
+
     public static final String ADMIN_USER_ADD_PAGE = "/jsp/pages/admin/admin_user_add.jsp";
+    public static final String ADMIN_USER_ADD_PAGE_REDIRECT = "/controller?command=USER_ADD";
     public static final String ADMIN_USER_ADD_CARD = "/jsp/pages/admin/admin_new_user_card.jsp";
 
+    public static final String ADMIN_TARIFF_ADD_PAGE = "/jsp/pages/admin/admin_tariff_add.jsp";
+    public static final String ADMIN_TARIFF_ADD_PAGE_REDIRECT = "/controller?command=TARIFF_ADD";
+
     public static final String ADMIN_TARIFFS_LIST_PAGE = "/jsp/pages/admin/admin_tariffs_list.jsp";
+    public static final String ADMIN_TARIFFS_LIST_PAGE_REDIRECT = "/controller?command=TARIFF_LIST";
+
+    public static final String ADMIN_PAYMENTS_CARD_ADD_PAGE = "/jsp/pages/admin/admin_express_payment_card_add.jsp";
+    public static final String ADMIN_PAYMENTS_CARD_ADD_PAGE_REDIRECT = "/controller?command=CARD_ADD";
+    public static final String ADMIN_PAYMENTS_CARD_GENERATED_PAGE ="/jsp/pages/admin/admin_express_payment_cards_generated_list.jsp";
 
     public static final String ADMIN_MAIN_PAGE = "/jsp/pages/admin/admin_main.jsp";
+
     //    Commons pages
     public static final String LOGIN_PAGE = "/jsp/pages/login.jsp";
     public static final String HOME_PAGE = "/controller?command=home";
@@ -24,7 +36,7 @@ public final class PageUrl {
     public static final String USER_ACTIVATE_PAYMENT_CARD = "/jsp/pages/user/payment_card.jsp";
 
     //Access error page
-    public static final String ACCESS_ERROR_PAGE = "/jsp/pages/static_pages/error.jsp";
+    public static final String ACCESS_ERROR_403_PAGE = "/jsp/pages/static_pages/error_403.jsp";
 
     private PageUrl() {
     }

@@ -30,8 +30,8 @@ public class PaymentCardDaoImpl implements PaymentCardDao {
 
     private static final String SQL_ADD_PAYMENT_CARD = """
             INSERT INTO express_payment_cards 
-            (amount, card_number, card_pin, card_status_card_status_id)
-            VALUES (?,?,?,
+            (amount, card_number, card_pin, activation_date, card_status_card_status_id)
+            VALUES (?,?,?,?,
             (select card_status_id from card_status where status=?))
             """;
 
@@ -129,7 +129,7 @@ public class PaymentCardDaoImpl implements PaymentCardDao {
     }
 
     @Override
-    public void add(BigDecimal amount, String cardNumber, String cardPin, PaymentCard.CardStatus cardStatus) throws DaoException {
-        jdbcTemplate.executeInsertQuery(SQL_ADD_PAYMENT_CARD, amount, cardNumber, cardPin, cardStatus.name());
+    public void add(BigDecimal amount, String cardNumber, String cardPin, PaymentCard.CardStatus cardStatus, LocalDateTime expiredDate) throws DaoException {
+        jdbcTemplate.executeInsertQuery(SQL_ADD_PAYMENT_CARD, amount, cardNumber, cardPin, expiredDate, cardStatus.name());
     }
 }

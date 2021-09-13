@@ -78,9 +78,9 @@ public class UserDaoImpl implements UserDao {
 
     private static final String SQL_ADD_USER = """
             INSERT INTO USERS 
-            (first_name, last_name, patronymic, contract_number, contract_date, balance, name, password, email, 
+            (first_name, last_name, patronymic, contract_date, balance, password, email, 
             activation_code, activation_code_used, traffic, user_roles_role_id, user_statuses_status_id, tariffs_tariff_id)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,
+            VALUES (?,?,?,?,?,?,?,?,?,?,
             (select role_id from user_roles where role=?),
             (select status_id from user_statuses where status=?),
             ?
@@ -142,6 +142,13 @@ public class UserDaoImpl implements UserDao {
     private static final String SQL_UPDATE_BALANCE = """
             UPDATE USERS SET
             balance=?
+            WHERE 
+            user_id=?
+            """;
+
+    private static final String SQL_UPDATE_CONTRACT_NUMBER_AND_USER_NAME = """
+            UPDATE USERS SET
+            contract_number=?, name=?
             WHERE 
             user_id=?
             """;
@@ -243,10 +250,8 @@ public class UserDaoImpl implements UserDao {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getPatronymic(),
-                user.getContractNumber(),
                 Timestamp.valueOf(user.getContractDate()),
                 user.getBalance(),
-                user.getName(),
                 password,
                 user.getEmail(),
                 activationCode,
@@ -273,6 +278,14 @@ public class UserDaoImpl implements UserDao {
     public boolean balanceReplenishment(long userId, BigDecimal userBalance) throws DaoException {
         return jdbcTemplate.executeUpdateQuery(SQL_UPDATE_BALANCE,
                 userBalance,
+                userId);
+    }
+
+    @Override
+    public boolean updateContractNumberAndUserName(long userId, String contractNumber, String userName) throws DaoException {
+        return jdbcTemplate.executeUpdateQuery(SQL_UPDATE_CONTRACT_NUMBER_AND_USER_NAME,
+                contractNumber,
+                userName,
                 userId);
     }
 }

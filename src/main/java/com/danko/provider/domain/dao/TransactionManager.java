@@ -59,6 +59,7 @@ public class TransactionManager {
             connectionThreadLocal.remove();
             connection.setAutoCommit(true);
             connection.close();
+            connection = null;
         } catch (SQLException e) {
             logger.log(Level.ERROR, "SQL exception in method close: {}", e);
             throw new DaoException("SQL exception in method close.", e);

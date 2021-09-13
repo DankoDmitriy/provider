@@ -61,8 +61,6 @@
                         </h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                        <%--                        ${sessionScope.user.contractDate}--%>
-                        <%--<fmt:formatDate value="${sessionScope.user.contractDate}" pattern="dd-MM-yyyy"/>--%>
                         <fmt:parseDate value="${sessionScope.user.contractDate}" pattern="yyyy-MM-dd"
                                        var="parsedDateTime" type="both"/>
                         <fmt:formatDate pattern="dd.MM.yyyy" value="${parsedDateTime}"/>

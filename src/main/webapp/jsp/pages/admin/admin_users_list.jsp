@@ -17,7 +17,7 @@
             <th scope="col">Контракт</th>
             <th scope="col">Баланс</th>
             <th scope="col">E-mail</th>
-            <th scope="col">Role</th>
+            <th scope="col">Status</th>
             <th scope="col">Редактировать</th>
         </tr>
         </thead>

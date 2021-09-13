@@ -38,6 +38,22 @@ public final class ParamName {
     public static final String USER_ADD_TARIFF_ID = "tariff_id";
     public static final String USER_ADD_E_MAIL = "e_mail";
 
+    //   Admin Tariff add page.
+    public static final String TARIFF_ADD_NAME = "tariff_name";
+    public static final String TARIFF_ADD_MAX_SPEED = "max_speed";
+    public static final String TARIFF_ADD_MIN_SPEED = "min_speed";
+    public static final String TARIFF_ADD_TRAFFIC = "traffic";
+    public static final String TARIFF_ADD_PRICE = "price";
+    public static final String TARIFF_ADD_STATUS = "status";
+    public static final String TARIFF_ADD_PERIOD = "period";
+
+    //   Admin Payment cards add page.
+    public static final String PAYMENT_CARD_ADD_SERIES = "series";
+    public static final String PAYMENT_CARD_ADD_AMOUNT = "amount";
+    public static final String PAYMENT_CARD_ADD_COUNT = "count";
+    public static final String PAYMENT_CARD_ADD_DATE_EXPIRED = "date_expired";
+
+
     private ParamName() {
     }
 }
