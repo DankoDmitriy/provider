@@ -1,7 +1,6 @@
 package com.danko.provider.domain.service.impl;
 
-import com.danko.provider.domain.dao.TariffDao;
-import com.danko.provider.domain.dao.UserDao;
+import com.danko.provider.domain.dao.*;
 import com.danko.provider.domain.dao.impl.TariffDaoImpl;
 import com.danko.provider.domain.dao.impl.UserDaoImpl;
 import com.danko.provider.domain.entity.*;
@@ -28,31 +27,60 @@ public class UserServiceImpl implements UserService {
     private static Logger logger = LogManager.getLogger();
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
     private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
-    private UserDao userDao = new UserDaoImpl();
-    private TariffDao tariffDao = new TariffDaoImpl();
+//    private UserDao userDao = new UserDaoImpl();
+//    private TariffDao tariffDao = new TariffDaoImpl();
+
+    private UserDao userDao;
+    private TariffDao tariffDao;
+    private UserActionDao userActionDao;
+    private PaymentCardDao paymentCardDao;
+    private AccountTransactionDao accountTransactionDao;
+    private TransactionManager transactionManager;
+
+
+    public UserServiceImpl(UserDao userDao, TariffDao tariffDao, UserActionDao userActionDao, PaymentCardDao paymentCardDao, AccountTransactionDao accountTransactionDao, TransactionManager transactionManager) {
+        this.userDao = userDao;
+        this.tariffDao = tariffDao;
+        this.userActionDao = userActionDao;
+        this.paymentCardDao = paymentCardDao;
+        this.accountTransactionDao = accountTransactionDao;
+        this.transactionManager = transactionManager;
+    }
 
     @Override
     public List<User> findAllUsers() throws ServiceException {
-        List<User> list;
         try {
-            list = userDao.findAll();
+            transactionManager.startTransaction();
+            return userDao.findAll();
         } catch (DaoException e) {
             logger.log(Level.ERROR, "Could not find all users in database: {}", e);
             throw new ServiceException("Could not find all users in database.", e);
+        } finally {
+            try {
+                transactionManager.endTransaction();
+            } catch (DaoException e) {
+                logger.log(Level.ERROR, "End transaction error: {}", e);
+                throw new ServiceException("End transaction error", e);
+            }
         }
-        return list;
     }
 
     @Override
     public List<User> findAllUsersByRole(UserRole role) throws ServiceException {
-        List<User> list;
         try {
-            list = userDao.findAllByRole(role);
+            transactionManager.startTransaction();
+            return userDao.findAllByRole(role);
         } catch (DaoException e) {
             logger.log(Level.ERROR, "Could not find all users in database: {}", e);
             throw new ServiceException("Could not find all users in database.", e);
+        } finally {
+            try {
+                transactionManager.endTransaction();
+            } catch (DaoException e) {
+                logger.log(Level.ERROR, "End transaction error: {}", e);
+                throw new ServiceException("End transaction error", e);
+            }
         }
-        return list;
     }
 
     @Override
@@ -61,11 +89,19 @@ public class UserServiceImpl implements UserService {
         try {
             //TODO - ADD CHECK FOR VALIDATION LOGIN AND PASSWORD
             String passwordHash = PasswordHasher.hashString(password);
+            transactionManager.startTransaction();
             optionalUser = userDao.findByNameAndPassword(name, passwordHash);
             return optionalUser;
         } catch (DaoException e) {
             logger.log(Level.ERROR, "Can't find user by login and password: {}", e);
             throw new ServiceException("can't find user by login and password.", e);
+        } finally {
+            try {
+                transactionManager.endTransaction();
+            } catch (DaoException e) {
+                logger.log(Level.ERROR, "End transaction error: {}", e);
+                throw new ServiceException("End transaction error", e);
+            }
         }
     }
 
@@ -75,16 +111,15 @@ public class UserServiceImpl implements UserService {
             boolean result = true;
             InputDataValidator inputDataValidator = InputDataValidator.getInstance();
             if (password != null && inputDataValidator.isPasswordValid(password)) {
+                transactionManager.startTransaction();
                 String passwordHash = PasswordHasher.hashString(password);
                 String newActivateCode = UniqueStringGenerator.generationUniqueString();
                 result = userDao.updatePassword(userId, passwordHash, newActivateCode, UserStatus.WAIT_ACTIVATE);
-
-                UserActionService userActionService = ServiceProvider.getInstance().getUserActionService();
                 UserAction userAction = UserAction.builder().
                         setActionType(UserAction.ActionType.CHANGE_PASSWORD)
                         .setDateTime(LocalDateTime.now()).build();
-                userActionService.add(userAction, userId, tariffId);
-
+                userActionDao.add(userAction, userId, tariffId);
+                transactionManager.commit();
                 EmailService emailService = ServiceProvider.getInstance().getEmailService();
                 String domain = UrlUtil.requestUrlToDomain(requestUrl) + contextPath;
 //                TODO - Расскомментировать отправку почты. Убрарно что бы не спамить самому себе.
@@ -95,39 +130,76 @@ public class UserServiceImpl implements UserService {
             return result;
         } catch (DaoException e) {
             logger.log(Level.ERROR, "Password has not been updated: {}", e);
+            try {
+                transactionManager.rollback();
+            } catch (DaoException e1) {
+                logger.log(Level.ERROR, "Rollback error: {}", e1);
+                throw new ServiceException("Rollback error.", e1);
+            }
             throw new ServiceException("Password has not been updated.", e);
+        } finally {
+            try {
+                transactionManager.endTransaction();
+            } catch (DaoException e) {
+                logger.log(Level.ERROR, "End transaction error: {}", e);
+                throw new ServiceException("End transaction error", e);
+            }
         }
     }
 
     @Override
     public boolean updateActivationCodeStatus(String activateCode, UserStatus userStatus) throws ServiceException {
+        boolean result = false;
         try {
-            if (verificationOfActivationCode(activateCode)) {
-                return userDao.updateActivationCodeStatus(activateCode, userStatus);
+            transactionManager.startTransaction();
+            if (userDao.verificationOfActivationCode(activateCode)) {
+                result = userDao.updateActivationCodeStatus(activateCode, userStatus);
+                transactionManager.commit();
             }
-            return false;
         } catch (DaoException e) {
             logger.log(Level.ERROR, "Activation code status has not been updated: {}", e);
+            try {
+                transactionManager.rollback();
+            } catch (DaoException e1) {
+                logger.log(Level.ERROR, "Rollback error: {}", e1);
+                throw new ServiceException("Rollback error.", e);
+            }
             throw new ServiceException("Activation code status has not been updated.", e);
+        } finally {
+            try {
+                transactionManager.endTransaction();
+            } catch (DaoException e) {
+                logger.log(Level.ERROR, "End transaction error: {}", e);
+                throw new ServiceException("End transaction error", e);
+            }
         }
+        return result;
     }
 
     @Override
     public boolean verificationOfActivationCode(String activateCode) throws ServiceException {
         try {
+            transactionManager.startTransaction();
             return userDao.verificationOfActivationCode(activateCode);
         } catch (DaoException e) {
             logger.log(Level.ERROR, "Activation code has not been verification: {}", e);
             throw new ServiceException("Activation code has not been verification.", e);
+        } finally {
+            try {
+                transactionManager.endTransaction();
+            } catch (DaoException e) {
+                logger.log(Level.ERROR, "End transaction error: {}", e);
+                throw new ServiceException("End transaction error", e);
+            }
         }
     }
 
     @Override
     public BigDecimal updateTariffPlan(long userId, long tariffId) throws ServiceException {
         BigDecimal newUserTraffic = null;
-        TariffService tariffService = ServiceProvider.getInstance().getTariffService();
         try {
-            Optional<Tariff> tariffOptional = tariffService.findById(tariffId);
+            transactionManager.startTransaction();
+            Optional<Tariff> tariffOptional = tariffDao.findById(tariffId);
             if (!tariffOptional.isEmpty()) {
                 Optional<User> optionalUser = userDao.findById(userId);
                 if (!optionalUser.isEmpty()) {
@@ -136,18 +208,30 @@ public class UserServiceImpl implements UserService {
                     if (tariff.getStatus().equals(TariffStatus.ACTIVE) & user.getStatus().equals(UserStatus.ACTIVE)) {
                         newUserTraffic = tariff.getTraffic().add(user.getTraffic());
                         userDao.updateTariffAndTrafficValue(userId, tariffId, newUserTraffic);
-
-                        UserActionService userActionService = ServiceProvider.getInstance().getUserActionService();
                         UserAction userAction = UserAction.builder().
                                 setActionType(UserAction.ActionType.CHANGE_TARIFF)
                                 .setDateTime(LocalDateTime.now()).build();
-                        userActionService.add(userAction, userId, tariffId);
+                        userActionDao.add(userAction, userId, tariffId);
+                        transactionManager.commit();
                     }
                 }
             }
         } catch (DaoException e) {
             logger.log(Level.ERROR, "Tariff has not been updated: {}", e);
+            try {
+                transactionManager.rollback();
+            } catch (DaoException e1) {
+                logger.log(Level.ERROR, "Rollback error: {}", e1);
+                throw new ServiceException("Rollback error.", e);
+            }
             throw new ServiceException("Tariff has not been updated.", e);
+        } finally {
+            try {
+                transactionManager.endTransaction();
+            } catch (DaoException e) {
+                logger.log(Level.ERROR, "End transaction error: {}", e);
+                throw new ServiceException("End transaction error", e);
+            }
         }
         return newUserTraffic;
     }
@@ -155,41 +239,62 @@ public class UserServiceImpl implements UserService {
     @Override
     public BigDecimal activatePaymentCard(String cardNumber, String cardPin, long userId, BigDecimal userBalance, long tariffId) throws ServiceException {
         BigDecimal newUserBalance;
-        PaymentCardService paymentCardService = ServiceProvider.getInstance().getPaymentCardService();
-        Optional<PaymentCard> paymentCardOptional = paymentCardService.findByCardNumberAndPin(cardNumber, cardPin);
-        if (!paymentCardOptional.isEmpty()) {
-            PaymentCard paymentCard = paymentCardOptional.get();
-            if (paymentCard.getCardStatus().equals(PaymentCard.CardStatus.NOT_USED)) {
-                paymentCard.setCardStatus(PaymentCard.CardStatus.USED);
+//        PaymentCardService paymentCardService = ServiceProvider.getInstance().getPaymentCardService();
+        try {
+            transactionManager.startTransaction();
 
-                LocalDateTime localDateTimeNow = LocalDateTime.now();
+            String cardNumberHash = PasswordHasher.hashString(cardNumber);
+            String cardPinHash = PasswordHasher.hashString(cardPin);
 
-                UserAction userAction = UserAction.builder().
-                        setActionType(UserAction.ActionType.CARD_ACTIVATE)
-                        .setDateTime(localDateTimeNow).build();
+            Optional<PaymentCard> paymentCardOptional = paymentCardDao.findByCardNumberAndPin(cardNumberHash, cardPinHash);
+            if (!paymentCardOptional.isEmpty()) {
+                PaymentCard paymentCard = paymentCardOptional.get();
+                if (paymentCard.getCardStatus().equals(PaymentCard.CardStatus.NOT_USED)) {
 
-                AccountTransaction accountTransaction = AccountTransaction.builder()
-                        .setSum(paymentCard.getAmount())
-                        .setDate(localDateTimeNow)
-                        .setUserId(userId)
-                        .setType(TransactionType.REFILL).build();
+                    LocalDateTime localDateTimeNow = LocalDateTime.now();
+                    paymentCard.setCardStatus(PaymentCard.CardStatus.USED);
+                    paymentCard.setActivationDate(localDateTimeNow);
 
-                paymentCard.setActivationDate(localDateTimeNow);
+                    UserAction userAction = UserAction.builder().
+                            setActionType(UserAction.ActionType.CARD_ACTIVATE)
+                            .setDateTime(localDateTimeNow).build();
 
-                newUserBalance = userBalance.add(paymentCard.getAmount());
+                    AccountTransaction accountTransaction = AccountTransaction.builder()
+                            .setSum(paymentCard.getAmount())
+                            .setDate(localDateTimeNow)
+                            .setUserId(userId)
+                            .setType(TransactionType.REFILL).build();
 
-                try {
-                    userDao.balanceReplenishment(userId, newUserBalance, tariffId, paymentCard, userAction, accountTransaction);
-                } catch (DaoException e) {
-                    logger.log(Level.ERROR, "Balance has not been replenished: {}", e);
-                    throw new ServiceException("Balance has not been replenished.", e);
+                    newUserBalance = userBalance.add(paymentCard.getAmount());
+
+                    userActionDao.add(userAction, userId, tariffId);
+                    accountTransactionDao.add(accountTransaction);
+                    paymentCardDao.activateCard(paymentCard.getCardId(), userId, localDateTimeNow);
+                    userDao.balanceReplenishment(userId, newUserBalance);
+
+                    transactionManager.commit();
+                } else {
+                    throw new ServiceException("Balance has not been replenished.");
                 }
-
             } else {
                 throw new ServiceException("Balance has not been replenished.");
             }
-        } else {
-            throw new ServiceException("Balance has not been replenished.");
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, "Balance has not been replenished: {}", e);
+            try {
+                transactionManager.rollback();
+            } catch (DaoException e1) {
+                logger.log(Level.ERROR, "Rollback error: {}", e1);
+                throw new ServiceException("Rollback error.", e);
+            }
+            throw new ServiceException("Balance has not been replenished.", e);
+        } finally {
+            try {
+                transactionManager.endTransaction();
+            } catch (DaoException e) {
+                logger.log(Level.ERROR, "End transaction error: {}", e);
+                throw new ServiceException("End transaction error", e);
+            }
         }
         return newUserBalance;
     }
@@ -224,6 +329,8 @@ public class UserServiceImpl implements UserService {
             LocalDateTime contractDateLocalDateTime = contractDateLocalDate.atStartOfDay();
 
             try {
+                transactionManager.startTransaction();
+
                 Optional<Tariff> optionalTariff = tariffDao.findById(Long.valueOf(tariffId));
                 Tariff tariff = optionalTariff.get();
 
@@ -247,13 +354,26 @@ public class UserServiceImpl implements UserService {
                 TransferObject newUser = new TransferObject();
                 newUser.setUser(user);
                 newUser.setPassword(password);
+                transactionManager.commit();
                 return Optional.of(newUser);
 
             } catch (DaoException e) {
                 logger.log(Level.ERROR, "User has not added: {}", e);
+                try {
+                    transactionManager.rollback();
+                } catch (DaoException e1) {
+                    logger.log(Level.ERROR, "Rollback error: {}", e1);
+                    throw new ServiceException("Rollback error.", e);
+                }
                 throw new ServiceException("User has not added.", e);
+            } finally {
+                try {
+                    transactionManager.endTransaction();
+                } catch (DaoException e) {
+                    logger.log(Level.ERROR, "End transaction error: {}", e);
+                    throw new ServiceException("End transaction error", e);
+                }
             }
-
         }
         return Optional.empty();
     }

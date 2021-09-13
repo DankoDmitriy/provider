@@ -3,6 +3,7 @@ package com.danko.provider.domain.dao.impl;
 import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.domain.dao.JdbcTemplate;
 import com.danko.provider.domain.dao.PaymentCardDao;
+import com.danko.provider.domain.dao.TransactionManager;
 import com.danko.provider.domain.dao.mapper.impl.PaymentCardResultSetHandler;
 import com.danko.provider.domain.entity.PaymentCard;
 import com.danko.provider.exception.DaoException;
@@ -76,7 +77,7 @@ public class PaymentCardDaoImpl implements PaymentCardDao {
             """;
 
     public PaymentCardDaoImpl() {
-        jdbcTemplate = new JdbcTemplate<PaymentCard>(ConnectionPool.getInstance(), new PaymentCardResultSetHandler());
+        jdbcTemplate = new JdbcTemplate<PaymentCard>(new PaymentCardResultSetHandler());
     }
 
     @Override

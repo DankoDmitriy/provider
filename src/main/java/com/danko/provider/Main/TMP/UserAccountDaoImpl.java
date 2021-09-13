@@ -42,7 +42,7 @@ public class UserAccountDaoImpl implements UserAccountDao {
     private JdbcTemplate<UserAccount> jdbcTemplate;
 
     public UserAccountDaoImpl() {
-        jdbcTemplate = new JdbcTemplate<>(ConnectionPool.getInstance(), new UserAccountResultSetHandler());
+        jdbcTemplate = new JdbcTemplate<UserAccount>(new UserAccountResultSetHandler());
     }
 
     @Override

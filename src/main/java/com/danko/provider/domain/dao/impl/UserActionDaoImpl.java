@@ -3,6 +3,7 @@ package com.danko.provider.domain.dao.impl;
 import cn.hutool.core.date.DateTime;
 import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.domain.dao.JdbcTemplate;
+import com.danko.provider.domain.dao.TransactionManager;
 import com.danko.provider.domain.dao.UserActionDao;
 import com.danko.provider.domain.dao.mapper.impl.UserActionResultSetHandler;
 import com.danko.provider.domain.entity.UserAction;
@@ -67,7 +68,7 @@ public class UserActionDaoImpl implements UserActionDao {
     private JdbcTemplate<UserAction> jdbcTemplate;
 
     public UserActionDaoImpl() {
-        jdbcTemplate = new JdbcTemplate<UserAction>(ConnectionPool.getInstance(), new UserActionResultSetHandler());
+        jdbcTemplate = new JdbcTemplate<UserAction>(new UserActionResultSetHandler());
     }
 
     @Override

@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TransactionManager {
     private static Logger logger = LogManager.getLogger();
-    private static ThreadLocal<Connection> connectionThreadLocal = new ThreadLocal<>();
+    private ThreadLocal<Connection> connectionThreadLocal = new ThreadLocal<>();
     private static TransactionManager instance;
     private static final AtomicBoolean isTransactionManagerCreated = new AtomicBoolean(false);
     private ConnectionPool connectionPool;
@@ -56,6 +56,8 @@ public class TransactionManager {
     public void endTransaction() throws DaoException {
         Connection connection = connectionThreadLocal.get();
         try {
+            connectionThreadLocal.remove();
+            connection.setAutoCommit(true);
             connection.close();
         } catch (SQLException e) {
             logger.log(Level.ERROR, "SQL exception in method close: {}", e);
@@ -82,5 +84,9 @@ public class TransactionManager {
             logger.log(Level.ERROR, "SQL exception in method rollback: {}", e);
             throw new DaoException("SQL exception in method rollback.", e);
         }
+    }
+
+    public Connection getConnection() {
+        return connectionThreadLocal.get();
     }
 }

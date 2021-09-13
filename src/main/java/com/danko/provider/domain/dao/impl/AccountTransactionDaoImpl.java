@@ -3,6 +3,7 @@ package com.danko.provider.domain.dao.impl;
 import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.domain.dao.AccountTransactionDao;
 import com.danko.provider.domain.dao.JdbcTemplate;
+import com.danko.provider.domain.dao.TransactionManager;
 import com.danko.provider.domain.entity.AccountTransaction;
 import com.danko.provider.domain.dao.mapper.impl.AccountTransactionResultSetHandler;
 import com.danko.provider.exception.DaoException;
@@ -77,7 +78,7 @@ public class AccountTransactionDaoImpl implements AccountTransactionDao {
     private JdbcTemplate<AccountTransaction> jdbcTemplate;
 
     public AccountTransactionDaoImpl() {
-        jdbcTemplate = new JdbcTemplate<AccountTransaction>(ConnectionPool.getInstance(), new AccountTransactionResultSetHandler());
+        jdbcTemplate = new JdbcTemplate<AccountTransaction>(new AccountTransactionResultSetHandler());
     }
 
     @Override
@@ -90,7 +91,7 @@ public class AccountTransactionDaoImpl implements AccountTransactionDao {
     @Override
     public List<AccountTransaction> findAllByUserId(long userId) throws DaoException {
         List<AccountTransaction> list;
-            list = jdbcTemplate.executeSelectQuery(SQL_FIND_ALL_ACCOUNT_TRANSACTIONS_BY_USER_ID, userId);
+        list = jdbcTemplate.executeSelectQuery(SQL_FIND_ALL_ACCOUNT_TRANSACTIONS_BY_USER_ID, userId);
         return list;
     }
 

@@ -24,6 +24,12 @@ public class _Main {
 //        connectionThreadLocal.remove();
 
 
+//        TODO String format
+
+        String result = String.format("%06d", 516);
+        System.out.println(result);
+
+
 //        System.out.println(PasswordHasher.hashString("000001"));
 //        System.out.println(PasswordHasher.hashString("000002"));
 //        System.out.println(PasswordHasher.hashString("000003"));
@@ -32,13 +38,15 @@ public class _Main {
 //        System.out.println(PasswordHasher.hashString("000006"));
 //
 //        System.out.println(PasswordHasher.hashString("1"));
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String dateForm = "2021-09-09";
-//        System.out.println(Timestamp.valueOf("2021-09-09 00:00:00"));
-        LocalDate localDate = LocalDate.parse(dateForm,dateTimeFormatter);
-        System.out.println(localDate);
-        LocalDateTime localDateTime = localDate.atStartOfDay();
-        System.out.println(localDateTime);
+
+//        TODO - localdatetome
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        String dateForm = "2021-09-09";
+////        System.out.println(Timestamp.valueOf("2021-09-09 00:00:00"));
+//        LocalDate localDate = LocalDate.parse(dateForm,dateTimeFormatter);
+//        System.out.println(localDate);
+//        LocalDateTime localDateTime = localDate.atStartOfDay();
+//        System.out.println(localDateTime);
 
 
 //        todo - проверка userDao

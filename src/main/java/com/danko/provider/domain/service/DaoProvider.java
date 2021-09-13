@@ -6,7 +6,7 @@ import com.danko.provider.domain.dao.impl.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DaoProvider {
-    public static DaoProvider instance;
+    private static DaoProvider instance;
     private static final AtomicBoolean isDaoProviderCreated = new AtomicBoolean(false);
     private AccountTransactionDao accountTransactionDao = new AccountTransactionDaoImpl();
     private PaymentCardDao paymentCardDao = new PaymentCardDaoImpl();
@@ -45,4 +45,5 @@ public class DaoProvider {
     public UserDao getUserDao() {
         return userDao;
     }
+
 }

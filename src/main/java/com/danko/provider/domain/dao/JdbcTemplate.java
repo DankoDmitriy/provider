@@ -4,7 +4,6 @@ import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.domain.entity.AbstractEntity;
 import com.danko.provider.domain.dao.mapper.ResultSetHandler;
 import com.danko.provider.exception.DaoException;
-import com.danko.provider.exception.DatabaseConnectionException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,18 +15,20 @@ import java.util.Optional;
 
 public class JdbcTemplate<T extends AbstractEntity> {
     private static Logger logger = LogManager.getLogger();
-    private ConnectionPool connectionPool;
     private ResultSetHandler<T> resultSetHandler;
+    private TransactionManager transactionManager;
 
-    public JdbcTemplate(ConnectionPool connectionPool, ResultSetHandler resultSetHandler) {
-        this.connectionPool = connectionPool;
+    public JdbcTemplate(ResultSetHandler resultSetHandler) {
         this.resultSetHandler = resultSetHandler;
+        this.transactionManager = TransactionManager.getInstance();
     }
 
     public List<T> executeSelectQuery(String sqlQuery, Object... parameters) throws DaoException {
         List<T> list = new ArrayList<>();
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sqlQuery);) {
+        Connection connection = transactionManager.getConnection();
+        try (
+//          Connection connection = connectionPool.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sqlQuery);) {
             setParametersInPreparedStatement(statement, parameters);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -35,7 +36,8 @@ public class JdbcTemplate<T extends AbstractEntity> {
                 list.add(entity);
             }
 
-        } catch (SQLException | DatabaseConnectionException e) {
+//        } catch (SQLException | DatabaseConnectionException e) {
+        } catch (SQLException e) {
             logger.log(Level.ERROR, "Error...Message: {}", e.getMessage());
             throw new DaoException(e);
         }
@@ -53,11 +55,14 @@ public class JdbcTemplate<T extends AbstractEntity> {
 
     public boolean executeUpdateQuery(String sqlQuery, Object... parameters) throws DaoException {
         int result = 0;
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        Connection connection = transactionManager.getConnection();
+        try (
+//                Connection connection = connectionPool.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             setParametersInPreparedStatement(statement, parameters);
             result = statement.executeUpdate();
-        } catch (SQLException | DatabaseConnectionException e) {
+//        } catch (SQLException | DatabaseConnectionException e) {
+        } catch (SQLException e) {
             logger.log(Level.ERROR, "Error...Message: {}", e.getMessage());
             throw new DaoException(e);
         }
@@ -66,14 +71,17 @@ public class JdbcTemplate<T extends AbstractEntity> {
 
     public long executeInsertQuery(String sqlQuery, Object... parameters) throws DaoException {
         long generatedId = 0;
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS);) {
+        Connection connection = transactionManager.getConnection();
+        try (
+//                Connection connection = connectionPool.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS);) {
             setParametersInPreparedStatement(statement, parameters);
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
             generatedId = resultSet.getLong(1);
-        } catch (SQLException | DatabaseConnectionException e) {
+//        } catch (SQLException | DatabaseConnectionException e) {
+        } catch (SQLException e) {
             logger.log(Level.ERROR, "Error...Message: {}", e.getMessage());
             throw new DaoException(e);
         }
@@ -82,7 +90,7 @@ public class JdbcTemplate<T extends AbstractEntity> {
 
     private void setParametersInPreparedStatement(PreparedStatement statement, Object... parameters) throws SQLException {
         for (int i = 1; i <= parameters.length; i++) {
-            statement.setObject(i, parameters[i-1]);
+            statement.setObject(i, parameters[i - 1]);
         }
     }
 }

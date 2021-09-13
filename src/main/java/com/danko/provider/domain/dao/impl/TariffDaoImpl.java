@@ -3,6 +3,7 @@ package com.danko.provider.domain.dao.impl;
 import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.domain.dao.JdbcTemplate;
 import com.danko.provider.domain.dao.TariffDao;
+import com.danko.provider.domain.dao.TransactionManager;
 import com.danko.provider.domain.entity.Tariff;
 import com.danko.provider.domain.entity.TariffStatus;
 import com.danko.provider.domain.dao.mapper.impl.TariffResultSetHandler;
@@ -75,7 +76,7 @@ public class TariffDaoImpl implements TariffDao {
     private JdbcTemplate<Tariff> jdbcTemplate;
 
     public TariffDaoImpl() {
-        jdbcTemplate = new JdbcTemplate<Tariff>(ConnectionPool.getInstance(), new TariffResultSetHandler());
+        jdbcTemplate = new JdbcTemplate<Tariff>(new TariffResultSetHandler());
     }
 
     @Override

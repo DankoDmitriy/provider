@@ -1,6 +1,8 @@
 package com.danko.provider.controller.listener;
 
 import com.danko.provider.connection.ConnectionPool;
+import com.danko.provider.domain.dao.TransactionManager;
+import com.danko.provider.domain.service.DaoProvider;
 import com.danko.provider.domain.service.ServiceProvider;
 import com.danko.provider.validator.InputDataValidator;
 import org.apache.logging.log4j.Level;
@@ -17,7 +19,10 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        TransactionManager.getInstance();
         ConnectionPool.getInstance();
+
+        DaoProvider.getInstance();
         ServiceProvider.getInstance();
         InputDataValidator.getInstance();
         logger.log(Level.INFO, "Context was created. Created: ConnectionPool,ServiceProvider,InputDataValidator.");

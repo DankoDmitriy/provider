@@ -20,7 +20,9 @@ public interface UserDao extends BaseDao<Long, User> {
 
     boolean updateTariffAndTrafficValue(long userId, long tariffId, BigDecimal traffic) throws DaoException;
 
-    void balanceReplenishment(long userId, BigDecimal userBalance, long tariffId, PaymentCard paymentCard, UserAction userAction, AccountTransaction accountTransaction) throws DaoException;
+//    void balanceReplenishment(long userId, BigDecimal userBalance, long tariffId, PaymentCard paymentCard, UserAction userAction, AccountTransaction accountTransaction) throws DaoException;
+
+    boolean balanceReplenishment(long userId, BigDecimal userBalance) throws DaoException;
 
     List<User> findAllByRole(UserRole role) throws DaoException;
 
