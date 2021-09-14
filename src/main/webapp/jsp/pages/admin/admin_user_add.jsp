@@ -25,7 +25,7 @@
             <div class="col-md-4 mb-3">
                 <label for="validationServer03">Отчество</label>
                 <input type="text" class="form-control is-valid" id="validationServer03" placeholder=""
-                       name="patronymic" minlength="2" maxlength="55">
+                       name="patronymic" pattern="[a-zA-ZА-Яа-я]{2,55}">
             </div>
         </div>
         <%--END User data--%>

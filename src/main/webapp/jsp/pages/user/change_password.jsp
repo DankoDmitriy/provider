@@ -25,7 +25,7 @@
                 <c:if test="${not empty errorMessage}">
                     <div style="text-align: center;">${errorMessage}</div>
                 </c:if>
-                <form action="/provider_war_exploded/controller" method="post">
+                <form action="${pageContext.request.contextPath}/controller" method="post">
                     <input type="hidden" name="command" value="USER_CHANGE_PASSWORD">
                     <div class="row mb-3">
                         <div class="col-sm-3">

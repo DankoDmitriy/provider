@@ -39,6 +39,7 @@ public class ChangePasswordCommand implements Command {
                 updateResult = userService.updatePassword(user.getUserId(), newPassword, user.getEmail(), contextPath, requestUrl, user.getTariffId());
             } catch (ServiceException e) {
                 logger.log(Level.WARN, "Password has not been updated: {}", e);
+//                FIXME - НЕ тут. если результат говно...
                 router.setPageUrl(USER_CHANGE_PASSWORD_PAGE);
                 request.setAttribute(USER_PERSONAL_MESSAGE_ERROR, e.getMessage());
             }

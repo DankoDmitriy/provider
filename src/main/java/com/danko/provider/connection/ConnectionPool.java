@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -26,8 +27,8 @@ public class ConnectionPool {
     private static final AtomicBoolean isConnectionPoolCreated = new AtomicBoolean(false);
 
     private int poolSize;
-    private BlockingQueue<Connection> freeConnections;
-    private BlockingQueue<Connection> busyConnections;
+    private BlockingQueue<ConnectionProxy> freeConnections;
+    private BlockingQueue<ConnectionProxy> busyConnections;
     private boolean poolCloseFlag;
 
     private ConnectionPool() {
@@ -56,8 +57,8 @@ public class ConnectionPool {
         busyConnections = new LinkedBlockingQueue<>(poolSize);
         for (int i = 0; i < poolSize; i++) {
             try {
-                java.sql.Connection connection = ConnectionFactory.createConnection();
-                Connection connectionProxy = new Connection(connection);
+                Connection connection = ConnectionFactory.createConnection();
+                ConnectionProxy connectionProxy = new ConnectionProxy(connection);
                 freeConnections.add(connectionProxy);
             } catch (SQLException e) {
                 logger.log(Level.ERROR, "Error with creating connection: {}", e.getMessage());
@@ -85,12 +86,12 @@ public class ConnectionPool {
 
     public Connection getConnection() throws DatabaseConnectionException {
         if (!poolCloseFlag) {
-            Connection connection;
+            ConnectionProxy connection;
             try {
                 connection = freeConnections.take();
                 try {
                     if (connection.isClosed()) {
-                        connection = new Connection(ConnectionFactory.createConnection());
+                        connection = new ConnectionProxy(ConnectionFactory.createConnection());
                     }
                 } catch (SQLException e) {
                     logger.log(Level.ERROR, "Error occurred while creating a connection instead of a previously closed one : {}", e.getMessage());
@@ -105,11 +106,11 @@ public class ConnectionPool {
         return null;
     }
 
-    public boolean releaseConnection(java.sql.Connection connection) throws DatabaseConnectionException {
+    public boolean releaseConnection(Connection connection) throws DatabaseConnectionException {
         boolean result = false;
-        if (connection instanceof Connection & busyConnections.contains(connection) & busyConnections.remove(connection) & !poolCloseFlag) {
+        if (connection instanceof ConnectionProxy & busyConnections.contains(connection) & busyConnections.remove(connection) & !poolCloseFlag) {
             try {
-                freeConnections.put((Connection) connection);
+                freeConnections.put((ConnectionProxy) connection);
             } catch (InterruptedException e) {
                 logger.log(Level.ERROR, "This thread has interrupted {} {}", e.getMessage(), e.getStackTrace());
                 throw new DatabaseConnectionException(e.getMessage() + " " + e.getStackTrace());
@@ -140,7 +141,7 @@ public class ConnectionPool {
         }
     }
 
-    private void destroyConnectionQueue(BlockingQueue<Connection> connections) {
+    private void destroyConnectionQueue(BlockingQueue<ConnectionProxy> connections) {
         while (!connections.isEmpty()) {
             try {
                 connections.take().reallyClose();

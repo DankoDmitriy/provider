@@ -107,8 +107,8 @@ public class UserServiceImpl implements UserService {
         try {
             boolean result = true;
             InputDataValidator inputDataValidator = InputDataValidator.getInstance();
+            transactionManager.startTransaction();
             if (password != null && inputDataValidator.isPasswordValid(password)) {
-                transactionManager.startTransaction();
                 String passwordHash = PasswordHasher.hashString(password);
                 String newActivateCode = UniqueStringGenerator.generationUniqueString();
                 result = userDao.updatePassword(userId, passwordHash, newActivateCode, UserStatus.WAIT_ACTIVATE);
@@ -122,6 +122,7 @@ public class UserServiceImpl implements UserService {
 //                TODO - Расскомментировать отправку почты. Убрарно что бы не спамить самому себе.
 //                emailService.sendActivateMail(email, domain, newActivateCode);
             } else {
+//                FIXME - ТУТ result - возвращать...а не исключение...
                 throw new ServiceException("Input password is not correct.");
             }
             return result;

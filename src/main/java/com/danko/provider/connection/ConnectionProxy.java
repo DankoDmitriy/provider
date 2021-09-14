@@ -7,10 +7,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-class Connection implements java.sql.Connection {
-    private java.sql.Connection connection;
+class ConnectionProxy implements Connection {
+    private Connection connection;
 
-    Connection(java.sql.Connection connection) {
+    ConnectionProxy(Connection connection) {
         this.connection = connection;
     }
 
