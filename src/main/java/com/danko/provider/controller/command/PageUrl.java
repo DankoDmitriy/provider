@@ -9,8 +9,14 @@ public final class PageUrl {
     public static final String ADMIN_USER_ADD_PAGE_REDIRECT = "/controller?command=USER_ADD";
     public static final String ADMIN_USER_ADD_CARD = "/jsp/pages/admin/admin_new_user_card.jsp";
 
+    public static final String ADMIN_USER_EDIT_PAGE = "/jsp/pages/admin/admin_user_edit.jsp";
+    public static final String ADMIN_USER_EDIT_PAGE_REDIRECT = "/controller?command=USER_EDIT";
+
     public static final String ADMIN_TARIFF_ADD_PAGE = "/jsp/pages/admin/admin_tariff_add.jsp";
     public static final String ADMIN_TARIFF_ADD_PAGE_REDIRECT = "/controller?command=TARIFF_ADD";
+
+    public static final String ADMIN_TARIFF_EDIT_PAGE = "/jsp/pages/admin/admin_tariff_edit.jsp";
+    public static final String ADMIN_TARIFF_EDIT_PAGE_REDIRECT = "/controller?command=TARIFF_EDIT";
 
     public static final String ADMIN_TARIFFS_LIST_PAGE = "/jsp/pages/admin/admin_tariffs_list.jsp";
     public static final String ADMIN_TARIFFS_LIST_PAGE_REDIRECT = "/controller?command=TARIFF_LIST";

@@ -26,11 +26,12 @@ public enum CommandType {
     //    Admin
     USERS_LIST(new AdminUsersListCommand()),
     USER_ADD(new AdminUserAddCommand()),
+    USER_EDIT(new AdminUserEditCommand()),
     TARIFF_LIST(new AdminTariffsListCommand()),
     TARIFF_ADD(new AdminTariffAddCommand()),
+    TARIFF_EDIT(new AdminTariffEditCommand()),
     EMPLOYEE_LIST(new AdminEmployeeListCommand()),
     CARD_ADD(new AdminPaymentCardAddCommand());
-
     //    Дефлотная комманда добавить.
     private Command command;
 

@@ -32,6 +32,12 @@ public final class RequestAttribute {
     public static final String ADMIN_NEW_PAYMENT_CARDS_LIST = "cards";
     public static final String ADMIN_NEW_PAYMENT_CARDS_EXPIRED_DATE = "expiredDate";
 
+    //    Admin Edit tariff Page
+    public static final String ADMIN_TARIFF_EDIT = "tariff";
+    public static final String ADMIN_TARIFF_STATUS_LIST_FOR_EDIT_TARIFF = "tariffStatuses";
+    public static final String ADMIN_TARIFF_WRITE_OFF_LIST_EDIT_NEW_TARIFF = "writeOffs";
+    public static final String ADMIN_TARIFF_EDIT_ORIGINAL = "tariffOrigin";
+
     private RequestAttribute() {
     }
 }

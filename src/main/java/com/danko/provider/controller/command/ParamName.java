@@ -53,6 +53,17 @@ public final class ParamName {
     public static final String PAYMENT_CARD_ADD_COUNT = "count";
     public static final String PAYMENT_CARD_ADD_DATE_EXPIRED = "date_expired";
 
+    //   Admin Tariff edit page.
+    public static final String TARIFF_EDIT_ORIGIN = "tariffOrigin";
+    public static final String TARIFF_EDIT_ID = "tariff_id";
+    public static final String TARIFF_EDIT_NAME = "tariff_name";
+    public static final String TARIFF_EDIT_MAX_SPEED = "max_speed";
+    public static final String TARIFF_EDIT_MIN_SPEED = "min_speed";
+    public static final String TARIFF_EDIT_TRAFFIC = "traffic";
+    public static final String TARIFF_EDIT_PRICE = "price";
+    public static final String TARIFF_EDIT_STATUS = "status";
+    public static final String TARIFF_EDIT_PERIOD = "period";
+
 
     private ParamName() {
     }

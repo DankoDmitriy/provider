@@ -94,15 +94,14 @@ public class TariffServiceImpl implements TariffService {
                              String tariffPeriodWriteOfStr) throws ServiceException {
         boolean result = true;
         InputDataValidator validator = InputDataValidator.getInstance();
-        if (
-                validator.isTariffDescriptionValid(tariffName) &&
-                        validator.isTariffSpeedValid(maxSpeed) &&
-                        validator.isTariffSpeedValid(minSpeed) &&
-                        validator.isTariffTrafficValid(traffic) &&
-                        validator.isTariffPriceValid(price) &&
-                        validator.isTariffStatusValid(tariffStatusStr) &&
-                        validator.isPeriodicityWriteOffValid(tariffPeriodWriteOfStr)
-        ) {
+        if (validator.isTariffDescriptionValid(tariffName) &&
+                validator.isTariffSpeedValid(maxSpeed) &&
+                validator.isTariffSpeedValid(minSpeed) &&
+                validator.isTariffTrafficValid(traffic) &&
+                validator.isTariffPriceValid(price) &&
+                validator.isTariffStatusValid(tariffStatusStr) &&
+                validator.isPeriodicityWriteOffValid(tariffPeriodWriteOfStr)) {
+
             Tariff tariff = Tariff.builder()
                     .setMaxSpeed(Integer.parseInt(maxSpeed))
                     .setMinSpeed(Integer.parseInt(minSpeed))
@@ -128,6 +127,55 @@ public class TariffServiceImpl implements TariffService {
             }
         } else {
             result = false;
+        }
+        return result;
+    }
+
+    @Override
+    public boolean update(String tariffId,
+                          String tariffName,
+                          String maxSpeed,
+                          String minSpeed,
+                          String traffic,
+                          String price,
+                          String tariffStatusStr,
+                          String tariffPeriodWriteOfStr,
+                          Tariff tariffOrigin) throws ServiceException {
+        boolean result = false;
+        InputDataValidator validator = InputDataValidator.getInstance();
+        if (validator.isTariffDescriptionValid(tariffName) &&
+                validator.isTariffSpeedValid(maxSpeed) &&
+                validator.isTariffSpeedValid(minSpeed) &&
+                validator.isTariffTrafficValid(traffic) &&
+                validator.isTariffPriceValid(price) &&
+                validator.isTariffStatusValid(tariffStatusStr) &&
+                validator.isPeriodicityWriteOffValid(tariffPeriodWriteOfStr)
+        ) {
+            Tariff tariff = Tariff.builder()
+                    .setTariffId(Long.parseLong(tariffId))
+                    .setMaxSpeed(Integer.parseInt(maxSpeed))
+                    .setMinSpeed(Integer.parseInt(minSpeed))
+                    .setDescription(tariffName)
+                    .setTraffic(new BigDecimal(traffic))
+                    .setPrice(new BigDecimal(price))
+                    .setStatus(TariffStatus.valueOf(tariffStatusStr))
+                    .setPeriod(PeriodicityWriteOff.valueOf(tariffPeriodWriteOfStr)).build();
+            if (!tariffOrigin.equals(tariff)) {
+                try {
+                    try {
+                        transactionManager.startTransaction();
+                        tariffDao.update(tariff);
+                        transactionManager.commit();
+                    } catch (DaoException e) {
+                        transactionManager.rollback();
+                    } finally {
+                        result = true;
+                        transactionManager.endTransaction();
+                    }
+                } catch (DaoException e) {
+                    throw new ServiceException(e);
+                }
+            }
         }
         return result;
     }

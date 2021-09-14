@@ -24,4 +24,14 @@ public interface TariffService {
                       String price,
                       String tariffStatusStr,
                       String tariffPeriodWriteOfStr) throws ServiceException;
+
+    boolean update(String tariffId,
+                   String tariffName,
+                   String maxSpeed,
+                   String minSpeed,
+                   String traffic,
+                   String price,
+                   String tariffStatusStr,
+                   String tariffPeriodWriteOfStr,
+                   Tariff tariffOrigin) throws ServiceException;
 }

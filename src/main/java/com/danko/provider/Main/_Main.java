@@ -3,10 +3,14 @@ package com.danko.provider.Main;
 import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.domain.dao.UserActionDao;
 import com.danko.provider.domain.dao.impl.UserActionDaoImpl;
-import com.danko.provider.domain.entity.TariffStatus;
-import com.danko.provider.domain.entity.UserAction;
+import com.danko.provider.domain.entity.*;
 import com.danko.provider.util.PasswordHasher;
+import org.apache.logging.log4j.util.Supplier;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Savepoint;
@@ -15,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
@@ -28,10 +33,41 @@ public class _Main {
 //        connectionThreadLocal.remove();
 
 
+//        TODO - конвертация объектов.
+        User user = User.builder().setRole(UserRole.USER)
+                .setName("asdasd")
+                .setFirstName("asdasdasd")
+                .setLastName("asdasdas")
+                .setEmail("asdasdads@gmail.com")
+                .setTariffId(1l)
+                .setBalance(new BigDecimal("10.0"))
+                .setUserId(1l)
+                .setTraffic(new BigDecimal("10240"))
+                .setContractDate(LocalDateTime.now())
+                .setContractNumber("1111")
+                .setPatronymic("sadasd")
+                .setStatus(UserStatus.WAIT_ACTIVATE).build();
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+        objectOutputStream.writeObject(user);
+        objectOutputStream.flush();
+        String result = new String(Base64.getEncoder().encode(byteArrayOutputStream.toByteArray()));
+
+        String base64String = result;
+        byte[] objToBytes = Base64.getDecoder().decode(base64String);
+        ByteArrayInputStream bais = new ByteArrayInputStream(objToBytes);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        User userReturn = (User) ois.readObject();
+
+        System.out.println(user.equals(userReturn));
+        System.out.println(user);
+        System.out.println(userReturn);
+
 //        TODO BigDecimal
 
-        BigDecimal bigDecimal = new BigDecimal("10.09");
-        System.out.println(bigDecimal);
+//        BigDecimal bigDecimal = new BigDecimal("10.09");
+//        System.out.println(bigDecimal);
 
 
 //        TODO ENUM
@@ -41,7 +77,6 @@ public class _Main {
 //
 //        List<TariffStatus> tariffStatuses = Arrays.asList(TariffStatus.values());
 //        tariffStatuses.forEach(status -> System.out.println(status.name()));
-
 
 
 //        TODO String format

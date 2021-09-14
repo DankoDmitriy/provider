@@ -8,6 +8,8 @@ import com.danko.provider.domain.service.ServiceProvider;
 import com.danko.provider.domain.service.TariffService;
 import com.danko.provider.exception.CommandException;
 import com.danko.provider.exception.ServiceException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -20,6 +22,7 @@ import static com.danko.provider.controller.command.RequestAttribute.ADMIN_TARIF
 import static com.danko.provider.controller.command.RequestAttribute.ADMIN_TARIFF_WRITE_OFF_LIST_FOR_NEW_TARIFF;
 
 public class AdminTariffAddCommand implements Command {
+    private static Logger logger = LogManager.getLogger();
     private static TariffService tariffService = ServiceProvider.getInstance().getTariffService();
 
     @Override
@@ -50,8 +53,6 @@ public class AdminTariffAddCommand implements Command {
                         tariffStatusStr,
                         tariffPeriodWriteOfStr);
                 if (result) {
-//                    FIXME - как от возврата  отбится....
-//                    router.setPageUrl(ADMIN_TARIFFS_LIST_PAGE_REDIRECT);
                     router.setRouteType(Router.RouteType.REDIRECT);
                     router.setPageUrl(request.getContextPath() + ADMIN_TARIFFS_LIST_PAGE_REDIRECT);
                 } else {

@@ -45,6 +45,7 @@ public class AdminUserAddCommand implements Command {
             try {
                 Optional<TransferObject> createdUserOptional = userService.addUser(firstName, lastName, patronymic, contractDate, tariffId, email);
                 TransferObject createdUserTr = createdUserOptional.get();
+                //                FIXME - положить объект в сессию и отправить польлзователя редиректом. ОТ F5
                 request.setAttribute(ADMIN_NEW_USER_CARD_TRANSFER_OBJECT, createdUserTr);
                 router.setPageUrl(ADMIN_USER_ADD_CARD);
             } catch (ServiceException e) {

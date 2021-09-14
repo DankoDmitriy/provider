@@ -42,6 +42,7 @@ public class AdminPaymentCardAddCommand implements Command {
             try {
                 Map<String, String> cardsMap = paymentCardService.addCards(series, amount, count, dateExpiredStr);
                 LocalDateTime cardExpiredDate = LocalDate.parse(dateExpiredStr, dateTimeFormatter).atStartOfDay();
+                //                FIXME - положить объект в сессию и отправить польлзователя редиректом. ОТ F5
                 request.setAttribute(ADMIN_NEW_PAYMENT_CARDS_LIST, cardsMap);
                 request.setAttribute(ADMIN_NEW_PAYMENT_CARDS_EXPIRED_DATE, cardExpiredDate);
                 router.setPageUrl(ADMIN_PAYMENTS_CARD_GENERATED_PAGE);
