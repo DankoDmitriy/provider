@@ -1,14 +1,10 @@
 package com.danko.provider.domain.dao.impl;
 
-import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.domain.dao.JdbcTemplate;
-import com.danko.provider.domain.dao.TransactionManager;
 import com.danko.provider.domain.dao.UserDao;
 import com.danko.provider.domain.entity.*;
 import com.danko.provider.domain.dao.mapper.impl.UserResultSetHandler;
 import com.danko.provider.exception.DaoException;
-import com.danko.provider.exception.DatabaseConnectionException;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -131,10 +127,11 @@ public class UserDaoImpl implements UserDao {
             user_id=?
             """;
 
-    private static final String SQL_UPDATE_TARIFF_AND_TRAFFIC = """
+    private static final String SQL_UPDATE_TARIFF_AND_TRAFFIC_AND_BALANCE = """
             UPDATE USERS SET
             tariffs_tariff_id=?,
-            traffic=?
+            traffic=?,
+            balance=?
             WHERE 
             user_id=?
             """;
@@ -149,6 +146,34 @@ public class UserDaoImpl implements UserDao {
     private static final String SQL_UPDATE_CONTRACT_NUMBER_AND_USER_NAME = """
             UPDATE USERS SET
             contract_number=?, name=?
+            WHERE 
+            user_id=?
+            """;
+
+    private static final String SQL_UPDATE_FIRST_NAME = """
+            UPDATE USERS SET
+            first_name=?
+            WHERE 
+            user_id=?
+            """;
+
+    private static final String SQL_UPDATE_LAST_NAME = """
+            UPDATE USERS SET
+            last_name=?
+            WHERE 
+            user_id=?
+            """;
+
+    private static final String SQL_UPDATE_PATRONYMIC = """
+            UPDATE USERS SET
+            patronymic=?
+            WHERE 
+            user_id=?
+            """;
+
+    private static final String SQL_UPDATE_EMAIL = """
+            UPDATE USERS SET
+            email=?
             WHERE 
             user_id=?
             """;
@@ -265,11 +290,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean updateTariffAndTrafficValue(long userId, long tariffId, BigDecimal traffic) throws DaoException {
+    public boolean updateTariffAndTrafficAndBalanceValue(long userId, long tariffId, BigDecimal traffic, BigDecimal balance) throws DaoException {
         boolean result;
-        result = jdbcTemplate.executeUpdateQuery(SQL_UPDATE_TARIFF_AND_TRAFFIC,
+        result = jdbcTemplate.executeUpdateQuery(SQL_UPDATE_TARIFF_AND_TRAFFIC_AND_BALANCE,
                 tariffId,
                 traffic,
+                balance,
                 userId);
         return result;
     }
@@ -286,6 +312,34 @@ public class UserDaoImpl implements UserDao {
         return jdbcTemplate.executeUpdateQuery(SQL_UPDATE_CONTRACT_NUMBER_AND_USER_NAME,
                 contractNumber,
                 userName,
+                userId);
+    }
+
+    @Override
+    public boolean updateFirstName(long userId, String firstName) throws DaoException {
+        return jdbcTemplate.executeUpdateQuery(SQL_UPDATE_FIRST_NAME,
+                firstName,
+                userId);
+    }
+
+    @Override
+    public boolean updateLastName(long userId, String lastName) throws DaoException {
+        return jdbcTemplate.executeUpdateQuery(SQL_UPDATE_LAST_NAME,
+                lastName,
+                userId);
+    }
+
+    @Override
+    public boolean updatePatronymic(long userId, String patronymic) throws DaoException {
+        return jdbcTemplate.executeUpdateQuery(SQL_UPDATE_PATRONYMIC,
+                patronymic,
+                userId);
+    }
+
+    @Override
+    public boolean updateEmail(long userId, String email) throws DaoException {
+        return jdbcTemplate.executeUpdateQuery(SQL_UPDATE_EMAIL,
+                email,
                 userId);
     }
 }

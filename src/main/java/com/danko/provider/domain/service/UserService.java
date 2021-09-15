@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.danko.provider.controller.command.ParamName.USER_EDIT_LAST_NAME;
+import static com.danko.provider.controller.command.ParamName.USER_EDIT_PATRONYMIC;
+
 public interface UserService {
 
     List<User> findAllUsers() throws ServiceException;
@@ -26,7 +29,7 @@ public interface UserService {
 
     boolean verificationOfActivationCode(String activateCode) throws ServiceException;
 
-    BigDecimal updateTariffPlan(long userId, long tariffId) throws ServiceException;
+    boolean updateTariffPlan(long userId, long tariffId) throws ServiceException;
 
     BigDecimal activatePaymentCard(String cardNumber,
                                    String cardPin,
@@ -40,4 +43,13 @@ public interface UserService {
                                      String contractDate,
                                      String tariffId,
                                      String email) throws ServiceException;
+
+    Optional<User> findById(long id) throws ServiceException;
+
+    boolean updateUserPersonalData(String firstName,
+                                   String lastName,
+                                   String patronymic,
+                                   String email,
+                                   String userIdStr,
+                                   User user) throws ServiceException;
 }

@@ -23,7 +23,7 @@ import static com.danko.provider.controller.command.RequestAttribute.ADMIN_TARIF
 
 public class AdminTariffAddCommand implements Command {
     private static Logger logger = LogManager.getLogger();
-    private static TariffService tariffService = ServiceProvider.getInstance().getTariffService();
+    private TariffService tariffService = ServiceProvider.getInstance().getTariffService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

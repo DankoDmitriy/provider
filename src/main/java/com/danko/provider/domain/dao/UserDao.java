@@ -18,12 +18,21 @@ public interface UserDao extends BaseDao<Long, User> {
 
     boolean verificationOfActivationCode(String activateCode) throws DaoException;
 
-    boolean updateTariffAndTrafficValue(long userId, long tariffId, BigDecimal traffic) throws DaoException;
+    boolean updateTariffAndTrafficAndBalanceValue(long userId, long tariffId, BigDecimal traffic, BigDecimal balance) throws DaoException;
 
     boolean balanceReplenishment(long userId, BigDecimal userBalance) throws DaoException;
 
     boolean updateContractNumberAndUserName(long userId, String contractNumber, String userName) throws DaoException;
 
     List<User> findAllByRole(UserRole role) throws DaoException;
+
+    boolean updateFirstName(long userId, String firstName) throws DaoException;
+
+    boolean updateLastName(long userId, String lastName) throws DaoException;
+
+    boolean updatePatronymic(long userId, String patronymic) throws DaoException;
+
+    boolean updateEmail(long userId, String email) throws DaoException;
+
 
 }

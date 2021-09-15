@@ -32,37 +32,39 @@ public class _Main {
 //        connectionThreadLocal.set(ConnectionPool.getInstance().getConnection());
 //        connectionThreadLocal.remove();
 
+//        System.out.println(Long.parseLong("asda"));
+
 
 //        TODO - конвертация объектов.
-        User user = User.builder().setRole(UserRole.USER)
-                .setName("asdasd")
-                .setFirstName("asdasdasd")
-                .setLastName("asdasdas")
-                .setEmail("asdasdads@gmail.com")
-                .setTariffId(1l)
-                .setBalance(new BigDecimal("10.0"))
-                .setUserId(1l)
-                .setTraffic(new BigDecimal("10240"))
-                .setContractDate(LocalDateTime.now())
-                .setContractNumber("1111")
-                .setPatronymic("sadasd")
-                .setStatus(UserStatus.WAIT_ACTIVATE).build();
-
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-        objectOutputStream.writeObject(user);
-        objectOutputStream.flush();
-        String result = new String(Base64.getEncoder().encode(byteArrayOutputStream.toByteArray()));
-
-        String base64String = result;
-        byte[] objToBytes = Base64.getDecoder().decode(base64String);
-        ByteArrayInputStream bais = new ByteArrayInputStream(objToBytes);
-        ObjectInputStream ois = new ObjectInputStream(bais);
-        User userReturn = (User) ois.readObject();
-
-        System.out.println(user.equals(userReturn));
-        System.out.println(user);
-        System.out.println(userReturn);
+//        User user = User.builder().setRole(UserRole.USER)
+//                .setName("asdasd")
+//                .setFirstName("asdasdasd")
+//                .setLastName("asdasdas")
+//                .setEmail("asdasdads@gmail.com")
+//                .setTariffId(1l)
+//                .setBalance(new BigDecimal("10.0"))
+//                .setUserId(1l)
+//                .setTraffic(new BigDecimal("10240"))
+//                .setContractDate(LocalDateTime.now())
+//                .setContractNumber("1111")
+//                .setPatronymic("sadasd")
+//                .setStatus(UserStatus.WAIT_ACTIVATE).build();
+//
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+//        objectOutputStream.writeObject(user);
+//        objectOutputStream.flush();
+//        String result = new String(Base64.getEncoder().encode(byteArrayOutputStream.toByteArray()));
+//
+//        String base64String = result;
+//        byte[] objToBytes = Base64.getDecoder().decode(base64String);
+//        ByteArrayInputStream bais = new ByteArrayInputStream(objToBytes);
+//        ObjectInputStream ois = new ObjectInputStream(bais);
+//        User userReturn = (User) ois.readObject();
+//
+//        System.out.println(user.equals(userReturn));
+//        System.out.println(user);
+//        System.out.println(userReturn);
 
 //        TODO BigDecimal
 

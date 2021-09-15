@@ -25,9 +25,9 @@ import static com.danko.provider.controller.command.RequestAttribute.*;
 
 public class HomeCommand implements Command {
     private static Logger logger = LogManager.getLogger();
-    private static UserService userService = ServiceProvider.getInstance().getUserService();
-    private static TariffService tariffService = ServiceProvider.getInstance().getTariffService();
-    private static AccountTransactionService accountTransactionService = ServiceProvider.getInstance().getAccountTransactionService();
+    private UserService userService = ServiceProvider.getInstance().getUserService();
+    private TariffService tariffService = ServiceProvider.getInstance().getTariffService();
+    private AccountTransactionService accountTransactionService = ServiceProvider.getInstance().getAccountTransactionService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

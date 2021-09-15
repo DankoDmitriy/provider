@@ -32,7 +32,7 @@
                         </div>
                         <div class="col-sm-9 text-secondary">
                                 ${transaction.type}:
-                            <b>${transaction.sum}$</b>
+                            <b>${transaction.sum}$</b><br>
                             <fmt:parseDate value="${transaction.date}" pattern="yyyy-MM-dd'T'HH:mm"
                                            var="parsedDateTime" type="both"/>
                             <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedDateTime}"/>

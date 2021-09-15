@@ -143,6 +143,7 @@ public class TariffServiceImpl implements TariffService {
                           Tariff tariffOrigin) throws ServiceException {
         boolean result = false;
         InputDataValidator validator = InputDataValidator.getInstance();
+
         if (validator.isTariffDescriptionValid(tariffName) &&
                 validator.isTariffSpeedValid(maxSpeed) &&
                 validator.isTariffSpeedValid(minSpeed) &&
@@ -169,12 +170,12 @@ public class TariffServiceImpl implements TariffService {
                     } catch (DaoException e) {
                         transactionManager.rollback();
                     } finally {
-                        result = true;
                         transactionManager.endTransaction();
                     }
                 } catch (DaoException e) {
                     throw new ServiceException(e);
                 }
+                result = true;
             }
         }
         return result;

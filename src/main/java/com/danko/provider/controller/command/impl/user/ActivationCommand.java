@@ -17,7 +17,7 @@ import static com.danko.provider.controller.command.RequestAttribute.ACTIVATION_
 
 public class ActivationCommand implements Command {
     private static Logger logger = LogManager.getLogger();
-    private static UserService userService = ServiceProvider.getInstance().getUserService();
+    private UserService userService = ServiceProvider.getInstance().getUserService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -29,6 +29,7 @@ public class ActivationCommand implements Command {
             userService.updateActivationCodeStatus(activationCode, UserStatus.ACTIVE);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Error with activation code or it status update: {}", e);
+            throw new CommandException(e);
         }
         return router;
     }

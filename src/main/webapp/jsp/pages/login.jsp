@@ -6,6 +6,15 @@
 
 <%@include file="../../WEB-INF/parts/admin/header.jsp"%>
 <div class="container mt-5">
+    <c:set var="rus" value="ru_RU" scope="page"/>
+    <c:set var="eng" value="en_EN" scope="page"/>
+
+    <c:if test="${sessionScope.local eq rus}">
+        <a href="${pageContext.request.contextPath}/controller?command=LOCAL&newLocal=en_EN">English version</a>
+    </c:if>
+    <c:if test="${sessionScope.local eq eng}">
+        <a href="${pageContext.request.contextPath}/controller?command=LOCAL&newLocal=ru_RU">Russian version</a>
+    </c:if>
     <%@include file="../../WEB-INF/parts/common/login_form.jsp"%>
 </div>
 <%@include file="../../WEB-INF/parts/admin/footer.jsp"%>

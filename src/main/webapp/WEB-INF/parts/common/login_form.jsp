@@ -1,11 +1,7 @@
-<%--<%@ page contentType="text/html;charset=UTF-8" language="java" %>--%>
-<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
-<%--<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
-<%--<fmt:setLocale value="${sessionScope.local}" scope="session"/>--%>
-<%--<fmt:setBundle basename="local.pagecontent"/>--%>
-<%--<fmt:message key="label.hello"/>--%>
-
-<H1><fmt:message key="label.login.hello"/> ${sessionScope.user.role}</H1>
+<H1><fmt:message key="label.login.hello"/> ${sessionScope.user.role}</H1><br>
+<c:if test="${sessionScope.isLoginError == true}">
+    <div class="col-sm-4">Your login or password is not correct. Try again.</div>
+</c:if>
 <form action="${pageContext.request.contextPath}/controller" method="post">
     <input type="hidden" name="command" value="login">
     <div class="form-group row">
@@ -21,11 +17,5 @@
                    placeholder="<fmt:message key="label.login.password"/>"/>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary"/>
-    <fmt:message key="label.login.signin"/></button>
-
-    <c:if test="${sessionScope.isLoginError == true}">
-        <div class="col-sm-4">Your login or password is not correct. Try again.</div>
-    </c:if>
-
+    <button type="submit" class="btn btn-primary"><fmt:message key="label.login.signin"/></button>
 </form>

@@ -9,16 +9,23 @@
 
 <jsp:useBean id="users" scope="request" type="java.util.List"/>
 <div class="container mt-5">
+    <c:if test="${resultWork == true}">
+        <p><fmt:message key="label.admin.usersList.message.changeUserDataTrue"/></p>
+    </c:if>
+    <c:if test="${resultWork == false}">
+        <p><fmt:message key="label.admin.usersList.message.changeUserDataFalse"/></p>
+    </c:if>
+
     <table class="table">
         <thead>
         <tr>
             <th scope="col">-</th>
-            <th scope="col">Ф.И.О</th>
-            <th scope="col">Контракт</th>
-            <th scope="col">Баланс</th>
-            <th scope="col">E-mail</th>
-            <th scope="col">Status</th>
-            <th scope="col">Редактировать</th>
+            <th scope="col"><fmt:message key="label.admin.usersList.firstAndLastName"/></th>
+            <th scope="col"><fmt:message key="label.admin.usersList.contract"/></th>
+            <th scope="col"><fmt:message key="label.admin.usersList.balance"/></th></th>
+            <th scope="col"><fmt:message key="label.admin.usersList.email"/></th></th>
+            <th scope="col"><fmt:message key="label.admin.usersList.status"/></th></th>
+            <th scope="col"><fmt:message key="label.admin.usersList.edit"/></th></th>
         </tr>
         </thead>
         <tbody>
@@ -43,7 +50,7 @@
                 <td>${user.status}</td>
                 <td>
                     <a href="${pageContext.request.contextPath}/controller?command=USER_EDIT&user_id=${user.userId}">
-                        Редактировать
+                        <fmt:message key="label.admin.usersList.edit"/>
                     </a>
                 </td>
             </tr>

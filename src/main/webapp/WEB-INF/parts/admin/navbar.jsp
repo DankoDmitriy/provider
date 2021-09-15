@@ -18,16 +18,20 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Клиенты
+                    <fmt:message key="label.admin.navBar.users"/>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item"
-                       href="${pageContext.request.contextPath}/controller?command=USERS_LIST">Все клиенты</a>
+                       href="${pageContext.request.contextPath}/controller?command=USERS_LIST">
+                        <fmt:message key="label.admin.navBar.user.all"/></a>
                     <a class="dropdown-item"
-                       href="${pageContext.request.contextPath}/controller?command=USER_ADD">Добавить
-                        клиента</a>
+                       href="${pageContext.request.contextPath}/controller?command=USER_ADD">
+                        <fmt:message key="label.admin.navBar.user.add"/>
+                    </a>
                     <a class="dropdown-item"
-                       href="${pageContext.request.contextPath}/controller?command=USER_SEARCH">Поиск пользователя</a>
+                       href="${pageContext.request.contextPath}/controller?command=USER_SEARCH">
+                        <fmt:message key="label.admin.navBar.user.search"/>
+                    </a>
                 </div>
             </li>
 
@@ -35,28 +39,28 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Тарифы
+                    <fmt:message key="label.admin.navBar.tariffs"/>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?command=TARIFF_LIST">
-                        Все тарифы</a>
+                        <fmt:message key="label.admin.navBar.tariff.all"/></a>
 
                     <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?command=TARIFF_ADD">
-                        Добавить тариф</a>
+                        <fmt:message key="label.admin.navBar.tariff.add"/></a>
                 </div>
             </li>
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Карты экспрес оплаты.
+                    <fmt:message key="label.admin.navBar.paymentCards"/>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?command=CARD_SEARCH">
-                        Поиск карты</a>
+                        <fmt:message key="label.admin.navBar.paymentCard.search"/></a>
 
                     <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?command=CARD_ADD">
-                        Добавить серию карт</a>
+                        <fmt:message key="label.admin.navBar.paymentCard.add"/></a>
 
                 </div>
             </li>
@@ -65,18 +69,20 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Сотрудники
+                    <fmt:message key="label.admin.navBar.employees"/>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?command=EMPLOYEE_LIST">
-                        Все струдники</a>
+                        <fmt:message key="label.admin.navBar.employee.all"/></a>
                 </div>
             </li>
 
 
             <li class="nav-item">
                 <a class="nav-link"
-                   href="${pageContext.request.contextPath}/controller?command=STATISTICS">Статистика</a>
+                   href="${pageContext.request.contextPath}/controller?command=STATISTICS">
+                    <fmt:message key="label.admin.navBar.statistics"/>
+                </a>
             </li>
         </ul>
 

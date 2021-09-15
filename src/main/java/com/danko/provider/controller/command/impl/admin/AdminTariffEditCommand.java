@@ -20,16 +20,16 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
-import static com.danko.provider.controller.command.PageUrl.ADMIN_TARIFFS_LIST_PAGE_REDIRECT;
-import static com.danko.provider.controller.command.PageUrl.ADMIN_TARIFF_EDIT_PAGE;
+import static com.danko.provider.controller.command.PageUrl.*;
 import static com.danko.provider.controller.command.ParamName.*;
 import static com.danko.provider.controller.command.RequestAttribute.*;
 
 public class AdminTariffEditCommand implements Command {
     private static Logger logger = LogManager.getLogger();
-    private static TariffService tariffService = ServiceProvider.getInstance().getTariffService();
-    private static List<TariffStatus> tariffStatuses = Arrays.asList(TariffStatus.values());
-    private static List<PeriodicityWriteOff> periodicityWriteOffs = Arrays.asList(PeriodicityWriteOff.values());
+    private static final List<TariffStatus> TARIFF_STATUSES = Arrays.asList(TariffStatus.values());
+    private static final List<PeriodicityWriteOff> PERIODICITY_WRITE_OFFS = Arrays.asList(PeriodicityWriteOff.values());
+    private static final String ID_CHECK_REGEX = "^[1-9]{1}[0-9]*$";
+    private TariffService tariffService = ServiceProvider.getInstance().getTariffService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -44,41 +44,41 @@ public class AdminTariffEditCommand implements Command {
         String tariffStatusStr = request.getParameter(TARIFF_EDIT_STATUS);
         String tariffPeriodWriteOfStr = request.getParameter(TARIFF_EDIT_PERIOD);
         try {
-            if (tariffEditIdStr != null && !tariffEditIdStr.isEmpty()) {
-                if (tariffName != null
-                        && maxSpeed != null
-                        && minSpeed != null
-                        && traffic != null
-                        && price != null
-                        && tariffStatusStr != null
-                        && tariffPeriodWriteOfStr != null) {
-                    Tariff tariffOrigin = stringToObjectTariff(request.getParameter(TARIFF_EDIT_ORIGIN));
-                    if (tariffService.update(tariffId, tariffName, maxSpeed, minSpeed, traffic, price, tariffStatusStr, tariffPeriodWriteOfStr, tariffOrigin)) {
-                        router.setRouteType(Router.RouteType.REDIRECT);
-                        router.setPageUrl(request.getContextPath() + ADMIN_TARIFFS_LIST_PAGE_REDIRECT);
-                    } else {
-                        request.setAttribute(ADMIN_TARIFF_STATUS_LIST_FOR_EDIT_TARIFF, tariffStatuses);
-                        request.setAttribute(ADMIN_TARIFF_WRITE_OFF_LIST_EDIT_NEW_TARIFF, periodicityWriteOffs);
-                        request.setAttribute(ADMIN_TARIFF_EDIT, tariffOrigin);
-                        request.setAttribute(ADMIN_TARIFF_EDIT_ORIGINAL, objectTariffToString(tariffOrigin));
-                        router.setPageUrl(ADMIN_TARIFF_EDIT_PAGE);
-                    }
-                } else {
+            if (tariffEditIdStr.matches(ID_CHECK_REGEX) &&
+                    tariffName != null &&
+                    maxSpeed != null &&
+                    minSpeed != null &&
+                    traffic != null &&
+                    price != null &&
+                    tariffStatusStr != null &&
+                    tariffPeriodWriteOfStr != null) {
+                Tariff tariffOrigin = stringToObjectTariff(request.getParameter(TARIFF_EDIT_ORIGIN));
+                boolean result = tariffService.update(tariffId, tariffName, maxSpeed, minSpeed, traffic, price, tariffStatusStr, tariffPeriodWriteOfStr, tariffOrigin);
+//                FIXME - сделать пользовательскую страницу для админа. и туда уже отправлять.
+                List<Tariff> tariffs = Arrays.asList(tariffService.findById(Long.parseLong(tariffId)).get());
+                request.setAttribute(ADMIN_TARIFFS_LIST, tariffs);
+                request.setAttribute(ADMIN_TARIFFS_LIST_RESULT_WORK_FOR_MESSAGE, result);
+                router.setPageUrl(ADMIN_TARIFFS_LIST_PAGE);
+            } else {
+                if (tariffEditIdStr.matches(ID_CHECK_REGEX)) {
                     Optional<Tariff> optionalTariff = tariffService.findById(Long.parseLong(tariffEditIdStr));
                     if (!optionalTariff.isEmpty()) {
-                        request.setAttribute(ADMIN_TARIFF_STATUS_LIST_FOR_EDIT_TARIFF, tariffStatuses);
-                        request.setAttribute(ADMIN_TARIFF_WRITE_OFF_LIST_EDIT_NEW_TARIFF, periodicityWriteOffs);
+                        request.setAttribute(ADMIN_TARIFF_STATUS_LIST, TARIFF_STATUSES);
+                        request.setAttribute(ADMIN_TARIFF_WRITE_OFF_LIST, PERIODICITY_WRITE_OFFS);
                         request.setAttribute(ADMIN_TARIFF_EDIT, optionalTariff.get());
                         request.setAttribute(ADMIN_TARIFF_EDIT_ORIGINAL, objectTariffToString(optionalTariff.get()));
                         router.setPageUrl(ADMIN_TARIFF_EDIT_PAGE);
                     } else {
-                        router.setPageUrl(ADMIN_TARIFFS_LIST_PAGE_REDIRECT);
+                        router.setRouteType(Router.RouteType.REDIRECT);
+                        router.setPageUrl(request.getContextPath() + ADMIN_TARIFFS_LIST_PAGE_REDIRECT);
                     }
+                } else {
+                    router.setRouteType(Router.RouteType.REDIRECT);
+                    router.setPageUrl(request.getContextPath() + ADMIN_TARIFFS_LIST_PAGE_REDIRECT);
                 }
-            } else {
-                router.setPageUrl(ADMIN_TARIFFS_LIST_PAGE_REDIRECT);
             }
-        } catch (ServiceException e) {
+        } catch (
+                ServiceException e) {
             logger.log(Level.ERROR, e);
             throw new CommandException(e);
         }

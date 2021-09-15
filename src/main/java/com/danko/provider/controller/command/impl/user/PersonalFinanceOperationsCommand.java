@@ -23,7 +23,7 @@ import static com.danko.provider.controller.command.RequestAttribute.*;
 
 public class PersonalFinanceOperationsCommand implements Command {
     private static Logger logger = LogManager.getLogger();
-    private static AccountTransactionService accountTransactionService = ServiceProvider.getInstance().getAccountTransactionService();
+    private AccountTransactionService accountTransactionService = ServiceProvider.getInstance().getAccountTransactionService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

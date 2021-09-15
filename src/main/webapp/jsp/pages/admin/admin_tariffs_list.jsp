@@ -8,20 +8,25 @@
 <%@include file="../../../WEB-INF/parts/admin/navbar.jsp" %>
 
 <div class="container mt-5">
+    <c:if test="${resultWork == true}">
+        <p><fmt:message key="label.admin.tariffsList.message.changeTariffDataTrue"/></p>
+    </c:if>
+    <c:if test="${resultWork == false}">
+        <p><fmt:message key="label.admin.tariffsList.message.changeTariffDataFalse"/></p>
+    </c:if>
     <table class="table">
         <thead>
         <tr>
-
             <th scope="col">-</th>
-            <th scope="col">Название</th>
-            <th scope="col">Скорость</th>
-            <th scope="col">Трафик</th>
-            <th scope="col">Стоимость</th>
-            <th scope="col">Статус</th>
+            <th scope="col"><fmt:message key="label.admin.tariffsList.title"/></th>
+            <th scope="col"><fmt:message key="label.admin.tariffsList.speed"/></th>
+            <th scope="col"><fmt:message key="label.admin.tariffsList.traffic"/></th>
+            <th scope="col"><fmt:message key="label.admin.tariffsList.price"/></th>
+            <th scope="col"><fmt:message key="label.admin.tariffsList.status"/></th>
             <th scope="col">
-                Периодичность</br>списания
+                <fmt:message key="label.admin.tariffsList.writeOfPeriod"/>
             </th>
-            <th scope="col">Редактировать</th>
+            <th scope="col"><fmt:message key="label.admin.tariffsList.edit"/></th>
         </tr>
         </thead>
         <tbody>
@@ -32,20 +37,22 @@
                         ${tariff.description}
                 </td>
                 <td>
-                    Мах скорость: ${tariff.maxSpeed} Mbit\s
+                    Мах <fmt:message key="label.admin.tariffsList.speed"/>: ${tariff.maxSpeed}
+                    <fmt:message key="label.admin.tariffsList.mBitS"/>
                     </br>
-                    Мin скорость: ${tariff.minSpeed} Mbit\s
+                    Мin <fmt:message key="label.admin.tariffsList.speed"/>: ${tariff.minSpeed}
+                    <fmt:message key="label.admin.tariffsList.mBitS"/>
 
                 </td>
                 <td>
-                    <c:out value="${tariff.traffic/1024}"/> Gb
+                    <c:out value="${tariff.traffic/1024}"/> <fmt:message key="label.admin.tariffsList.gb"/>
                 </td>
                 <td>${tariff.price}</td>
                 <td>${tariff.status}</td>
                 <td>${tariff.period}</td>
                 <td>
                     <a href="${pageContext.request.contextPath}/controller?command=TARIFF_EDIT&tariff_id=${tariff.tariffId}">
-                        Редактировать
+                        <fmt:message key="label.admin.tariffsList.edit"/>
                     </a>
                 </td>
             </tr>

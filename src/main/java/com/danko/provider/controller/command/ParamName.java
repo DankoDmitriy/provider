@@ -64,6 +64,13 @@ public final class ParamName {
     public static final String TARIFF_EDIT_STATUS = "status";
     public static final String TARIFF_EDIT_PERIOD = "period";
 
+    //   Admin Edit edit page.
+    public static final String USER_EDIT_ORIGIN = "userOrigin";
+    public static final String USER_EDIT_ID = "user_id";
+    public static final String USER_EDIT_FIRST_NAME = "first_name";
+    public static final String USER_EDIT_LAST_NAME = "last_name";
+    public static final String USER_EDIT_PATRONYMIC = "patronymic";
+    public static final String USER_EDIT_E_MAIL = "e_mail";
 
     private ParamName() {
     }

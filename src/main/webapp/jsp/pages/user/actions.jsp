@@ -31,11 +31,11 @@
                             </h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <b>${action.actionType}:</b>
+                            <b>${action.actionType}:</b><br>
                             <fmt:parseDate value="${action.dateTime}" pattern="yyyy-MM-dd'T'HH:mm"
                                            var="parsedDateTime" type="both"/>
-                            <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedDateTime}"/>
-                            <fmt:message key="label.user.action.tariffName"/>
+                            <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedDateTime}"/><br>
+                            <fmt:message key="label.user.action.tariffName"/><br>
                             <b>${action.tariffName}:</b>
                         </div>
                     </div>

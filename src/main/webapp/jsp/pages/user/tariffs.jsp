@@ -23,7 +23,12 @@
     <div class="col-md-8">
         <div class="card mb-3">
             <div class="card-body">
-
+                <c:if test="${resultWork == true}">
+                    <p><fmt:message key="label.user.tariffs.information.message.changeTariffDataTrue"/></p>
+                </c:if>
+                <c:if test="${resultWork == false}">
+                    <p><fmt:message key="label.user.tariffs.information.message.changeTariffDataFalse"/></p>
+                </c:if>
                 <div class="row">
                     <div class="col-sm-3">
                         <h6 class="mb-0">${user.tariff.description}:</h6>

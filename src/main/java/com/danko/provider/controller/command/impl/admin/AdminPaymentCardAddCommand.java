@@ -27,7 +27,7 @@ public class AdminPaymentCardAddCommand implements Command {
     private static Logger logger = LogManager.getLogger();
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
-    private static PaymentCardService paymentCardService = ServiceProvider.getInstance().getPaymentCardService();
+    private PaymentCardService paymentCardService = ServiceProvider.getInstance().getPaymentCardService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

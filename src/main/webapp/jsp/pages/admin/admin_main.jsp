@@ -8,7 +8,7 @@
 <%@include file="../../../WEB-INF/parts/admin/navbar.jsp" %>
 
 <div class="container mt-5">
-    Административная часть биллинговой системы.
+    <fmt:message key="label.admin.main.information"/>
 </div>
 <%@include file="../../../WEB-INF/parts/admin/footer.jsp" %>
 

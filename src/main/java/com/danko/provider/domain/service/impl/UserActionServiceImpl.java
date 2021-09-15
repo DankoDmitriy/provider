@@ -16,7 +16,6 @@ import java.util.Optional;
 
 public class UserActionServiceImpl implements UserActionService {
     private static Logger logger = LogManager.getLogger();
-    //    private UserActionDao userActionDao = new UserActionDaoImpl();
     private UserActionDao userActionDao;
     private TransactionManager transactionManager;
 
@@ -27,84 +26,75 @@ public class UserActionServiceImpl implements UserActionService {
 
     @Override
     public List<UserAction> findAll() throws ServiceException {
+        List<UserAction> list = null;
         try {
-            transactionManager.startTransaction();
-            List<UserAction> list = userActionDao.findAll();
-            return list;
-        } catch (DaoException e) {
-            logger.log(Level.ERROR, "Could not find users actions in database: {}", e);
-            throw new ServiceException("Could not find users actions in database.", e);
-        } finally {
             try {
-                transactionManager.endTransaction();
+                transactionManager.startTransaction();
+                list = userActionDao.findAll();
             } catch (DaoException e) {
-                logger.log(Level.ERROR, "End transaction error: {}", e);
-                throw new ServiceException("End transaction error", e);
+                transactionManager.rollback();
+            } finally {
+                transactionManager.endTransaction();
             }
+        } catch (DaoException e1) {
+            throw new ServiceException(e1);
         }
+        return list;
     }
 
     @Override
     public Optional<UserAction> findById(Long id) throws ServiceException {
+        Optional<UserAction> userActionOptional = Optional.empty();
         try {
-            transactionManager.startTransaction();
-            Optional<UserAction> userActionOptional = userActionDao.findById(id);
-            return userActionOptional;
-        } catch (DaoException e) {
-            logger.log(Level.ERROR, "Could not find users action in database: {}", e);
-            throw new ServiceException("Could not find users action in database.", e);
-        } finally {
             try {
-                transactionManager.endTransaction();
+                transactionManager.startTransaction();
+                userActionOptional = userActionDao.findById(id);
+                transactionManager.commit();
             } catch (DaoException e) {
-                logger.log(Level.ERROR, "End transaction error: {}", e);
-                throw new ServiceException("End transaction error", e);
+                transactionManager.rollback();
+            } finally {
+                transactionManager.endTransaction();
             }
+        } catch (DaoException e1) {
+            throw new ServiceException(e1);
         }
+        return userActionOptional;
     }
 
     @Override
     public List<UserAction> findAllByUserId(long userId) throws ServiceException {
+        List<UserAction> list = null;
         try {
-            transactionManager.startTransaction();
-            List<UserAction> list = userActionDao.findAllByUserId(userId);
-            return list;
-        } catch (DaoException e) {
-            logger.log(Level.ERROR, "Could not find user actions in database: {}", e);
-            throw new ServiceException("Could not find user actions in database.", e);
-        } finally {
             try {
-                transactionManager.endTransaction();
+                transactionManager.startTransaction();
+                list = userActionDao.findAllByUserId(userId);
             } catch (DaoException e) {
-                logger.log(Level.ERROR, "End transaction error: {}", e);
-                throw new ServiceException("End transaction error", e);
+                transactionManager.rollback();
+            } finally {
+                transactionManager.endTransaction();
             }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
         }
+        return list;
     }
 
     @Override
     public long add(UserAction userAction, long userId, long tariffId) throws ServiceException {
+        long generatedId = 0l;
         try {
-            transactionManager.startTransaction();
-            long generatedId = userActionDao.add(userAction, userId, tariffId);
-            transactionManager.commit();
-            return generatedId;
-        } catch (DaoException e) {
-            logger.log(Level.ERROR, "Could not add user action in database: {}", e);
             try {
-                transactionManager.rollback();
-            } catch (DaoException e1) {
-                logger.log(Level.ERROR, "Rollback error: {}", e1);
-                throw new ServiceException("Rollback error.", e);
-            }
-            throw new ServiceException("Could not add user action in database.", e);
-        } finally {
-            try {
-                transactionManager.endTransaction();
+                transactionManager.startTransaction();
+                generatedId = userActionDao.add(userAction, userId, tariffId);
+                transactionManager.commit();
             } catch (DaoException e) {
-                logger.log(Level.ERROR, "End transaction error: {}", e);
-                throw new ServiceException("End transaction error", e);
+                transactionManager.rollback();
+            } finally {
+                transactionManager.endTransaction();
             }
+        } catch (DaoException e1) {
+            throw new ServiceException(e1);
         }
+        return generatedId;
     }
 }

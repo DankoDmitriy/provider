@@ -23,7 +23,7 @@ public final class PageUrl {
 
     public static final String ADMIN_PAYMENTS_CARD_ADD_PAGE = "/jsp/pages/admin/admin_express_payment_card_add.jsp";
     public static final String ADMIN_PAYMENTS_CARD_ADD_PAGE_REDIRECT = "/controller?command=CARD_ADD";
-    public static final String ADMIN_PAYMENTS_CARD_GENERATED_PAGE ="/jsp/pages/admin/admin_express_payment_cards_generated_list.jsp";
+    public static final String ADMIN_PAYMENTS_CARD_GENERATED_PAGE = "/jsp/pages/admin/admin_express_payment_cards_generated_list.jsp";
 
     public static final String ADMIN_MAIN_PAGE = "/jsp/pages/admin/admin_main.jsp";
 
@@ -38,6 +38,7 @@ public final class PageUrl {
     public static final String USER_ALL_FINANCE_OPERATIONS_PAGE = "/jsp/pages/user/all_finance_operations.jsp";
     public static final String USER_CHANGE_PASSWORD_PAGE = "/jsp/pages/user/change_password.jsp";
     public static final String USER_TARIFFS_LIST = "/jsp/pages/user/tariffs.jsp";
+    public static final String USER_TARIFFS_LIST_REDIRECT = "/controller?command=USER_TARIFF_LIST";
     public static final String USER_ACTIONS_PAGE = "/jsp/pages/user/actions.jsp";
     public static final String USER_ACTIVATE_PAYMENT_CARD = "/jsp/pages/user/payment_card.jsp";
 

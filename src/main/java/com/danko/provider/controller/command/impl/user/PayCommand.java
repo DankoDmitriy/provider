@@ -23,7 +23,7 @@ import static com.danko.provider.controller.command.SessionAttribute.SESSION_USE
 
 public class PayCommand implements Command {
     private static Logger logger = LogManager.getLogger();
-    UserService userService = ServiceProvider.getInstance().getUserService();
+    private UserService userService = ServiceProvider.getInstance().getUserService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

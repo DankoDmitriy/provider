@@ -30,6 +30,9 @@ public class InputDataValidator {
     private static final String PAYMENTS_CARD_SERIES_REGEX = "^[A-Z]{3,5}$";
     private static final String PAYMENTS_CARD_AMOUNT_REGEX = "^[1-9]{1}[0-9]{0,4}$";
     private static final String PAYMENTS_CARD_COUNT_REGEX = "^[1-9]{1}[0-9]{0,4}$";
+
+    private static final String ID_CHECK_REGEX = "^[1-9]{1}[0-9]*$";
+
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
     private static final long DAYS_CARD_ACTIVE = 364;
@@ -127,5 +130,11 @@ public class InputDataValidator {
         LocalDateTime expiredDate = LocalDateTime.now().plusDays(DAYS_CARD_ACTIVE);
         return localDateTimeCardExpired.isAfter(expiredDate);
     }
+
+    public boolean isIdValid(String idStr) {
+        return idStr != null && idStr.matches(ID_CHECK_REGEX);
+    }
+
+
 }
 

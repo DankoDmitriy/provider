@@ -21,7 +21,7 @@ import static com.danko.provider.controller.command.RequestAttribute.ADMIN_USERS
 
 public class AdminUsersListCommand implements Command {
     private static Logger logger = LogManager.getLogger();
-    private static UserService userService = ServiceProvider.getInstance().getUserService();
+    private UserService userService = ServiceProvider.getInstance().getUserService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

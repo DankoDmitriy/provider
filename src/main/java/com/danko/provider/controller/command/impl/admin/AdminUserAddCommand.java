@@ -28,8 +28,8 @@ import static com.danko.provider.controller.command.RequestAttribute.ADMIN_TARIF
 
 public class AdminUserAddCommand implements Command {
     private static Logger logger = LogManager.getLogger();
-    private static TariffService tariffService = ServiceProvider.getInstance().getTariffService();
-    private static UserService userService = ServiceProvider.getInstance().getUserService();
+    private TariffService tariffService = ServiceProvider.getInstance().getTariffService();
+    private UserService userService = ServiceProvider.getInstance().getUserService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

@@ -22,7 +22,7 @@ import static com.danko.provider.controller.command.SessionAttribute.SESSION_USE
 
 public class ChangePasswordCommand implements Command {
     private static Logger logger = LogManager.getLogger();
-    private static UserService userService = ServiceProvider.getInstance().getUserService();
+    private UserService userService = ServiceProvider.getInstance().getUserService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -32,22 +32,24 @@ public class ChangePasswordCommand implements Command {
         String newPassword = request.getParameter(USER_CHANGE_PASSWORD_NEW_PASSWORD);
         String contextPath = request.getContextPath();
         String requestUrl = request.getRequestURL().toString();
-        boolean updateResult = false;
 
         if (newPassword != null) {
             try {
-                updateResult = userService.updatePassword(user.getUserId(), newPassword, user.getEmail(), contextPath, requestUrl, user.getTariffId());
+                boolean updateResult = userService.updatePassword(user.getUserId(),
+                        newPassword,
+                        user.getEmail(),
+                        contextPath,
+                        requestUrl,
+                        user.getTariffId());
+                if (updateResult) {
+                    router.setPageUrl(request.getContextPath() + LOGOUT_PAGE);
+                    router.setRouteType(Router.RouteType.REDIRECT);
+                } else {
+                    router.setPageUrl(USER_CHANGE_PASSWORD_PAGE);
+                    request.setAttribute(USER_PERSONAL_MESSAGE_ERROR, "Input password is not correct.");
+                }
             } catch (ServiceException e) {
-                logger.log(Level.WARN, "Password has not been updated: {}", e);
-//                FIXME - НЕ тут. если результат говно...
-                router.setPageUrl(USER_CHANGE_PASSWORD_PAGE);
-                request.setAttribute(USER_PERSONAL_MESSAGE_ERROR, e.getMessage());
-            }
-            if (updateResult) {
-//                FIXME - del this comment
-//              END SESSION. ANd RETURN TO LOGIN PAGE.
-                router.setPageUrl(request.getContextPath() + LOGOUT_PAGE);
-                router.setRouteType(Router.RouteType.REDIRECT);
+                throw new CommandException(e);
             }
         } else {
             router.setPageUrl(USER_CHANGE_PASSWORD_PAGE);

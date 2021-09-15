@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.net.ConnectException;
 import java.util.List;
 
 import static com.danko.provider.controller.command.PageUrl.*;
@@ -23,7 +24,7 @@ import static com.danko.provider.controller.command.SessionAttribute.SESSION_USE
 
 public class ActionCommand implements Command {
     private static Logger logger = LogManager.getLogger();
-    private static UserActionService userActionService = ServiceProvider.getInstance().getUserActionService();
+    private UserActionService userActionService = ServiceProvider.getInstance().getUserActionService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -36,8 +37,7 @@ public class ActionCommand implements Command {
                 request.setAttribute(USER_ACTION_LIST, actions);
                 router.setPageUrl(USER_ACTIONS_PAGE);
             } catch (ServiceException e) {
-                logger.log(Level.ERROR, "Could not find actions in database: {}", e);
-                router.setPageUrl(HOME_PAGE);
+                throw new CommandException(e);
             }
         } else {
             router.setPageUrl(LOGIN_PAGE);

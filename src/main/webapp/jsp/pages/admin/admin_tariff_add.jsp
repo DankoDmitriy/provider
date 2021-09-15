@@ -13,17 +13,17 @@
         <%--Tariff data--%>
         <div class="form-row">
             <div class="col-md-4 mb-3">
-                <label for="validationServer01">Название тарифа</label>
+                <label for="validationServer01"> <fmt:message key="label.admin.tariffAdd.title"/></label>
                 <input type="text" class="form-control is-valid" id="validationServer01" placeholder=""
                        name="tariff_name" pattern="[0-9a-zA-ZА-Яа-я -]{2,100}" required>
             </div>
             <div class="col-md-4 mb-3">
-                <label for="validationServer02">Максимальная скорость</label>
+                <label for="validationServer02"><fmt:message key="label.admin.tariffAdd.maxSpeed"/></label>
                 <input type="text" class="form-control is-valid" id="validationServer02" placeholder=""
                        name="max_speed" pattern="^[1-9]{1}[0-9]{0,4}$" required>
             </div>
             <div class="col-md-4 mb-3">
-                <label for="validationServer03">Минимальная скорость</label>
+                <label for="validationServer03"><fmt:message key="label.admin.tariffAdd.minSpeed"/></label>
                 <input type="text" class="form-control is-valid" id="validationServer03" placeholder=""
                        name="min_speed" pattern="^[1-9]{1}[0-9]{0,4}$" required>
             </div>
@@ -33,35 +33,32 @@
         <div class="form-row">
 
             <div class="col-md-4 mb-3">
-                <label for="validationServer04">Трафик мегабайт</label>
+                <label for="validationServer04"><fmt:message key="label.admin.tariffAdd.traffic"/></label>
                 <input type="text" class="form-control is-valid" id="validationServer04" placeholder=""
                        name="traffic" pattern="^[1-9]{1}[0-9]{0,7}$" required>
             </div>
             <div class="col-md-4 mb-3">
-                <label for="validationServer05">Стоимость</label>
+                <label for="validationServer05"><fmt:message key="label.admin.tariffAdd.price"/></label>
                 <input type="text" class="form-control is-valid" id="validationServer05" placeholder=""
                        name="price" pattern="^[0-9]+[.][0-9]{1}[1-9]{1}$" required>
             </div>
         </div>
         <%-- END Tariff traffic and price--%>
-
         <%-- Tariff status and period--%>
         <div class="form-row">
-
             <div class="col-md-4 mb-3">
-                <label for="inlineFormCustomSelectPref1">Статус</label>
+                <label for="inlineFormCustomSelectPref1"><fmt:message key="label.admin.tariffAdd.status"/></label>
                 <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref1" name="status">
-                    <option selected>Choose...</option>
+                    <option selected><fmt:message key="label.admin.tariffAdd.choose"/></option>
                     <c:forEach var="tariffStatus" items="${tariffStatuses}">
                         <option value="${tariffStatus}">${tariffStatus}</option>
                     </c:forEach>
                 </select>
             </div>
-
             <div class="col-md-4 mb-3">
-                <label for="inlineFormCustomSelectPref2">Период</label>
+                <label for="inlineFormCustomSelectPref2"><fmt:message key="label.admin.tariffAdd.writeOf"/></label>
                 <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref2" name="period">
-                    <option selected>Choose...</option>
+                    <option selected><fmt:message key="label.admin.tariffAdd.choose"/></option>
                     <c:forEach var="writeOff" items="${writeOffs}">
                         <option value="${writeOff}">${writeOff}</option>
                     </c:forEach>
@@ -69,10 +66,7 @@
             </div>
         </div>
         <%-- Tariff status and period--%>
-
-
-        <button class="btn btn-primary" type="submit">Добавить тариф</button>
+        <button class="btn btn-primary" type="submit"><fmt:message key="label.admin.tariffAdd.add"/></button>
     </form>
-
 </div>
 <%@include file="../../../WEB-INF/parts/admin/footer.jsp" %>

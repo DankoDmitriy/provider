@@ -12,9 +12,9 @@
         <thead>
         <tr>
             <th scope="col">#</th>
-            <td colspan="1">Номер карты</td>
-            <td colspan="1">Пин карты</td>
-            <td colspan="1">Действует До</td>
+            <td colspan="1"><fmt:message key="label.admin.generate.number"/></td>
+            <td colspan="1"><fmt:message key="label.admin.generate.pin"/></td>
+            <td colspan="1"><fmt:message key="label.admin.generate.dateExpired"/></td>
         </tr>
         </thead>
         <tbody>

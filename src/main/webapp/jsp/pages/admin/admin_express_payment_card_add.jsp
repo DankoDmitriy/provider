@@ -13,12 +13,12 @@
 
         <div class="form-row">
             <div class="col-md-4 mb-3">
-                <label for="validationServer01">Серия карт</label>
+                <label for="validationServer01"><fmt:message key="label.admin.generate.series"/></label>
                 <input type="text" class="form-control is-valid" id="validationServer01" placeholder=""
                        name="series" pattern="[A-Z]{3,5}" required>
             </div>
             <div class="col-md-4 mb-3">
-                <label for="validationServer02">Номинал</label>
+                <label for="validationServer02"><fmt:message key="label.admin.generate.amount"/></label>
                 <input type="text" class="form-control is-valid" id="validationServer02" placeholder=""
                        name="amount" pattern="[1-9]{1}[0-9]{0,4}" required>
             </div>
@@ -26,19 +26,19 @@
 
         <div class="form-row">
             <div class="col-md-4 mb-3">
-                <label for="validationServer02">Колличество</label>
+                <label for="validationServer02"><fmt:message key="label.admin.generate.count"/></label>
                 <input type="text" class="form-control is-valid" id="validationServer02" placeholder=""
                        name="count" pattern="[1-9]{1}[0-9]{0,4}" required>
             </div>
 
             <div class="col-md-4 mb-3">
-                <label for="validationServer05">Действительны ДО</label>
+                <label for="validationServer05"><fmt:message key="label.admin.generate.dateExpired"/></label>
                 <input type="date" class="form-control is-valid" id="validationServer05"
                        name="date_expired" required>
             </div>
         </div>
 
-        <button class="btn btn-primary" type="submit">Добавить серию карт</button>
+        <button class="btn btn-primary" type="submit"><fmt:message key="label.admin.generate.add"/></button>
     </form>
 </div>
 <%@include file="../../../WEB-INF/parts/admin/footer.jsp" %>
