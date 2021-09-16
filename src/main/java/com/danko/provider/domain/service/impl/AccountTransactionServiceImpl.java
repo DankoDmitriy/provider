@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class AccountTransactionServiceImpl implements AccountTransactionService {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     //    private AccountTransactionDao accountTransactionDao = new AccountTransactionDaoImpl();
-    private AccountTransactionDao accountTransactionDao;
-    private TransactionManager transactionManager;
+    private final AccountTransactionDao accountTransactionDao;
+    private final TransactionManager transactionManager;
 
     public AccountTransactionServiceImpl(AccountTransactionDao accountTransactionDao, TransactionManager transactionManager) {
         this.accountTransactionDao = accountTransactionDao;

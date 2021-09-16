@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class TariffServiceImpl implements TariffService {
-    private static Logger logger = LogManager.getLogger();
-    private TariffDao tariffDao;
-    private TransactionManager transactionManager;
+    private static final Logger logger = LogManager.getLogger();
+    private final TariffDao tariffDao;
+    private final TransactionManager transactionManager;
 
     public TariffServiceImpl(TariffDao tariffDao, TransactionManager transactionManager) {
         this.tariffDao = tariffDao;

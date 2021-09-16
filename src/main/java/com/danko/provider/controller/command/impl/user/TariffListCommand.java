@@ -24,8 +24,8 @@ import static com.danko.provider.controller.command.RequestAttribute.USER_TARIFF
 import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
 
 public class TariffListCommand implements Command {
-    private static Logger logger = LogManager.getLogger();
-    private TariffService tariffService = ServiceProvider.getInstance().getTariffService();
+    private static final Logger logger = LogManager.getLogger();
+    private final TariffService tariffService = ServiceProvider.getInstance().getTariffService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

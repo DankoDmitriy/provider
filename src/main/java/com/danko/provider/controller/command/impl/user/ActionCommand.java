@@ -23,8 +23,8 @@ import static com.danko.provider.controller.command.RequestAttribute.USER_ACTION
 import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
 
 public class ActionCommand implements Command {
-    private static Logger logger = LogManager.getLogger();
-    private UserActionService userActionService = ServiceProvider.getInstance().getUserActionService();
+    private static final Logger logger = LogManager.getLogger();
+    private final UserActionService userActionService = ServiceProvider.getInstance().getUserActionService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

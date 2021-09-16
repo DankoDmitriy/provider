@@ -16,7 +16,7 @@ import static com.danko.provider.controller.command.ParamName.USER_CHANGE_LOCAL;
 import static com.danko.provider.controller.command.SessionAttribute.*;
 
 public class ChangeLocalCommand implements Command {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

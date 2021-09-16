@@ -25,11 +25,11 @@ import static com.danko.provider.controller.command.ParamName.*;
 import static com.danko.provider.controller.command.RequestAttribute.*;
 
 public class AdminTariffEditCommand implements Command {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     private static final List<TariffStatus> TARIFF_STATUSES = Arrays.asList(TariffStatus.values());
     private static final List<PeriodicityWriteOff> PERIODICITY_WRITE_OFFS = Arrays.asList(PeriodicityWriteOff.values());
     private static final String ID_CHECK_REGEX = "^[1-9]{1}[0-9]*$";
-    private TariffService tariffService = ServiceProvider.getInstance().getTariffService();
+    private final TariffService tariffService = ServiceProvider.getInstance().getTariffService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

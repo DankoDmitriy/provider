@@ -22,17 +22,17 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
     private static final int CONTRACT_LENGTH = 11;
     private static final int PASSWORD_LENGTH = 11;
-    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
-    private UserDao userDao;
-    private TariffDao tariffDao;
-    private UserActionDao userActionDao;
-    private PaymentCardDao paymentCardDao;
-    private AccountTransactionDao accountTransactionDao;
-    private TransactionManager transactionManager;
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
+    private final UserDao userDao;
+    private final TariffDao tariffDao;
+    private final UserActionDao userActionDao;
+    private final PaymentCardDao paymentCardDao;
+    private final AccountTransactionDao accountTransactionDao;
+    private final TransactionManager transactionManager;
 
 
     public UserServiceImpl(UserDao userDao, TariffDao tariffDao, UserActionDao userActionDao, PaymentCardDao paymentCardDao, AccountTransactionDao accountTransactionDao, TransactionManager transactionManager) {

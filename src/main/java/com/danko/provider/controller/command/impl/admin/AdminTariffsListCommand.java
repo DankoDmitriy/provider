@@ -20,8 +20,8 @@ import static com.danko.provider.controller.command.PageUrl.HOME_PAGE;
 import static com.danko.provider.controller.command.RequestAttribute.ADMIN_TARIFFS_LIST;
 
 public class AdminTariffsListCommand implements Command {
-    private static Logger logger = LogManager.getLogger();
-    private TariffService tariffService = ServiceProvider.getInstance().getTariffService();
+    private static final Logger logger = LogManager.getLogger();
+    private final TariffService tariffService = ServiceProvider.getInstance().getTariffService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

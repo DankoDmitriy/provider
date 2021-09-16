@@ -22,8 +22,8 @@ import static com.danko.provider.controller.command.SessionAttribute.*;
 import static com.danko.provider.controller.command.RequestAttribute.*;
 
 public class PersonalFinanceOperationsCommand implements Command {
-    private static Logger logger = LogManager.getLogger();
-    private AccountTransactionService accountTransactionService = ServiceProvider.getInstance().getAccountTransactionService();
+    private static final Logger logger = LogManager.getLogger();
+    private final AccountTransactionService accountTransactionService = ServiceProvider.getInstance().getAccountTransactionService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

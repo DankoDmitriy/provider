@@ -21,8 +21,8 @@ import static com.danko.provider.controller.command.RequestAttribute.USER_PERSON
 import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
 
 public class ChangePasswordCommand implements Command {
-    private static Logger logger = LogManager.getLogger();
-    private UserService userService = ServiceProvider.getInstance().getUserService();
+    private static final Logger logger = LogManager.getLogger();
+    private final UserService userService = ServiceProvider.getInstance().getUserService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

@@ -25,14 +25,14 @@ import java.util.Map;
 import java.util.Optional;
 
 public class PaymentCardServiceImpl implements PaymentCardService {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
     private static final int PAYMENT_CARD_NUMBER_LENGTH = 7;
     private static final int PAYMENT_CARD_PIN_LENGTH = 8;
-    private PaymentCardDao paymentCardDao;
-    private PaymentCardSerialDao paymentCardSerialDao;
-    private TransactionManager transactionManager;
+    private final PaymentCardDao paymentCardDao;
+    private final PaymentCardSerialDao paymentCardSerialDao;
+    private final TransactionManager transactionManager;
 
 
     public PaymentCardServiceImpl(PaymentCardDao paymentCardDao, PaymentCardSerialDao paymentCardSerialDao, TransactionManager transactionManager) {

@@ -16,7 +16,7 @@ import java.util.Properties;
 import static com.danko.provider.controller.command.PageUrl.ACTIVATE_PAGE;
 
 public class EmailServiceImpl implements EmailService {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     private static final String PROPERTIES_FILE_PATH = "properties/mailSender.properties";
     private static final String USER = "mail.user.user";
     private static final String PASSWORD = "mail.user.password";

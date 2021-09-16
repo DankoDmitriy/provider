@@ -25,10 +25,10 @@ import static com.danko.provider.controller.command.RequestAttribute.USER_TARIFF
 import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
 
 public class ChangeTariffCommand implements Command {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     private static final String ID_CHECK_REGEX = "^[1-9]{1}[0-9]*$";
-    private UserService userService = ServiceProvider.getInstance().getUserService();
-    private TariffService tariffService = ServiceProvider.getInstance().getTariffService();
+    private final UserService userService = ServiceProvider.getInstance().getUserService();
+    private final TariffService tariffService = ServiceProvider.getInstance().getTariffService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

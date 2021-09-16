@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserActionServiceImpl implements UserActionService {
-    private static Logger logger = LogManager.getLogger();
-    private UserActionDao userActionDao;
-    private TransactionManager transactionManager;
+    private static final Logger logger = LogManager.getLogger();
+    private final UserActionDao userActionDao;
+    private final TransactionManager transactionManager;
 
     public UserActionServiceImpl(UserActionDao userActionDao, TransactionManager transactionManager) {
         this.userActionDao = userActionDao;

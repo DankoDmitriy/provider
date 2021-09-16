@@ -24,10 +24,10 @@ import static com.danko.provider.controller.command.RequestAttribute.ADMIN_NEW_P
 import static com.danko.provider.controller.command.RequestAttribute.ADMIN_NEW_PAYMENT_CARDS_LIST;
 
 public class AdminPaymentCardAddCommand implements Command {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
-    private PaymentCardService paymentCardService = ServiceProvider.getInstance().getPaymentCardService();
+    private final PaymentCardService paymentCardService = ServiceProvider.getInstance().getPaymentCardService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

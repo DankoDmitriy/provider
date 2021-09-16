@@ -26,10 +26,10 @@ import static com.danko.provider.controller.command.PageUrl.*;
 import static com.danko.provider.controller.command.SessionAttribute.*;
 
 public class LoginCommand implements Command {
-    private static Logger logger = LogManager.getLogger();
-    private UserService userService = ServiceProvider.getInstance().getUserService();
-    private TariffService tariffService = ServiceProvider.getInstance().getTariffService();
-    private AccountTransactionService accountTransactionService = ServiceProvider.getInstance().getAccountTransactionService();
+    private static final Logger logger = LogManager.getLogger();
+    private final UserService userService = ServiceProvider.getInstance().getUserService();
+    private final TariffService tariffService = ServiceProvider.getInstance().getTariffService();
+    private final AccountTransactionService accountTransactionService = ServiceProvider.getInstance().getAccountTransactionService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
