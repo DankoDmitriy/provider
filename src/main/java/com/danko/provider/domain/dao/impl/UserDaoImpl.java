@@ -178,6 +178,20 @@ public class UserDaoImpl implements UserDao {
             user_id=?
             """;
 
+    private static final String SQL_UPDATE_STATUS = """
+            UPDATE USERS SET
+            user_statuses_status_id=(select status_id from user_statuses where status=?)
+            WHERE 
+            user_id=?
+            """;
+
+    private static final String SQL_UPDATE_ROLE = """
+            UPDATE USERS SET
+            user_roles_role_id=(select role_id from user_roles where role=?)
+            WHERE 
+            user_id=?
+            """;
+
     private JdbcTemplate<User> jdbcTemplate;
 
     public UserDaoImpl() {
@@ -341,5 +355,15 @@ public class UserDaoImpl implements UserDao {
         return jdbcTemplate.executeUpdateQuery(SQL_UPDATE_EMAIL,
                 email,
                 userId);
+    }
+
+    @Override
+    public boolean updateStatus(long userId, UserStatus status) throws DaoException {
+        return jdbcTemplate.executeUpdateQuery(SQL_UPDATE_STATUS, status.name(), userId);
+    }
+
+    @Override
+    public boolean updateRole(long userId, UserRole role) throws DaoException {
+        return jdbcTemplate.executeUpdateQuery(SQL_UPDATE_ROLE, role.name(), userId);
     }
 }

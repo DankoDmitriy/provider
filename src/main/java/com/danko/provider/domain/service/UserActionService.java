@@ -14,5 +14,7 @@ public interface UserActionService {
 
     List<UserAction> findAllByUserId(long userId) throws ServiceException;
 
+    List<UserAction> findAllByUserIdLimit(long userId) throws ServiceException;
+
     long add(UserAction userAction, long userId, long tariffId) throws ServiceException;
 }

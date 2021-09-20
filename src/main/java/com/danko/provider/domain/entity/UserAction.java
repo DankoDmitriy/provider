@@ -11,7 +11,9 @@ public class UserAction extends AbstractEntity {
     public enum ActionType {
         CHANGE_PASSWORD,
         CARD_ACTIVATE,
-        CHANGE_TARIFF;
+        CHANGE_TARIFF,
+        CHANGE_STATUS,
+        CHANGE_ROLE;
     }
 
     public UserAction() {

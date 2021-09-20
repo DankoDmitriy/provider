@@ -1,5 +1,7 @@
 package com.danko.provider.controller.command;
 
+import com.sun.mail.imap.protocol.ID;
+
 public final class ParamName {
     //    General type Actions parameter
     public static final String COMMAND = "command";
@@ -22,7 +24,6 @@ public final class ParamName {
     //   User Pay page.
     public static final String CARD_NUMBER = "cardNumber";
     public static final String CARD_PIN = "cardPin";
-
 
     //   Admin Users_list page.
     public static final String USER_ID = "user_id";
@@ -64,13 +65,16 @@ public final class ParamName {
     public static final String TARIFF_EDIT_STATUS = "status";
     public static final String TARIFF_EDIT_PERIOD = "period";
 
-    //   Admin Edit edit page.
+    //   Admin User edit page.
     public static final String USER_EDIT_ORIGIN = "userOrigin";
     public static final String USER_EDIT_ID = "user_id";
     public static final String USER_EDIT_FIRST_NAME = "first_name";
     public static final String USER_EDIT_LAST_NAME = "last_name";
     public static final String USER_EDIT_PATRONYMIC = "patronymic";
     public static final String USER_EDIT_E_MAIL = "e_mail";
+
+    //   Admin User Profile page.
+    public static final String USER_PROFILE_ID = "user_id";
 
     private ParamName() {
     }

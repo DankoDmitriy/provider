@@ -22,11 +22,13 @@ public final class CommandName {
     public static final String COMMAND_ADMIN_TARIFF_EDIT = "TARIFF_EDIT";
     public static final String COMMAND_ADMIN_EMPLOYEE_LIST = "EMPLOYEE_LIST";
     public static final String COMMAND_ADMIN_CARD_ADD = "CARD_ADD";
+    public static final String COMMAND_ADMIN_USER_PROFILE = "USER_PROFILE";
+    public static final String COMMAND_ADMIN_USER_BAN = "USER_BAN";
+    public static final String COMMAND_ADMIN_USER_CHANGE_ROLE = "CHANGE_ROLE";
+    public static final String COMMAND_ADMIN_USER_PERSONAL_FINANCE="USER_FINANCE";
 
     //    TODO - Не реализованны.
     public static final String COMMAND_ADMIN_USER_SEARCH = "USER_SEARCH";
-
-    public static final String COMMAND_ADMIN_USER_EDIT_STATUS = "USER_EDIT_STATUS";
     public static final String COMMAND_ADMIN_CARD_SEARCH = "CARD_SEARCH";
     public static final String COMMAND_ADMIN_STATISTICS = "STATISTICS";
 
@@ -46,6 +48,10 @@ public final class CommandName {
                     COMMAND_ADMIN_USER_LIST,
                     COMMAND_ADMIN_USER_ADD,
                     COMMAND_ADMIN_USER_EDIT,
+                    COMMAND_ADMIN_USER_BAN,
+                    COMMAND_ADMIN_USER_CHANGE_ROLE,
+                    COMMAND_ADMIN_USER_PROFILE,
+                    COMMAND_ADMIN_USER_PERSONAL_FINANCE,
                     COMMAND_ADMIN_TARIFF_LIST,
                     COMMAND_ADMIN_TARIFF_ADD,
                     COMMAND_ADMIN_TARIFF_EDIT,

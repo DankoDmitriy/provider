@@ -80,14 +80,31 @@ public class UserActionServiceImpl implements UserActionService {
     }
 
     @Override
+    public List<UserAction> findAllByUserIdLimit(long userId) throws ServiceException {
+        try {
+            try {
+                transactionManager.startTransaction();
+                return userActionDao.findAllByUserIdLimit(userId);
+            } catch (DaoException e) {
+                throw new DaoException(e);
+            } finally {
+                transactionManager.endTransaction();
+            }
+        } catch (DaoException e1) {
+            throw new ServiceException(e1);
+        }
+    }
+
+    @Override
     public long add(UserAction userAction, long userId, long tariffId) throws ServiceException {
-        long generatedId = 0l;
+        long generatedId = 0;
         try {
             try {
                 transactionManager.startTransaction();
                 generatedId = userActionDao.add(userAction, userId, tariffId);
                 transactionManager.commit();
             } catch (DaoException e) {
+                generatedId = 0;
                 transactionManager.rollback();
             } finally {
                 transactionManager.endTransaction();

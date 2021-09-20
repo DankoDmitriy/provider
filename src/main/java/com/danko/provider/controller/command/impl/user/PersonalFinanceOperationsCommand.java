@@ -48,8 +48,7 @@ public class PersonalFinanceOperationsCommand implements Command {
             }
             return router;
         } catch (ServiceException e) {
-            logger.log(Level.WARN, "Could not find all transactions in database: {}", e);
-            throw new CommandException("Could not find all transactions in database.", e);
+            throw new CommandException(e);
         }
     }
 }

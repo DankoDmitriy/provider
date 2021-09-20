@@ -7,29 +7,6 @@
 <%@include file="../../../WEB-INF/parts/admin/header.jsp" %>
 <%@include file="../../../WEB-INF/parts/admin/navbar.jsp" %>
 
-<jsp:useBean id="users" scope="request" type="java.util.List"/>
-
-<style>
-    .iksweb {
-        display: inline-block;
-        cursor: pointer;
-        font-size: 14px;
-        text-decoration: none;
-        padding: 10px 10px;
-        color: #354251;
-        background: #ffff0;
-        border-radius: 0px;
-        border: 2px solid #354251;
-    }
-
-    .iksweb:hover {
-        background: #354251;
-        color: #ffffff;
-        border: 2px solid #354251;
-        transition: all 0.2s ease;
-    }
-</style>
-
 <div class="container mt-5">
     <c:if test="${resultWork == true}">
         <p><fmt:message key="label.admin.usersList.message.changeUserDataTrue"/></p>
@@ -75,18 +52,11 @@
                 <td>${user.email}</td>
                 <td>${user.status}</td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/controller?command=USER_EDIT&user_id=${user.userId}">
-                        <fmt:message key="label.admin.usersList.edit"/>
-                    </a>
-
-                    <a class="iksweb"
-                       href="${pageContext.request.contextPath}/controller?command=USER_EDIT&user_id=${user.userId}"
-                       title="Block">Block</a>
                     <a class="iksweb"
                        href="${pageContext.request.contextPath}/controller?command=USER_EDIT&user_id=${user.userId}"
                        title="Edit">Edit</a>
                     <a class="iksweb"
-                       href="${pageContext.request.contextPath}/controller?command=USER_EDIT&user_id=${user.userId}"
+                       href="${pageContext.request.contextPath}/controller?command=USER_PROFILE&user_id=${user.userId}"
                        title="Profile">Profile</a>
                 </td>
             </tr>

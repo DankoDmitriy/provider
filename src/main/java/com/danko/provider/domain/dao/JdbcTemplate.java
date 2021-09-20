@@ -15,6 +15,7 @@ import java.util.Optional;
 
 public class JdbcTemplate<T extends AbstractEntity> {
     private static Logger logger = LogManager.getLogger();
+    private static final String COUNT_LINES_PARAMETER = "line";
     private ResultSetHandler<T> resultSetHandler;
     private TransactionManager transactionManager;
 
@@ -76,6 +77,23 @@ public class JdbcTemplate<T extends AbstractEntity> {
             throw new DaoException(e);
         }
         return generatedId;
+    }
+
+    public long executeCountRows(String sqlQuery, Object... parameters) throws DaoException {
+        long rowsCount = 0;
+        Connection connection = transactionManager.getConnection();
+        try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+            setParametersInPreparedStatement(statement, parameters);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.isBeforeFirst()) {
+                resultSet.next();
+                rowsCount = resultSet.getLong(COUNT_LINES_PARAMETER);
+            }
+            return rowsCount;
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Error...Message: {}", e.getMessage());
+            throw new DaoException(e);
+        }
     }
 
     private void setParametersInPreparedStatement(PreparedStatement statement, Object... parameters) throws SQLException {

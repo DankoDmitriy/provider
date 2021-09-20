@@ -34,5 +34,7 @@ public interface UserDao extends BaseDao<Long, User> {
 
     boolean updateEmail(long userId, String email) throws DaoException;
 
+    boolean updateStatus(long userId, UserStatus status) throws DaoException;
 
+    boolean updateRole(long userId, UserRole role) throws DaoException;
 }

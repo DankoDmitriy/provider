@@ -15,5 +15,25 @@
 <%--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">--%>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <!--  End Bootstrap CSS -->
+    <style>
+        .iksweb {
+            display: inline-block;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            padding: 10px 10px;
+            color: #354251;
+            background: #ffff0;
+            border-radius: 0px;
+            border: 2px solid #354251;
+        }
+
+        .iksweb:hover {
+            background: #354251;
+            color: #ffffff;
+            border: 2px solid #354251;
+            transition: all 0.2s ease;
+        }
+    </style>
 </head>
 <body>

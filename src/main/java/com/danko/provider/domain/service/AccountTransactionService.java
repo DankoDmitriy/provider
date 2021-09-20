@@ -15,4 +15,7 @@ public interface AccountTransactionService {
 
     Optional<AccountTransaction> findById(long id) throws ServiceException;
 
+    List<AccountTransaction> findPageByUserId(long userId, long rowsOnPage, long nextPage) throws ServiceException;
+
+    long rowsInTableForUser(long userId) throws ServiceException;
 }

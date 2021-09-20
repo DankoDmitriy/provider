@@ -12,6 +12,12 @@ public final class PageUrl {
     public static final String ADMIN_USER_EDIT_PAGE = "/jsp/pages/admin/admin_user_edit.jsp";
     public static final String ADMIN_USER_EDIT_PAGE_REDIRECT = "/controller?command=USER_EDIT";
 
+    public static final String ADMIN_USER_PROFILE_PAGE = "/jsp/pages/admin/admin_user_profile.jsp";
+    public static final String ADMIN_USER_PROFILE_PAGE_REDIRECT = "/controller?command=USER_PROFILE&user_id=";
+
+    public static final String ADMIN_USER_FINANCES_OPERATION_PAGE = "/jsp/pages/admin/admin_user_finance_operations.jsp";
+    public static final String ADMIN_USER_FINANCES_OPERATION_PAGE_REDIRECT = "/controller?command=USER_FINANCE&user_id=";
+
     public static final String ADMIN_TARIFF_ADD_PAGE = "/jsp/pages/admin/admin_tariff_add.jsp";
     public static final String ADMIN_TARIFF_ADD_PAGE_REDIRECT = "/controller?command=TARIFF_ADD";
 

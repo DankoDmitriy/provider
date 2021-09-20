@@ -36,6 +36,7 @@ public class AccountTransactionDaoImpl implements AccountTransactionDao {
             users_user_id=?
             ORDER BY date DESC 
             """;
+
     private static final String SQL_FIND_ALL_ACCOUNT_TRANSACTIONS_BY_USER_ID_LIMIT_5 = """
             SELECT
             transaction_id, sum, date, transaction_type_type_id, tt.type, users_user_id
@@ -75,6 +76,26 @@ public class AccountTransactionDaoImpl implements AccountTransactionDao {
             WHERE
             transaction_id=?
             """;
+
+    private static final String SQL_COUNT_ROWS_FOR_USER = """
+            SELECT count(*) as line 
+            FROM account_transactions
+            WHERE users_user_id=?
+            """;
+
+    private static final String SQL_FIND_ACCOUNT_TRANSACTIONS_BY_USER_ID_AND_PAGE_NUMBER = """
+            SELECT
+            transaction_id, sum, date, transaction_type_type_id, tt.type, users_user_id
+            FROM
+            account_transactions
+            JOIN
+            transaction_type AS tt ON account_transactions.transaction_type_type_id = tt.type_id
+            WHERE
+            users_user_id=? 
+            ORDER BY date DESC 
+            LIMIT ?,?
+            """;
+
     private JdbcTemplate<AccountTransaction> jdbcTemplate;
 
     public AccountTransactionDaoImpl() {
@@ -132,5 +153,18 @@ public class AccountTransactionDaoImpl implements AccountTransactionDao {
         );
         accountTransaction.setTransactionId(generatedId);
         return generatedId;
+    }
+
+    @Override
+    public long rowsInTableForUser(long userId) throws DaoException {
+        return jdbcTemplate.executeCountRows(SQL_COUNT_ROWS_FOR_USER, userId);
+    }
+
+    @Override
+    public List<AccountTransaction> findAllByUserIdPageLimit(long userId, long startPosition, long rows) throws DaoException {
+        return jdbcTemplate.executeSelectQuery(SQL_FIND_ACCOUNT_TRANSACTIONS_BY_USER_ID_AND_PAGE_NUMBER,
+                userId,
+                startPosition,
+                rows);
     }
 }

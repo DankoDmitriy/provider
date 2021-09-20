@@ -100,8 +100,8 @@
 
         <div class="navbar-text mr-3">
             <span class="border">
-                <b>${user.firstName} ${user.lastName}</b>
-                    {Account: ${user.name},Role: ${user.role}}
+                <b>${sessionScope.user.firstName} ${sessionScope.user.lastName}</b>
+                    {Account: ${sessionScope.user.name},Role: ${sessionScope.user.role}}
             </span>
         </div>
 

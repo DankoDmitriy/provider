@@ -8,5 +8,11 @@ import java.util.List;
 
 public interface AccountTransactionDao extends BaseDao<Long, AccountTransaction> {
     List<AccountTransaction> findAllByUserId(long userId) throws DaoException;
+
     List<AccountTransaction> findAllByUserIdLimit(long userId) throws DaoException;
+
+    long rowsInTableForUser(long userId) throws DaoException;
+
+    List<AccountTransaction> findAllByUserIdPageLimit(long userId, long startPosition, long rows) throws DaoException;
+
 }

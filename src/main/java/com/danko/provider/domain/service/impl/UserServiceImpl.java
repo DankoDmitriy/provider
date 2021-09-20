@@ -188,7 +188,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateTariffPlan(long userId, long tariffId) throws ServiceException {
-        boolean result = false;
+        boolean result = true;
         try {
             try {
                 transactionManager.startTransaction();
@@ -217,11 +217,11 @@ public class UserServiceImpl implements UserService {
                             userActionDao.add(userAction, userId, tariffId);
                             accountTransactionDao.add(accountTransaction);
                             transactionManager.commit();
-                            result = true;
                         }
                     }
                 }
             } catch (DaoException e) {
+                result = false;
                 transactionManager.rollback();
             } finally {
                 transactionManager.endTransaction();
@@ -303,6 +303,7 @@ public class UserServiceImpl implements UserService {
                                             String email) throws ServiceException {
 
         InputDataValidator inputDataValidator = InputDataValidator.getInstance();
+        Optional<TransferObject> optionalTransferObject = Optional.empty();
         if (inputDataValidator.isFirstNameValid(firstName) &&
                 inputDataValidator.isLastNameValid(lastName) &&
                 inputDataValidator.isPatronymic(patronymic) &&
@@ -319,10 +320,10 @@ public class UserServiceImpl implements UserService {
 
             LocalDate contractDateLocalDate = LocalDate.parse(contractDate, dateTimeFormatter);
             LocalDateTime contractDateLocalDateTime = contractDateLocalDate.atStartOfDay();
+
             try {
                 try {
                     transactionManager.startTransaction();
-
                     Optional<Tariff> optionalTariff = tariffDao.findById(Long.valueOf(tariffId));
                     Tariff tariff = optionalTariff.get();
 
@@ -355,8 +356,9 @@ public class UserServiceImpl implements UserService {
                     newUser.setUser(user);
                     newUser.setPassword(password);
                     transactionManager.commit();
-                    return Optional.of(newUser);
+                    optionalTransferObject = Optional.of(newUser);
                 } catch (DaoException e) {
+                    optionalTransferObject = Optional.empty();
                     transactionManager.rollback();
                 } finally {
                     transactionManager.endTransaction();
@@ -365,7 +367,7 @@ public class UserServiceImpl implements UserService {
                 throw new ServiceException(e1);
             }
         }
-        return Optional.empty();
+        return optionalTransferObject;
     }
 
     @Override
@@ -391,7 +393,7 @@ public class UserServiceImpl implements UserService {
                                           String email,
                                           String userIdStr,
                                           User user) throws ServiceException {
-        boolean result = false;
+        boolean result = true;
         InputDataValidator inputDataValidator = InputDataValidator.getInstance();
         if (inputDataValidator.isFirstNameValid(firstName) &&
                 inputDataValidator.isLastNameValid(lastName) &&
@@ -421,6 +423,7 @@ public class UserServiceImpl implements UserService {
                     }
                     transactionManager.commit();
                 } catch (DaoException e) {
+                    result = false;
                     transactionManager.rollback();
                 } finally {
                     transactionManager.endTransaction();
@@ -428,7 +431,92 @@ public class UserServiceImpl implements UserService {
             } catch (DaoException e1) {
                 throw new ServiceException(e1);
             }
-            result = true;
+        }
+        return result;
+    }
+
+    @Override
+    public boolean blockOrUnblock(long userId) throws ServiceException {
+        boolean result = true;
+        try {
+            try {
+                transactionManager.startTransaction();
+                Optional<User> optionalUser = userDao.findById(userId);
+                if (!optionalUser.isEmpty()) {
+                    User user = optionalUser.get();
+                    UserStatus userStatus = user.getStatus();
+                    switch (userStatus) {
+                        case ACTIVE, WAIT_ACTIVATE: {
+                            result = userDao.updateStatus(userId, UserStatus.BLOCK);
+                            break;
+                        }
+                        case BLOCK: {
+                            result = userDao.updateStatus(userId, UserStatus.WAIT_ACTIVATE);
+                            break;
+                        }
+                        default: {
+                            result = false;
+                        }
+                    }
+                    Tariff tariff = tariffDao.findById(user.getTariffId()).get();
+                    UserAction userAction = UserAction.builder()
+                            .setDateTime(LocalDateTime.now())
+                            .setActionType(UserAction.ActionType.CHANGE_STATUS)
+                            .setTariffName(tariff.getDescription()).build();
+                    userActionDao.add(userAction, userId, tariff.getTariffId());
+                    transactionManager.commit();
+                }
+            } catch (DaoException e) {
+                result = false;
+                transactionManager.rollback();
+            } finally {
+                transactionManager.endTransaction();
+            }
+        } catch (DaoException e1) {
+            throw new ServiceException(e1);
+        }
+        return result;
+    }
+
+    @Override
+    public boolean changeRole(long userId) throws ServiceException {
+        boolean result = true;
+        try {
+            try {
+                transactionManager.startTransaction();
+                Optional<User> optionalUser = userDao.findById(userId);
+                if (!optionalUser.isEmpty()) {
+                    User user = optionalUser.get();
+                    UserRole userRole = user.getRole();
+                    switch (userRole) {
+                        case USER: {
+                            result = userDao.updateRole(userId, UserRole.ADMIN);
+                            break;
+                        }
+                        case ADMIN: {
+                            result = userDao.updateRole(userId, UserRole.USER);
+                            break;
+                        }
+                        default: {
+                            result = false;
+                        }
+                    }
+                    Tariff tariff = tariffDao.findById(user.getTariffId()).get();
+                    UserAction userAction = UserAction.builder()
+                            .setDateTime(LocalDateTime.now())
+                            .setActionType(UserAction.ActionType.CHANGE_ROLE)
+                            .setTariffName(tariff.getDescription()).build();
+                    userActionDao.add(userAction, userId, tariff.getTariffId());
+                    transactionManager.commit();
+                }
+            } catch (DaoException e) {
+                result = false;
+                transactionManager.rollback();
+            } finally {
+                transactionManager.endTransaction();
+            }
+        } catch (DaoException e1) {
+            throw new ServiceException(e1);
         }
         return result;
     }

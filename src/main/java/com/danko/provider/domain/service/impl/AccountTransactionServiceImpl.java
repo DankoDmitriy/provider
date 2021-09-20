@@ -97,4 +97,39 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
         }
 
     }
+
+    @Override
+    public List<AccountTransaction> findPageByUserId(long userId, long rowsOnPage, long nextPage) throws ServiceException {
+        List<AccountTransaction> transactions;
+        try {
+            transactionManager.startTransaction();
+//            long rows = accountTransactionDao.rowsInTableForUser(userId);
+            long startPosition = nextPage * rowsOnPage;
+            return accountTransactionDao.findAllByUserIdPageLimit(userId, startPosition, rowsOnPage);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        } finally {
+            try {
+                transactionManager.endTransaction();
+            } catch (DaoException e) {
+                throw new ServiceException(e);
+            }
+        }
+    }
+
+    @Override
+    public long rowsInTableForUser(long userId) throws ServiceException {
+        try {
+            transactionManager.startTransaction();
+            return accountTransactionDao.rowsInTableForUser(userId);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        } finally {
+            try {
+                transactionManager.endTransaction();
+            } catch (DaoException e) {
+                throw new ServiceException(e);
+            }
+        }
+    }
 }

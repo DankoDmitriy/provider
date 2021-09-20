@@ -52,4 +52,8 @@ public interface UserService {
                                    String email,
                                    String userIdStr,
                                    User user) throws ServiceException;
+
+    boolean blockOrUnblock(long userId) throws ServiceException;
+
+    boolean changeRole(long userId) throws ServiceException;
 }

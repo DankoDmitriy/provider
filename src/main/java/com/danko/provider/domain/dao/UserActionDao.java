@@ -8,5 +8,8 @@ import java.util.List;
 
 public interface UserActionDao extends BaseDao<Long, UserAction> {
     List<UserAction> findAllByUserId(long userId) throws DaoException;
+
+    List<UserAction> findAllByUserIdLimit(long userId) throws DaoException;
+
     long add(UserAction userAction, long userId, long tariffId) throws DaoException;
 }
