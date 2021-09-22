@@ -1,9 +1,11 @@
 package com.danko.provider.domain.service;
 
+import com.danko.provider.controller.command.InputContent;
 import com.danko.provider.domain.entity.Tariff;
 import com.danko.provider.domain.entity.TariffStatus;
 import com.danko.provider.domain.entity.User;
 import com.danko.provider.exception.ServiceException;
+import com.sun.mail.imap.protocol.BODY;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,21 +19,9 @@ public interface TariffService {
 
     List<Tariff> findAllByStatus(TariffStatus status) throws ServiceException;
 
-    boolean addTariff(String tariffName,
-                      String maxSpeed,
-                      String minSpeed,
-                      String traffic,
-                      String price,
-                      String tariffStatusStr,
-                      String tariffPeriodWriteOfStr) throws ServiceException;
+    void addTariff(InputContent content) throws ServiceException;
 
-    boolean update(String tariffId,
-                   String tariffName,
-                   String maxSpeed,
-                   String minSpeed,
-                   String traffic,
-                   String price,
-                   String tariffStatusStr,
-                   String tariffPeriodWriteOfStr,
-                   Tariff tariffOrigin) throws ServiceException;
+    void update(InputContent content) throws ServiceException;
+
+    void findPageTariff(InputContent content, long rowsOnPage) throws ServiceException;
 }

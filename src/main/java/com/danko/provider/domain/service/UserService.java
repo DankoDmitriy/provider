@@ -1,5 +1,6 @@
 package com.danko.provider.domain.service;
 
+import com.danko.provider.controller.command.InputContent;
 import com.danko.provider.domain.entity.TransferObject;
 import com.danko.provider.domain.entity.User;
 import com.danko.provider.domain.entity.UserRole;
@@ -19,7 +20,7 @@ public interface UserService {
 
     List<User> findAllUsers() throws ServiceException;
 
-    List<User> findAllUsersByRole(UserRole role) throws ServiceException;
+    void findPageByUserRole(InputContent content, long rowsOnPage) throws ServiceException;
 
     Optional<User> findByNameAndPassword(String name, String password) throws ServiceException;
 
@@ -37,21 +38,11 @@ public interface UserService {
                                    BigDecimal userBalance,
                                    long tariffId) throws ServiceException;
 
-    Optional<TransferObject> addUser(String firstName,
-                                     String lastName,
-                                     String patronymic,
-                                     String contractDate,
-                                     String tariffId,
-                                     String email) throws ServiceException;
+    void addUser(InputContent content) throws ServiceException;
 
     Optional<User> findById(long id) throws ServiceException;
 
-    boolean updateUserPersonalData(String firstName,
-                                   String lastName,
-                                   String patronymic,
-                                   String email,
-                                   String userIdStr,
-                                   User user) throws ServiceException;
+    void updateUserPersonalData(InputContent content) throws ServiceException;
 
     boolean blockOrUnblock(long userId) throws ServiceException;
 

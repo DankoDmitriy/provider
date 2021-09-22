@@ -37,4 +37,8 @@ public interface UserDao extends BaseDao<Long, User> {
     boolean updateStatus(long userId, UserStatus status) throws DaoException;
 
     boolean updateRole(long userId, UserRole role) throws DaoException;
+
+    long rowsInTableByUserRole(UserRole role) throws DaoException;
+
+    List<User> findAllByUserRolePageLimit(UserRole role, long startPosition, long rows) throws DaoException;
 }

@@ -3,7 +3,7 @@ package com.danko.provider.controller.command;
 public final class PageUrl {
     //    Administrator URLS
     public static final String ADMIN_USERS_LIST_PAGE = "/jsp/pages/admin/admin_users_list.jsp";
-    public static final String ADMIN_USERS_LIST_PAGE_REDIRECT = "/controller?command=USERS_LIST";
+    public static final String ADMIN_USERS_LIST_PAGE_REDIRECT = "/controller?command=USERS_LIST&USER_ROLE=USER&nextPage=0&previewPage=-1";
 
     public static final String ADMIN_USER_ADD_PAGE = "/jsp/pages/admin/admin_user_add.jsp";
     public static final String ADMIN_USER_ADD_PAGE_REDIRECT = "/controller?command=USER_ADD";
@@ -18,6 +18,9 @@ public final class PageUrl {
     public static final String ADMIN_USER_FINANCES_OPERATION_PAGE = "/jsp/pages/admin/admin_user_finance_operations.jsp";
     public static final String ADMIN_USER_FINANCES_OPERATION_PAGE_REDIRECT = "/controller?command=USER_FINANCE&user_id=";
 
+    public static final String ADMIN_USER_ACTIONS_PAGE = "/jsp/pages/admin/admin_user_actions.jsp";
+    public static final String ADMIN_USER_ACTIONS_PAGE_REDIRECT = "/controller?command=USER_ACTION&user_id=";
+
     public static final String ADMIN_TARIFF_ADD_PAGE = "/jsp/pages/admin/admin_tariff_add.jsp";
     public static final String ADMIN_TARIFF_ADD_PAGE_REDIRECT = "/controller?command=TARIFF_ADD";
 
@@ -25,7 +28,7 @@ public final class PageUrl {
     public static final String ADMIN_TARIFF_EDIT_PAGE_REDIRECT = "/controller?command=TARIFF_EDIT";
 
     public static final String ADMIN_TARIFFS_LIST_PAGE = "/jsp/pages/admin/admin_tariffs_list.jsp";
-    public static final String ADMIN_TARIFFS_LIST_PAGE_REDIRECT = "/controller?command=TARIFF_LIST";
+    public static final String ADMIN_TARIFFS_LIST_PAGE_REDIRECT = "/controller?command=TARIFF_LIST&nextPage=0&previewPage=-1";
 
     public static final String ADMIN_PAYMENTS_CARD_ADD_PAGE = "/jsp/pages/admin/admin_express_payment_card_add.jsp";
     public static final String ADMIN_PAYMENTS_CARD_ADD_PAGE_REDIRECT = "/controller?command=CARD_ADD";

@@ -1,5 +1,6 @@
 package com.danko.provider.domain.service.impl;
 
+import com.danko.provider.controller.command.InputContent;
 import com.danko.provider.domain.dao.PaymentCardDao;
 import com.danko.provider.domain.dao.PaymentCardSerialDao;
 import com.danko.provider.domain.dao.TransactionManager;
@@ -23,6 +24,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import static com.danko.provider.controller.command.PageUrl.ADMIN_PAYMENTS_CARD_ADD_PAGE;
+import static com.danko.provider.controller.command.PageUrl.ADMIN_PAYMENTS_CARD_GENERATED_PAGE;
+import static com.danko.provider.controller.command.ParamName.*;
+import static com.danko.provider.controller.command.RequestAttribute.ADMIN_NEW_PAYMENT_CARDS_EXPIRED_DATE;
+import static com.danko.provider.controller.command.RequestAttribute.ADMIN_NEW_PAYMENT_CARDS_LIST;
 
 public class PaymentCardServiceImpl implements PaymentCardService {
     private static final Logger logger = LogManager.getLogger();
@@ -64,55 +71,63 @@ public class PaymentCardServiceImpl implements PaymentCardService {
     }
 
     @Override
-    public Map<String, String> addCards(String series, String amount, String count, String dateExpiredStr) throws ServiceException {
+    public void addCards(InputContent content) throws ServiceException {
         InputDataValidator inputDataValidator = InputDataValidator.getInstance();
-        if (inputDataValidator.isPaymentCardSeriesValid(series) &&
-                inputDataValidator.isPaymentCardAmountValid(amount) &&
-                inputDataValidator.isPaymentCardCountValid(count) &&
-                inputDataValidator.isPaymentCardDateExpiredValid(dateExpiredStr)) {
-
+        String[] series = content.getRequestParameter(PAYMENT_CARD_ADD_SERIES);
+        String[] amount = content.getRequestParameter(PAYMENT_CARD_ADD_AMOUNT);
+        String[] count = content.getRequestParameter(PAYMENT_CARD_ADD_COUNT);
+        String[] dateExpiredStr = content.getRequestParameter(PAYMENT_CARD_ADD_DATE_EXPIRED);
+        if (series != null &&
+                amount != null &&
+                count != null &&
+                dateExpiredStr != null &&
+                inputDataValidator.isPaymentCardSeriesValid(series[0]) &&
+                inputDataValidator.isPaymentCardAmountValid(amount[0]) &&
+                inputDataValidator.isPaymentCardCountValid(count[0]) &&
+                inputDataValidator.isPaymentCardDateExpiredValid(dateExpiredStr[0])) {
             try {
-                transactionManager.startTransaction();
-                Optional<PaymentCardSerial> optionalPaymentCardSerial = paymentCardSerialDao.findBySeries(series);
-                if (optionalPaymentCardSerial.isEmpty()) {
-                    LocalDateTime cardExpiredDate = LocalDate.parse(dateExpiredStr, dateTimeFormatter).atStartOfDay();
-                    PasswordGenerator passwordGenerator = new PasswordGenerator.Builder()
-                            .useDigits(true)
-                            .useLower(false)
-                            .useUpper(false)
-                            .build();
-                    Map<String, String> cardsMap = new HashMap<>();
-                    for (int i = 1; i <= Integer.parseInt(count); i++) {
-                        String cardNumber = new StringBuilder()
-                                .append(series)
-                                .append(String.format("%0" + PAYMENT_CARD_NUMBER_LENGTH + "d", i)).toString();
-                        String cardPin = passwordGenerator.generate(PAYMENT_CARD_PIN_LENGTH);
-                        cardsMap.put(cardNumber, cardPin);
-                        String cardNumberHash = PasswordHasher.hashString(cardNumber);
-                        String cardPinHash = PasswordHasher.hashString(cardPin);
-                        paymentCardDao.add(new BigDecimal(amount), cardNumberHash, cardPinHash, PaymentCard.CardStatus.NOT_USED, cardExpiredDate);
+                try {
+                    transactionManager.startTransaction();
+                    Optional<PaymentCardSerial> optionalPaymentCardSerial = paymentCardSerialDao.findBySeries(series[0]);
+                    if (optionalPaymentCardSerial.isEmpty()) {
+                        LocalDateTime cardExpiredDate = LocalDate.parse(dateExpiredStr[0], dateTimeFormatter).atStartOfDay();
+                        PasswordGenerator passwordGenerator = new PasswordGenerator.Builder()
+                                .useDigits(true)
+                                .useLower(false)
+                                .useUpper(false)
+                                .build();
+
+                        Map<String, String> cardsMap = new HashMap<>();
+                        for (int i = 1; i <= Integer.parseInt(count[0]); i++) {
+                            String cardNumber = new StringBuilder()
+                                    .append(series[0])
+                                    .append(String.format("%0" + PAYMENT_CARD_NUMBER_LENGTH + "d", i)).toString();
+                            String cardPin = passwordGenerator.generate(PAYMENT_CARD_PIN_LENGTH);
+                            cardsMap.put(cardNumber, cardPin);
+                            String cardNumberHash = PasswordHasher.hashString(cardNumber);
+                            String cardPinHash = PasswordHasher.hashString(cardPin);
+                            paymentCardDao.add(new BigDecimal(amount[0]), cardNumberHash, cardPinHash, PaymentCard.CardStatus.NOT_USED, cardExpiredDate);
+                        }
+                        paymentCardSerialDao.add(PasswordHasher.hashString(series[0]));
+                        transactionManager.commit();
+                        content.putRequestAttribute(ADMIN_NEW_PAYMENT_CARDS_LIST, cardsMap);
+                        content.putRequestAttribute(ADMIN_NEW_PAYMENT_CARDS_EXPIRED_DATE, cardExpiredDate);
+                        content.setPageUrl(ADMIN_PAYMENTS_CARD_GENERATED_PAGE);
+                    } else {
+//                TODO - тут можно добавить сообщение, что уже есть такая серия Или проверить и выдать какой параметр не верен полностью
+                        content.setPageUrl(ADMIN_PAYMENTS_CARD_ADD_PAGE);
                     }
-                    paymentCardSerialDao.add(PasswordHasher.hashString(series));
-                    transactionManager.commit();
-                    return cardsMap;
-                }
-            } catch (DaoException e) {
-                try {
-                    transactionManager.rollback();
-                } catch (DaoException e1) {
-                    logger.log(Level.ERROR, "Rollback transaction error: {}", e);
-                    throw new ServiceException(e);
-                }
-                throw new ServiceException(e);
-            } finally {
-                try {
-                    transactionManager.endTransaction();
                 } catch (DaoException e) {
-                    logger.log(Level.ERROR, "End transaction error: {}", e);
-                    throw new ServiceException("End transaction error", e);
+                    transactionManager.rollback();
+                    throw new ServiceException(e);
+                } finally {
+                    transactionManager.endTransaction();
                 }
+            } catch (DaoException | ServiceException e1) {
+                throw new ServiceException(e1);
             }
+        } else {
+            content.setPageUrl(ADMIN_PAYMENTS_CARD_ADD_PAGE);
         }
-        return null;
     }
 }

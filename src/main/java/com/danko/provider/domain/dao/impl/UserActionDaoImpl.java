@@ -80,6 +80,27 @@ public class UserActionDaoImpl implements UserActionDao {
             )
             """;
 
+    private static final String SQL_COUNT_ROWS_FOR_USER = """
+            SELECT count(*) as line 
+            FROM actions
+            WHERE users_user_id=?
+            """;
+
+    private static final String SQL_FIND_ACTIONS_BY_USER_ID_AND_PAGE_NUMBER = """
+            SELECT
+            action_id, date, at.type, tp.description
+            FROM
+            actions
+            JOIN
+            action_type AS at ON actions.action_type_type_id = at.action_type_id
+            JOIN
+            tariffs AS tp ON actions.tariffs_tariff_id = tp.tariff_id
+            WHERE
+            users_user_id=?
+            ORDER BY date DESC
+            LIMIT ?,?
+            """;
+
     private JdbcTemplate<UserAction> jdbcTemplate;
 
     public UserActionDaoImpl() {
@@ -134,5 +155,18 @@ public class UserActionDaoImpl implements UserActionDao {
         List<UserAction> list;
         list = jdbcTemplate.executeSelectQuery(SQL_FIND_ALL_ACTIONS_BY_USER_ID, userId);
         return list;
+    }
+
+    @Override
+    public long rowsInTableForUser(long userId) throws DaoException {
+        return jdbcTemplate.executeCountRows(SQL_COUNT_ROWS_FOR_USER, userId);
+    }
+
+    @Override
+    public List<UserAction> findAllByUserIdPageLimit(long userId, long startPosition, long rows) throws DaoException {
+        return jdbcTemplate.executeSelectQuery(SQL_FIND_ACTIONS_BY_USER_ID_AND_PAGE_NUMBER,
+                userId,
+                startPosition,
+                rows);
     }
 }

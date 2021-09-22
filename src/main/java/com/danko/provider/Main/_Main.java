@@ -35,6 +35,7 @@ public class _Main {
 //        System.out.println(Long.parseLong("asda"));
 
 
+
 //        TODO - конвертация объектов.
 //        User user = User.builder().setRole(UserRole.USER)
 //                .setName("asdasd")

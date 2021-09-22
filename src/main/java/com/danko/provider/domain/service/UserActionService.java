@@ -1,5 +1,6 @@
 package com.danko.provider.domain.service;
 
+import com.danko.provider.controller.command.InputContent;
 import com.danko.provider.domain.entity.UserAction;
 import com.danko.provider.exception.DaoException;
 import com.danko.provider.exception.ServiceException;
@@ -17,4 +18,6 @@ public interface UserActionService {
     List<UserAction> findAllByUserIdLimit(long userId) throws ServiceException;
 
     long add(UserAction userAction, long userId, long tariffId) throws ServiceException;
+
+    public void findPageByUserId(InputContent content, long rowsOnPage) throws ServiceException;
 }

@@ -2,14 +2,14 @@ package com.danko.provider.controller.command;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.websocket.OnClose;
 import java.util.*;
 
 public class InputContent {
     private final HashMap<String, Object> requestAttributes;
     private final Map<String, String[]> requestParameters;
     private final Map<String, Object> sessionAttributes;
-    private String nextPage = null;
+    private String pageUrl = null;
+    private boolean redirect = false;
 
     public InputContent(HttpServletRequest request) {
         requestParameters = request.getParameterMap();
@@ -24,15 +24,15 @@ public class InputContent {
         });
     }
 
-    public void requestAttributesPut(String key, Object value) {
+    public void putRequestAttribute(String key, Object value) {
         requestAttributes.put(key, value);
     }
 
-    String[] getRequestParameter(String name) {
+    public String[] getRequestParameter(String name) {
         return requestParameters.get(name);
     }
 
-    Object getSessionAttribute(String name) {
+    public Object getSessionAttribute(String name) {
         return sessionAttributes.get(name);
     }
 
@@ -48,11 +48,19 @@ public class InputContent {
         return sessionAttributes;
     }
 
-    public String getNextPage() {
-        return nextPage;
+    public String getPageUrl() {
+        return pageUrl;
     }
 
-    public void setNextPage(String nextPage) {
-        this.nextPage = nextPage;
+    public void setPageUrl(String pageUrl) {
+        this.pageUrl = pageUrl;
+    }
+
+    public boolean isRedirect() {
+        return redirect;
+    }
+
+    public void setRedirect(boolean redirect) {
+        this.redirect = redirect;
     }
 }

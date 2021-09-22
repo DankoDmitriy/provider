@@ -4,7 +4,7 @@ import com.danko.provider.controller.Router;
 import com.danko.provider.controller.command.Command;
 import com.danko.provider.controller.command.InputContent;
 import com.danko.provider.domain.service.ServiceProvider;
-import com.danko.provider.domain.service.TariffService;
+import com.danko.provider.domain.service.UserActionService;
 import com.danko.provider.exception.CommandException;
 import com.danko.provider.exception.ServiceException;
 import org.apache.logging.log4j.LogManager;
@@ -12,24 +12,24 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class AdminTariffsListCommand implements Command {
+public class AdminUserActionsCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     public static final long ROWS_ON_PAGE = 5;
-    private final TariffService tariffService = ServiceProvider.getInstance().getTariffService();
+    private final UserActionService userActionService = ServiceProvider.getInstance().getUserActionService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
         InputContent inputContent = new InputContent(request);
         try {
-            tariffService.findPageTariff(inputContent, ROWS_ON_PAGE);
+            userActionService.findPageByUserId(inputContent, ROWS_ON_PAGE);
             router.setPageUrl(inputContent.getPageUrl());
             inputContent.getRequestAttributes().forEach((s, o) -> {
                 request.setAttribute(s, o);
             });
+            return router;
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        return router;
     }
 }

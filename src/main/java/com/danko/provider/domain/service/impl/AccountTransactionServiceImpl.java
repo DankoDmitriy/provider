@@ -1,18 +1,23 @@
 package com.danko.provider.domain.service.impl;
 
+import com.danko.provider.controller.command.InputContent;
 import com.danko.provider.domain.dao.AccountTransactionDao;
 import com.danko.provider.domain.dao.TransactionManager;
-import com.danko.provider.domain.dao.impl.AccountTransactionDaoImpl;
 import com.danko.provider.domain.entity.AccountTransaction;
 import com.danko.provider.domain.service.AccountTransactionService;
 import com.danko.provider.exception.DaoException;
 import com.danko.provider.exception.ServiceException;
+import com.danko.provider.validator.InputDataValidator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.danko.provider.controller.command.PageUrl.ADMIN_USERS_LIST_PAGE_REDIRECT;
+import static com.danko.provider.controller.command.PageUrl.ADMIN_USER_FINANCES_OPERATION_PAGE;
+import static com.danko.provider.controller.command.RequestAttribute.*;
 
 public class AccountTransactionServiceImpl implements AccountTransactionService {
     private static final Logger logger = LogManager.getLogger();
@@ -130,6 +135,61 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }
+        }
+    }
+
+    @Override
+    public void findPageByUserId(InputContent content, long rowsOnPage) throws ServiceException {
+        List<AccountTransaction> transactions;
+        long previewPage = 0;
+        long rowsInTable = 0;
+        long userId;
+        long nextPage;
+        long startPosition;
+        String userIdStr = content.getRequestParameter(PAGINATION_USER_ID)[0];
+        String nextPageStr = content.getRequestParameter(PAGINATION_NEXT_PAGE)[0];
+        InputDataValidator inputDataValidator = InputDataValidator.getInstance();
+        try {
+            try {
+                transactionManager.startTransaction();
+                if (inputDataValidator.isIdValid(userIdStr)) {
+                    userId = Long.parseLong(userIdStr);
+                    nextPage = Long.parseLong(nextPageStr);
+                    if (nextPage <= 0) {
+                        rowsInTable = accountTransactionDao.rowsInTableForUser(userId);
+                        nextPage = 0;
+                        previewPage = -1;
+                        startPosition = nextPage * rowsOnPage;
+                        transactions = accountTransactionDao.findAllByUserIdPageLimit(userId, startPosition, rowsOnPage);
+                        if (rowsInTable > rowsOnPage) {
+                            nextPage++;
+                        }
+                    } else {
+                        rowsInTable = accountTransactionDao.rowsInTableForUser(userId);
+                        startPosition = nextPage * rowsOnPage;
+                        transactions = accountTransactionDao.findAllByUserIdPageLimit(userId, startPosition, rowsOnPage);
+                        if (rowsInTable > (rowsOnPage * (nextPage + 1))) {
+                            previewPage = nextPage - 1;
+                            nextPage++;
+                        } else {
+                            previewPage = nextPage - 1;
+                        }
+                    }
+                    content.putRequestAttribute(PAGINATION_NEXT_PAGE, nextPage);
+                    content.putRequestAttribute(PAGINATION_PREVIEW_PAGE, previewPage);
+                    content.putRequestAttribute(PAGINATION_RESULT_LIST, transactions);
+                    content.putRequestAttribute(PAGINATION_USER_ID, userId);
+                    content.setPageUrl(ADMIN_USER_FINANCES_OPERATION_PAGE);
+                } else {
+                    content.setPageUrl(ADMIN_USERS_LIST_PAGE_REDIRECT);
+                }
+            } catch (DaoException e) {
+                throw new ServiceException(e);
+            } finally {
+                transactionManager.endTransaction();
+            }
+        } catch (DaoException | ServiceException e) {
+            throw new ServiceException(e);
         }
     }
 }

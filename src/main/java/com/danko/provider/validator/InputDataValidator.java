@@ -2,7 +2,9 @@ package com.danko.provider.validator;
 
 import com.danko.provider.domain.entity.PeriodicityWriteOff;
 import com.danko.provider.domain.entity.TariffStatus;
+import com.danko.provider.domain.entity.UserRole;
 
+import java.sql.Struct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,7 +33,7 @@ public class InputDataValidator {
     private static final String PAYMENTS_CARD_AMOUNT_REGEX = "^[1-9]{1}[0-9]{0,4}$";
     private static final String PAYMENTS_CARD_COUNT_REGEX = "^[1-9]{1}[0-9]{0,4}$";
 
-    private static final String ID_CHECK_REGEX = "^[1-9]{1}[0-9]*$";
+    private static final String ID_CHECK_REGEX = "^[1-9]{1}[0-9]{0,16}$";
 
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
@@ -133,6 +135,15 @@ public class InputDataValidator {
 
     public boolean isIdValid(String idStr) {
         return idStr != null && idStr.matches(ID_CHECK_REGEX);
+    }
+
+    public boolean isUserRoleValid(String userRole) {
+        for (UserRole role : UserRole.values()) {
+            if (role.name().matches(userRole)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

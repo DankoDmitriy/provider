@@ -1,18 +1,21 @@
 package com.danko.provider.domain.service.impl;
 
+import com.danko.provider.controller.command.InputContent;
 import com.danko.provider.domain.dao.TransactionManager;
 import com.danko.provider.domain.dao.UserActionDao;
-import com.danko.provider.domain.dao.impl.UserActionDaoImpl;
 import com.danko.provider.domain.entity.UserAction;
 import com.danko.provider.domain.service.UserActionService;
 import com.danko.provider.exception.DaoException;
 import com.danko.provider.exception.ServiceException;
-import org.apache.logging.log4j.Level;
+import com.danko.provider.validator.InputDataValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.danko.provider.controller.command.PageUrl.*;
+import static com.danko.provider.controller.command.RequestAttribute.*;
 
 public class UserActionServiceImpl implements UserActionService {
     private static final Logger logger = LogManager.getLogger();
@@ -113,5 +116,60 @@ public class UserActionServiceImpl implements UserActionService {
             throw new ServiceException(e1);
         }
         return generatedId;
+    }
+
+    @Override
+    public void findPageByUserId(InputContent content, long rowsOnPage) throws ServiceException {
+        List<UserAction> actions;
+        long previewPage = 0;
+        long rowsInTable = 0;
+        long userId;
+        long nextPage;
+        long startPosition;
+        String userIdStr = content.getRequestParameter(PAGINATION_USER_ID)[0];
+        String nextPageStr = content.getRequestParameter(PAGINATION_NEXT_PAGE)[0];
+        InputDataValidator inputDataValidator = InputDataValidator.getInstance();
+        try {
+            try {
+                transactionManager.startTransaction();
+                if (inputDataValidator.isIdValid(userIdStr)) {
+                    userId = Long.parseLong(userIdStr);
+                    nextPage = Long.parseLong(nextPageStr);
+                    if (nextPage <= 0) {
+                        rowsInTable = userActionDao.rowsInTableForUser(userId);
+                        nextPage = 0;
+                        previewPage = -1;
+                        startPosition = nextPage * rowsOnPage;
+                        actions = userActionDao.findAllByUserIdPageLimit(userId, startPosition, rowsOnPage);
+                        if (rowsInTable > rowsOnPage) {
+                            nextPage++;
+                        }
+                    } else {
+                        rowsInTable = userActionDao.rowsInTableForUser(userId);
+                        startPosition = nextPage * rowsOnPage;
+                        actions = userActionDao.findAllByUserIdPageLimit(userId, startPosition, rowsOnPage);
+                        if (rowsInTable > (rowsOnPage * (nextPage + 1))) {
+                            previewPage = nextPage - 1;
+                            nextPage++;
+                        } else {
+                            previewPage = nextPage - 1;
+                        }
+                    }
+                    content.putRequestAttribute(PAGINATION_NEXT_PAGE, nextPage);
+                    content.putRequestAttribute(PAGINATION_PREVIEW_PAGE, previewPage);
+                    content.putRequestAttribute(PAGINATION_RESULT_LIST, actions);
+                    content.putRequestAttribute(PAGINATION_USER_ID, userId);
+                    content.setPageUrl(ADMIN_USER_ACTIONS_PAGE);
+                } else {
+                    content.setPageUrl(ADMIN_USERS_LIST_PAGE_REDIRECT);
+                }
+            } catch (DaoException e) {
+                throw new ServiceException(e);
+            } finally {
+                transactionManager.endTransaction();
+            }
+        } catch (DaoException | ServiceException e) {
+            throw new ServiceException(e);
+        }
     }
 }

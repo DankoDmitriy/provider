@@ -32,7 +32,7 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${users}" var="user" varStatus="count">
+        <c:forEach items="${resultList}" var="user" varStatus="count">
             <tr>
                 <th scope="row">${count.count}</th>
                 <td>
@@ -63,6 +63,20 @@
         </c:forEach>
         </tbody>
     </table>
+
+    <center>
+        <br>
+        <c:if test="${previewPage >=0}">
+            <a class="btn btn-info "
+               href="${pageContext.request.contextPath}/controller?command=USERS_LIST&userRole=${userRole}&nextPage=${previewPage}">
+                <fmt:message key="label.admin.userActions.button.previousPage"/></a>
+        </c:if>
+        <c:if test="${nextPage >=0}">
+            <a class="btn btn-info "
+               href="${pageContext.request.contextPath}/controller?command=USERS_LIST&userRole=${userRole}&nextPage=${nextPage}">
+                <fmt:message key="label.admin.userActions.button.nextPage"/></a>
+        </c:if>
+    </center>
 
 </div>
 <%@include file="../../../WEB-INF/parts/admin/footer.jsp" %>

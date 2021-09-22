@@ -30,7 +30,7 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${tariffs}" var="tariff" varStatus="count">
+        <c:forEach items="${resultList}" var="tariff" varStatus="count">
             <tr>
                 <th scope="row">${count.count}</th>
                 <td>
@@ -59,6 +59,20 @@
         </c:forEach>
         </tbody>
     </table>
+
+    <center>
+        <br>
+        <c:if test="${previewPage >=0}">
+            <a class="btn btn-info "
+               href="${pageContext.request.contextPath}/controller?command=TARIFF_LIST&nextPage=${previewPage}">
+                <fmt:message key="label.admin.userActions.button.previousPage"/></a>
+        </c:if>
+        <c:if test="${nextPage >=0}">
+            <a class="btn btn-info "
+               href="${pageContext.request.contextPath}/controller?command=TARIFF_LIST&nextPage=${nextPage}">
+                <fmt:message key="label.admin.userActions.button.nextPage"/></a>
+        </c:if>
+    </center>
 
 </div>
 <%@include file="../../../WEB-INF/parts/admin/footer.jsp" %>

@@ -2,6 +2,7 @@ package com.danko.provider.controller.command.impl.admin;
 
 import com.danko.provider.controller.Router;
 import com.danko.provider.controller.command.Command;
+import com.danko.provider.controller.command.InputContent;
 import com.danko.provider.domain.entity.Tariff;
 import com.danko.provider.domain.entity.TariffStatus;
 import com.danko.provider.domain.entity.TransferObject;
@@ -28,40 +29,21 @@ import static com.danko.provider.controller.command.RequestAttribute.ADMIN_TARIF
 
 public class AdminUserAddCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
-    private final TariffService tariffService = ServiceProvider.getInstance().getTariffService();
     private final UserService userService = ServiceProvider.getInstance().getUserService();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
-        String firstName = request.getParameter(USER_ADD_FIRST_NAME);
-        String lastName = request.getParameter(USER_ADD_LAST_NAME);
-        String patronymic = request.getParameter(USER_ADD_PATRONYMIC);
-        String contractDate = request.getParameter(USER_ADD_CONTRACT_DATE);
-        String tariffId = request.getParameter(USER_ADD_TARIFF_ID);
-        String email = request.getParameter(USER_ADD_E_MAIL);
-
-        if (firstName != null && lastName != null && patronymic != null && contractDate != null && tariffId != null && email != null) {
-            try {
-                Optional<TransferObject> createdUserOptional = userService.addUser(firstName, lastName, patronymic, contractDate, tariffId, email);
-                TransferObject createdUserTr = createdUserOptional.get();
-                //                FIXME - положить объект в сессию и отправить польлзователя редиректом. ОТ F5
-                request.setAttribute(ADMIN_NEW_USER_CARD_TRANSFER_OBJECT, createdUserTr);
-                router.setPageUrl(ADMIN_USER_ADD_CARD);
-            } catch (ServiceException e) {
-                logger.log(Level.WARN, "User has not added: {}", e);
-                throw new CommandException("User has not added.", e);
-            }
-        } else {
-            router.setPageUrl(ADMIN_USER_ADD_PAGE);
-            try {
-                List<Tariff> tariffs = tariffService.findAllByStatus(TariffStatus.ACTIVE);
-                request.setAttribute(ADMIN_TARIFFS_LIST_FOR_NEW_USER, tariffs);
-            } catch (ServiceException e) {
-                logger.log(Level.ERROR, "Could not find all tariffs in database: {}", e);
-                throw new CommandException(e);
-            }
+        InputContent content = new InputContent(request);
+        try {
+            userService.addUser(content);
+            router.setPageUrl(content.getPageUrl());
+            content.getRequestAttributes().forEach((s, o) -> {
+                request.setAttribute(s, o);
+            });
+            return router;
+        } catch (ServiceException e) {
+            throw new CommandException(e);
         }
-        return router;
     }
 }

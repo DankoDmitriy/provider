@@ -31,6 +31,7 @@ public enum CommandType {
     CHANGE_ROLE(new AdminUserRoleChangeCommand()),
     USER_PROFILE(new AdminUserProfileCommand()),
     USER_FINANCE(new AdminUserFinanceCommand()),
+    USER_ACTION(new AdminUserActionsCommand()),
     TARIFF_LIST(new AdminTariffsListCommand()),
     TARIFF_ADD(new AdminTariffAddCommand()),
     TARIFF_EDIT(new AdminTariffEditCommand()),

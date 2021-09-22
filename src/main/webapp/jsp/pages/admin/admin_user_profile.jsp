@@ -188,7 +188,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <a class="btn btn-info "
-                                           href="${pageContext.request.contextPath}/controller?command=PERSONAL_FINANCE_OPERATIONS&user_id=${requestScope.userProfile.userId}">
+                                           href="${pageContext.request.contextPath}/controller?command=USER_ACTION&user_id=${requestScope.userProfile.userId}&nextPage=0&previewPage=-1">
                                             <fmt:message key="label.admin.userProfile.button.actions"/></a>
                                     </div>
                                 </div>

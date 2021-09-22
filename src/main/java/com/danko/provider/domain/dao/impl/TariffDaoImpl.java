@@ -73,6 +73,25 @@ public class TariffDaoImpl implements TariffDao {
             WHERE 
             tariff_id=?
             """;
+
+    private static final String SQL_COUNT_ROWS = """
+            SELECT count(*) as line 
+            FROM tariffs
+            """;
+
+    private static final String SQL_FIND_TARIFF_BY_PAGE_NUMBER = """
+            SELECT
+            tariff_id, description, max_speed, min_speed, traffic, price, ts.status, pwo.period
+            FROM
+            tariffs
+            JOIN
+            tariff_statuses AS ts ON tariffs.tariff_statuses_status_id = ts.status_id
+            JOIN
+            periodicity_write_off AS pwo ON tariffs.periodicity_write_off_write_off_id = pwo.write_off_id
+            ORDER BY
+            tariff_statuses_status_id
+            LIMIT ?,?            
+            """;
     private JdbcTemplate<Tariff> jdbcTemplate;
 
     public TariffDaoImpl() {
@@ -127,5 +146,17 @@ public class TariffDaoImpl implements TariffDao {
         );
         tariff.setTariffId(generatedId);
         return generatedId;
+    }
+
+    @Override
+    public long rowsInTable() throws DaoException {
+        return jdbcTemplate.executeCountRows(SQL_COUNT_ROWS);
+    }
+
+    @Override
+    public List<Tariff> findAllPageLimit(long startPosition, long rows) throws DaoException {
+        return jdbcTemplate.executeSelectQuery(SQL_FIND_TARIFF_BY_PAGE_NUMBER,
+                startPosition,
+                rows);
     }
 }

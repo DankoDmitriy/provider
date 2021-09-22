@@ -2,6 +2,7 @@ package com.danko.provider.controller.command.impl.admin;
 
 import com.danko.provider.controller.Router;
 import com.danko.provider.controller.command.Command;
+import com.danko.provider.controller.command.InputContent;
 import com.danko.provider.domain.entity.PaymentCardSerial;
 import com.danko.provider.domain.service.PaymentCardService;
 import com.danko.provider.domain.service.ServiceProvider;
@@ -32,27 +33,17 @@ public class AdminPaymentCardAddCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
-
-        String series = request.getParameter(PAYMENT_CARD_ADD_SERIES);
-        String amount = request.getParameter(PAYMENT_CARD_ADD_AMOUNT);
-        String count = request.getParameter(PAYMENT_CARD_ADD_COUNT);
-        String dateExpiredStr = request.getParameter(PAYMENT_CARD_ADD_DATE_EXPIRED);
-
-        if (series != null && amount != null && count != null && dateExpiredStr != null) {
-            try {
-                Map<String, String> cardsMap = paymentCardService.addCards(series, amount, count, dateExpiredStr);
-                LocalDateTime cardExpiredDate = LocalDate.parse(dateExpiredStr, dateTimeFormatter).atStartOfDay();
-                //                FIXME - положить объект в сессию и отправить польлзователя редиректом. ОТ F5
-                request.setAttribute(ADMIN_NEW_PAYMENT_CARDS_LIST, cardsMap);
-                request.setAttribute(ADMIN_NEW_PAYMENT_CARDS_EXPIRED_DATE, cardExpiredDate);
-                router.setPageUrl(ADMIN_PAYMENTS_CARD_GENERATED_PAGE);
-
-            } catch (ServiceException e) {
-                throw new CommandException(e);
-            }
-        } else {
-            router.setPageUrl(ADMIN_PAYMENTS_CARD_ADD_PAGE);
+        InputContent content = new InputContent(request);
+//                FIXME - положить объект в сессию и отправить польлзователя редиректом. ОТ F5
+        try {
+            paymentCardService.addCards(content);
+            router.setPageUrl(content.getPageUrl());
+            content.getRequestAttributes().forEach((s, o) -> {
+                request.setAttribute(s, o);
+            });
+            return router;
+        } catch (ServiceException e) {
+            throw new CommandException(e);
         }
-        return router;
     }
 }

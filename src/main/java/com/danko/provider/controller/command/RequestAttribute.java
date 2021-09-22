@@ -1,6 +1,14 @@
 package com.danko.provider.controller.command;
 
 public final class RequestAttribute {
+
+    //   Common parameter for pagination
+    public static final String PAGINATION_USER_ID = "user_id";
+    public static final String PAGINATION_USER_ROLE = "userRole";
+    public static final String PAGINATION_NEXT_PAGE = "nextPage";
+    public static final String PAGINATION_PREVIEW_PAGE = "previewPage";
+    public static final String PAGINATION_RESULT_LIST = "resultList";
+
     //    User personal Attributes
     public static final String USER_PERSONAL_TRANSACTIONS_LIMIT = "transactions";
     public static final String USER_PERSONAL_TRANSACTIONS_ALL = "transactionsAll";
@@ -17,7 +25,7 @@ public final class RequestAttribute {
 
     //    Admin attributes
     //    Admin users List Page
-    public static final String ADMIN_USERS_LIST = "users";
+    public static final String ADMIN_USERS_LIST = "resultList";
     public static final String ADMIN_USERS_LIST_RESULT_WORK_FOR_MESSAGE = "resultWork";
 
     //    Admin tariff List Page
@@ -47,7 +55,6 @@ public final class RequestAttribute {
     //    Admin Edit user Page
     public static final String ADMIN_USER_EDIT = "user";
     public static final String ADMIN_USER_EDIT_ORIGINAL = "userOrigin";
-
 
     private RequestAttribute() {
     }

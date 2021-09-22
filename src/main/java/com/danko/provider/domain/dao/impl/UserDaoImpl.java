@@ -192,6 +192,29 @@ public class UserDaoImpl implements UserDao {
             user_id=?
             """;
 
+    private static final String SQL_COUNT_ROWS_BY_USER_ROLE = """
+            SELECT count(*) as line 
+            FROM USERS
+            WHERE user_roles_role_id=(select role_id from user_roles where role=?)
+            """;
+
+    private static final String SQL_FIND_USERS_BY_ROLE_AND_PAGE_NUMBER = """
+            SELECT
+            user_id, first_name, last_name, patronymic, contract_number, contract_date, balance, name, email, 
+            traffic, ur.role, us.status, tariffs_tariff_id
+            FROM
+            users
+            JOIN
+            user_roles AS ur ON users.user_roles_role_id = ur.role_id
+            JOIN
+            user_statuses AS us ON users.user_statuses_status_id = us.status_id
+            WHERE 
+            user_roles_role_id=(select role_id from user_roles where role=?)
+            ORDER BY
+            user_statuses_status_id
+            LIMIT ?,?
+            """;
+
     private JdbcTemplate<User> jdbcTemplate;
 
     public UserDaoImpl() {
@@ -365,5 +388,18 @@ public class UserDaoImpl implements UserDao {
     @Override
     public boolean updateRole(long userId, UserRole role) throws DaoException {
         return jdbcTemplate.executeUpdateQuery(SQL_UPDATE_ROLE, role.name(), userId);
+    }
+
+    @Override
+    public long rowsInTableByUserRole(UserRole role) throws DaoException {
+        return jdbcTemplate.executeCountRows(SQL_COUNT_ROWS_BY_USER_ROLE, role.name());
+    }
+
+    @Override
+    public List<User> findAllByUserRolePageLimit(UserRole role, long startPosition, long rows) throws DaoException {
+        return jdbcTemplate.executeSelectQuery(SQL_FIND_USERS_BY_ROLE_AND_PAGE_NUMBER,
+                role.name(),
+                startPosition,
+                rows);
     }
 }

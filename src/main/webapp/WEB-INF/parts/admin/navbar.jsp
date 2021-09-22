@@ -22,7 +22,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item"
-                       href="${pageContext.request.contextPath}/controller?command=USERS_LIST">
+                       href="${pageContext.request.contextPath}/controller?command=USERS_LIST&userRole=USER&nextPage=0&previewPage=-1">
                         <fmt:message key="label.admin.navBar.user.all"/></a>
                     <a class="dropdown-item"
                        href="${pageContext.request.contextPath}/controller?command=USER_ADD">
@@ -42,7 +42,7 @@
                     <fmt:message key="label.admin.navBar.tariffs"/>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?command=TARIFF_LIST">
+                    <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?command=TARIFF_LIST&nextPage=0&previewPage=-1">
                         <fmt:message key="label.admin.navBar.tariff.all"/></a>
 
                     <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?command=TARIFF_ADD">
@@ -72,7 +72,8 @@
                     <fmt:message key="label.admin.navBar.employees"/>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?command=EMPLOYEE_LIST">
+                    <a class="dropdown-item"
+                       href="${pageContext.request.contextPath}/controller?command=EMPLOYEE_LIST&userRole=ADMIN&nextPage=0&previewPage=-1">
                         <fmt:message key="label.admin.navBar.employee.all"/></a>
                 </div>
             </li>
