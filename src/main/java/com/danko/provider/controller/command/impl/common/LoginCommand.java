@@ -58,8 +58,7 @@ public class LoginCommand implements Command {
             }
             return router;
         } catch (ServiceException e) {
-            logger.log(Level.WARN, "Logon process has not finished: {}", e);
-            throw new CommandException("Logon process has not finished.", e);
+            throw new CommandException(e);
         }
     }
 }

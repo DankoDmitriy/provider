@@ -1,13 +1,15 @@
 package com.danko.provider.domain.service.impl;
 
-import com.danko.provider.controller.Router;
 import com.danko.provider.controller.command.InputContent;
 import com.danko.provider.domain.dao.TariffDao;
 import com.danko.provider.domain.dao.TransactionManager;
-import com.danko.provider.domain.entity.*;
+import com.danko.provider.domain.entity.PeriodicityWriteOff;
+import com.danko.provider.domain.entity.Tariff;
+import com.danko.provider.domain.entity.TariffStatus;
 import com.danko.provider.domain.service.TariffService;
 import com.danko.provider.exception.DaoException;
 import com.danko.provider.exception.ServiceException;
+import com.danko.provider.util.PaginationCalculate;
 import com.danko.provider.validator.InputDataValidator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -15,10 +17,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.danko.provider.controller.command.PageUrl.*;
 import static com.danko.provider.controller.command.ParamName.*;
@@ -31,66 +30,60 @@ public class TariffServiceImpl implements TariffService {
     private final TariffDao tariffDao;
     private final TransactionManager transactionManager;
     private final InputDataValidator validator;
+    private final PaginationCalculate paginationCalculate;
 
     public TariffServiceImpl(TariffDao tariffDao, TransactionManager transactionManager) {
         this.tariffDao = tariffDao;
         this.transactionManager = transactionManager;
         this.validator = InputDataValidator.getInstance();
+        this.paginationCalculate = PaginationCalculate.getInstance();
     }
 
     @Override
     public List<Tariff> findAllTariffs() throws ServiceException {
         try {
-            transactionManager.startTransaction();
-            return tariffDao.findAll();
-        } catch (DaoException e) {
-            logger.log(Level.ERROR, "Could not find tariffs in database: {}", e);
-            throw new ServiceException("Could not find tariffs in database", e);
-        } finally {
             try {
-                transactionManager.endTransaction();
+                transactionManager.startTransaction();
+                return tariffDao.findAll();
             } catch (DaoException e) {
-                logger.log(Level.ERROR, "End transaction error: {}", e);
-                throw new ServiceException("End transaction error", e);
+                throw new ServiceException(e);
+            } finally {
+                transactionManager.endTransaction();
             }
+        } catch (DaoException | ServiceException e1) {
+            throw new ServiceException(e1);
         }
     }
 
     @Override
     public Optional<Tariff> findById(long id) throws ServiceException {
-        Optional<Tariff> optionalTariff = Optional.empty();
         try {
-            transactionManager.startTransaction();
-            return tariffDao.findById(id);
-        } catch (DaoException e) {
-            logger.log(Level.ERROR, "Can't find tariff by id: {}", e);
-            throw new ServiceException("Can't find tariff by id", e);
-        } finally {
             try {
-                transactionManager.endTransaction();
+                transactionManager.startTransaction();
+                return tariffDao.findById(id);
             } catch (DaoException e) {
-                logger.log(Level.ERROR, "End transaction error: {}", e);
-                throw new ServiceException("End transaction error", e);
+                throw new ServiceException(e);
+            } finally {
+                transactionManager.endTransaction();
             }
+        } catch (DaoException | ServiceException e1) {
+            throw new ServiceException(e1);
         }
     }
 
     @Override
     public List<Tariff> findAllByStatus(TariffStatus status) throws ServiceException {
-        List<Tariff> list;
         try {
-            transactionManager.startTransaction();
-            return tariffDao.findAllByStatus(status);
-        } catch (DaoException e) {
-            logger.log(Level.ERROR, "Could not find tariffs in database: {}", e);
-            throw new ServiceException("Could not find tariffs in database", e);
-        } finally {
             try {
-                transactionManager.endTransaction();
+                transactionManager.startTransaction();
+                return tariffDao.findAllByStatus(status);
             } catch (DaoException e) {
-                logger.log(Level.ERROR, "End transaction error: {}", e);
-                throw new ServiceException("End transaction error", e);
+                throw new ServiceException(e);
+            } finally {
+                transactionManager.endTransaction();
             }
+        } catch (DaoException | ServiceException e1) {
+            throw new ServiceException(e1);
         }
     }
 
@@ -150,7 +143,6 @@ public class TariffServiceImpl implements TariffService {
             content.putRequestAttribute(ADMIN_TARIFF_WRITE_OFF_LIST_FOR_NEW_TARIFF, periodicityWriteOffs);
             content.setPageUrl(ADMIN_TARIFF_ADD_PAGE);
         }
-
     }
 
     @Override
@@ -238,39 +230,20 @@ public class TariffServiceImpl implements TariffService {
 
     @Override
     public void findPageTariff(InputContent content, long rowsOnPage) throws ServiceException {
-        List<Tariff> tariffs;
-        long previewPage;
-        long rowsInTable;
-        long nextPage;
-        long startPosition;
-        String nextPageStr = content.getRequestParameter(PAGINATION_NEXT_PAGE)[0];
-//        InputDataValidator inputDataValidator = InputDataValidator.getInstance();
         try {
             try {
+                String nextPageStr = content.getRequestParameter(PAGINATION_NEXT_PAGE)[0];
                 transactionManager.startTransaction();
-                nextPage = Long.parseLong(nextPageStr);
-                if (nextPage <= 0) {
-                    rowsInTable = tariffDao.rowsInTable();
-                    nextPage = 0;
-                    previewPage = -1;
-                    startPosition = nextPage * rowsOnPage;
-                    tariffs = tariffDao.findAllPageLimit(startPosition, rowsOnPage);
-                    if (rowsInTable > rowsOnPage) {
-                        nextPage++;
-                    }
-                } else {
-                    rowsInTable = tariffDao.rowsInTable();
-                    startPosition = nextPage * rowsOnPage;
-                    tariffs = tariffDao.findAllPageLimit(startPosition, rowsOnPage);
-                    if (rowsInTable > (rowsOnPage * (nextPage + 1))) {
-                        previewPage = nextPage - 1;
-                        nextPage++;
-                    } else {
-                        previewPage = nextPage - 1;
-                    }
-                }
-                content.putRequestAttribute(PAGINATION_NEXT_PAGE, nextPage);
-                content.putRequestAttribute(PAGINATION_PREVIEW_PAGE, previewPage);
+                long nextPage = Long.parseLong(nextPageStr);
+                long rowsInTable = tariffDao.rowsInTable();
+                Map<String, Long> calculatedData = paginationCalculate.calculateNextAndPreviewPageValue(
+                        nextPage, rowsInTable, rowsOnPage);
+                List<Tariff> tariffs = tariffDao.findAllPageLimit(
+                        calculatedData.get(PaginationCalculate.START_POSITION), rowsOnPage);
+                content.putRequestAttribute(PAGINATION_NEXT_PAGE,
+                        calculatedData.get(PaginationCalculate.NEXT_PAGE));
+                content.putRequestAttribute(PAGINATION_PREVIEW_PAGE,
+                        calculatedData.get(PaginationCalculate.PREVIEW_PAGE));
                 content.putRequestAttribute(PAGINATION_RESULT_LIST, tariffs);
                 content.setPageUrl(ADMIN_TARIFFS_LIST_PAGE);
             } catch (DaoException e) {
@@ -307,5 +280,4 @@ public class TariffServiceImpl implements TariffService {
             return null;
         }
     }
-
 }

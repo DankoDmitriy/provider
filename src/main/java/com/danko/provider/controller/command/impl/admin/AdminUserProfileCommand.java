@@ -20,6 +20,7 @@ import java.util.Optional;
 import static com.danko.provider.controller.command.PageUrl.ADMIN_USERS_LIST_PAGE_REDIRECT;
 import static com.danko.provider.controller.command.PageUrl.ADMIN_USER_PROFILE_PAGE;
 import static com.danko.provider.controller.command.ParamName.USER_PROFILE_ID;
+import static com.danko.provider.controller.command.RequestAttribute.*;
 
 public class AdminUserProfileCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
@@ -44,9 +45,9 @@ public class AdminUserProfileCommand implements Command {
                     List<AccountTransaction> transactionList = accountTransactionService.findAllByUserIdLimit(userId);
                     List<UserAction> userActionList = userActionService.findAllByUserIdLimit(userId);
                     user.setTariff(tariff);
-                    request.setAttribute("userProfile", user);
-                    request.setAttribute("transactionList", transactionList);
-                    request.setAttribute("userActionList", userActionList);
+                    request.setAttribute(ADMIN_USER_PROFILE_USER, user);
+                    request.setAttribute(ADMIN_USER_PROFILE_TRANSACTIONS, transactionList);
+                    request.setAttribute(ADMIN_USER_PROFILE_ACTIONS, userActionList);
                     router.setPageUrl(ADMIN_USER_PROFILE_PAGE);
                 }
             }

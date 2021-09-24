@@ -36,7 +36,8 @@ public enum CommandType {
     TARIFF_ADD(new AdminTariffAddCommand()),
     TARIFF_EDIT(new AdminTariffEditCommand()),
     EMPLOYEE_LIST(new AdminEmployeeListCommand()),
-    CARD_ADD(new AdminPaymentCardAddCommand());
+    CARD_ADD(new AdminPaymentCardAddCommand()),
+    CARD_SEARCH(new AdminPaymentCardSearchCommand());
     //    Дефлотная комманда добавить.
     private Command command;
 

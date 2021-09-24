@@ -26,7 +26,7 @@ import static com.danko.provider.controller.command.SessionAttribute.SESSION_USE
 
 public class ChangeTariffCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
-    private static final String ID_CHECK_REGEX = "^[1-9]{1}[0-9]*$";
+    private static final String ID_CHECK_REGEX = "^[1-9]{1}[0-9]{0,16}$";
     private final UserService userService = ServiceProvider.getInstance().getUserService();
     private final TariffService tariffService = ServiceProvider.getInstance().getTariffService();
 
@@ -53,7 +53,7 @@ public class ChangeTariffCommand implements Command {
                 router.setPageUrl(USER_TARIFFS_LIST);
             }
         } catch (ServiceException e) {
-            throw new CommandException();
+            throw new CommandException(e);
         }
         return router;
     }

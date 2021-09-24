@@ -13,4 +13,6 @@ public interface PaymentCardService {
     Optional<PaymentCard> findByCardNumberAndPin(String cardNumber, String cardPin) throws ServiceException;
 
     void addCards(InputContent content) throws ServiceException;
+
+    void findByNumber(InputContent content) throws ServiceException;
 }

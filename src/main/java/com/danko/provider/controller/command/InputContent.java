@@ -8,8 +8,8 @@ public class InputContent {
     private final HashMap<String, Object> requestAttributes;
     private final Map<String, String[]> requestParameters;
     private final Map<String, Object> sessionAttributes;
-    private String pageUrl = null;
-    private boolean redirect = false;
+    private String pageUrl;
+    private boolean redirect;
 
     public InputContent(HttpServletRequest request) {
         requestParameters = request.getParameterMap();

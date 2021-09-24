@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class AdminUserFinanceCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
-    public static final long ROWS_ON_PAGE = 5;
+    private static final long ROWS_ON_PAGE = 5;
     private final AccountTransactionService accountTransactionService = ServiceProvider.getInstance().getAccountTransactionService();
 
     @Override

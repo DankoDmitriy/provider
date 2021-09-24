@@ -42,19 +42,13 @@ public class HomeCommand implements Command {
                     router.setPageUrl(USER_PROFILE_PAGE);
                     break;
                 case ADMIN:
-//       TODO - подумать куда будет уходить админ.
                     router.setPageUrl(ADMIN_MAIN_PAGE);
-//                    List<User> users = userService.findAllUsers();
-//                    request.setAttribute("users", users);
                     break;
                 default:
                     router.setRouteType(Router.RouteType.REDIRECT);
                     router.setPageUrl(request.getContextPath());
-//                    FIXME - или так или так.
-//                    router.setPageUrl(LOGIN_PAGE);
             }
         } catch (ServiceException e) {
-            logger.log(Level.ERROR, "Could not find information database: {}", e);
             throw new CommandException(e);
         }
         return router;

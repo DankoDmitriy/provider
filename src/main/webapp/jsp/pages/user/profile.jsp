@@ -177,7 +177,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <a class="btn btn-info "
-                                   href="${pageContext.request.contextPath}/controller?command=PERSONAL_FINANCE_OPERATIONS">
+                                   href="${pageContext.request.contextPath}/controller?command=PERSONAL_FINANCE_OPERATIONS&user_id=${sessionScope.user.userId}&nextPage=0&previewPage=-1">
                                     <fmt:message key="label.user.profile.last.transactions.button"/></a>
                             </div>
                         </div>

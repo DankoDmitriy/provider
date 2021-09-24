@@ -33,6 +33,8 @@ public final class PageUrl {
     public static final String ADMIN_PAYMENTS_CARD_ADD_PAGE = "/jsp/pages/admin/admin_express_payment_card_add.jsp";
     public static final String ADMIN_PAYMENTS_CARD_ADD_PAGE_REDIRECT = "/controller?command=CARD_ADD";
     public static final String ADMIN_PAYMENTS_CARD_GENERATED_PAGE = "/jsp/pages/admin/admin_express_payment_cards_generated_list.jsp";
+    public static final String ADMIN_PAYMENTS_CARD_SEARCH = "/jsp/pages/admin/admin_express_payment_card_search.jsp";
+    public static final String ADMIN_PAYMENTS_CARD_SEARCH_REDIRECT = "/controller?command=SEARCH_CARD";
 
     public static final String ADMIN_MAIN_PAGE = "/jsp/pages/admin/admin_main.jsp";
 

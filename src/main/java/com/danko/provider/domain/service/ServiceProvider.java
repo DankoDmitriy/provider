@@ -8,12 +8,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ServiceProvider {
     private static ServiceProvider instance;
     private static final AtomicBoolean isServiceProviderCreated = new AtomicBoolean(false);
-    private UserService userService;
-    private TariffService tariffService;
-    private AccountTransactionService accountTransactionService;
-    private UserActionService userActionService;
-    private PaymentCardService paymentCardService;
-    private EmailService emailService;
+    private final UserService userService;
+    private final TariffService tariffService;
+    private final AccountTransactionService accountTransactionService;
+    private final UserActionService userActionService;
+    private final PaymentCardService paymentCardService;
+    private final EmailService emailService;
 
     private ServiceProvider() {
         DaoProvider daoProvider = DaoProvider.getInstance();
@@ -26,9 +26,15 @@ public class ServiceProvider {
                 daoProvider.getAccountTransactionDao(),
                 transactionManager);
         this.tariffService = new TariffServiceImpl(daoProvider.getTariffDao(), transactionManager);
-        this.accountTransactionService = new AccountTransactionServiceImpl(daoProvider.getAccountTransactionDao(), transactionManager);
+        this.accountTransactionService = new AccountTransactionServiceImpl(
+                daoProvider.getAccountTransactionDao(),
+                transactionManager);
         this.userActionService = new UserActionServiceImpl(daoProvider.getUserActionDao(), transactionManager);
-        this.paymentCardService = new PaymentCardServiceImpl(daoProvider.getPaymentCardDao(), daoProvider.getPaymentCardSerialDao(), transactionManager);
+        this.paymentCardService = new PaymentCardServiceImpl(
+                daoProvider.getPaymentCardDao(),
+                daoProvider.getPaymentCardSerialDao(),
+                daoProvider.getUserDao(),
+                transactionManager);
         this.emailService = new EmailServiceImpl();
 
     }

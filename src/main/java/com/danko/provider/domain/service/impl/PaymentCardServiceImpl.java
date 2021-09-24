@@ -4,9 +4,11 @@ import com.danko.provider.controller.command.InputContent;
 import com.danko.provider.domain.dao.PaymentCardDao;
 import com.danko.provider.domain.dao.PaymentCardSerialDao;
 import com.danko.provider.domain.dao.TransactionManager;
+import com.danko.provider.domain.dao.UserDao;
 import com.danko.provider.domain.dao.impl.PaymentCardDaoImpl;
 import com.danko.provider.domain.entity.PaymentCard;
 import com.danko.provider.domain.entity.PaymentCardSerial;
+import com.danko.provider.domain.entity.User;
 import com.danko.provider.domain.service.PaymentCardService;
 import com.danko.provider.exception.DaoException;
 import com.danko.provider.exception.ServiceException;
@@ -25,8 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.danko.provider.controller.command.PageUrl.ADMIN_PAYMENTS_CARD_ADD_PAGE;
-import static com.danko.provider.controller.command.PageUrl.ADMIN_PAYMENTS_CARD_GENERATED_PAGE;
+import static com.danko.provider.controller.command.PageUrl.*;
 import static com.danko.provider.controller.command.ParamName.*;
 import static com.danko.provider.controller.command.RequestAttribute.ADMIN_NEW_PAYMENT_CARDS_EXPIRED_DATE;
 import static com.danko.provider.controller.command.RequestAttribute.ADMIN_NEW_PAYMENT_CARDS_LIST;
@@ -39,13 +40,16 @@ public class PaymentCardServiceImpl implements PaymentCardService {
     private static final int PAYMENT_CARD_PIN_LENGTH = 8;
     private final PaymentCardDao paymentCardDao;
     private final PaymentCardSerialDao paymentCardSerialDao;
+    private final UserDao userDao;
     private final TransactionManager transactionManager;
+    private final InputDataValidator validator;
 
-
-    public PaymentCardServiceImpl(PaymentCardDao paymentCardDao, PaymentCardSerialDao paymentCardSerialDao, TransactionManager transactionManager) {
+    public PaymentCardServiceImpl(PaymentCardDao paymentCardDao, PaymentCardSerialDao paymentCardSerialDao, UserDao userDao, TransactionManager transactionManager) {
         this.paymentCardDao = paymentCardDao;
         this.paymentCardSerialDao = paymentCardSerialDao;
+        this.userDao = userDao;
         this.transactionManager = transactionManager;
+        this.validator = InputDataValidator.getInstance();
     }
 
     //    FIXME - Наверное вообще не нужен будет этот метод.
@@ -72,7 +76,6 @@ public class PaymentCardServiceImpl implements PaymentCardService {
 
     @Override
     public void addCards(InputContent content) throws ServiceException {
-        InputDataValidator inputDataValidator = InputDataValidator.getInstance();
         String[] series = content.getRequestParameter(PAYMENT_CARD_ADD_SERIES);
         String[] amount = content.getRequestParameter(PAYMENT_CARD_ADD_AMOUNT);
         String[] count = content.getRequestParameter(PAYMENT_CARD_ADD_COUNT);
@@ -81,10 +84,10 @@ public class PaymentCardServiceImpl implements PaymentCardService {
                 amount != null &&
                 count != null &&
                 dateExpiredStr != null &&
-                inputDataValidator.isPaymentCardSeriesValid(series[0]) &&
-                inputDataValidator.isPaymentCardAmountValid(amount[0]) &&
-                inputDataValidator.isPaymentCardCountValid(count[0]) &&
-                inputDataValidator.isPaymentCardDateExpiredValid(dateExpiredStr[0])) {
+                validator.isPaymentCardSeriesValid(series[0]) &&
+                validator.isPaymentCardAmountValid(amount[0]) &&
+                validator.isPaymentCardCountValid(count[0]) &&
+                validator.isPaymentCardDateExpiredValid(dateExpiredStr[0])) {
             try {
                 try {
                     transactionManager.startTransaction();
@@ -128,6 +131,40 @@ public class PaymentCardServiceImpl implements PaymentCardService {
             }
         } else {
             content.setPageUrl(ADMIN_PAYMENTS_CARD_ADD_PAGE);
+        }
+    }
+
+    @Override
+    public void findByNumber(InputContent content) throws ServiceException {
+        String[] cardNumber = content.getRequestParameter("cardNumber");
+        content.setPageUrl(ADMIN_PAYMENTS_CARD_SEARCH);
+        try {
+            try {
+                transactionManager.startTransaction();
+                if (cardNumber != null && validator.isPaymentCardNumberValid(cardNumber[0])) {
+                    String cardNumberHash = PasswordHasher.hashString(cardNumber[0]);
+                    Optional<PaymentCard> paymentCardOptional = paymentCardDao.findByCardNumber(cardNumberHash);
+                    if (!paymentCardOptional.isEmpty()) {
+                        PaymentCard card = paymentCardOptional.get();
+                        content.putRequestAttribute("card", card);
+                        if (card.getCardStatus().equals(PaymentCard.CardStatus.USED)) {
+                            User user = userDao.findById(paymentCardDao.getUserIdActivatedCard(card.getCardId())).get();
+                            content.putRequestAttribute("user", user);
+                        }
+                        content.putRequestAttribute("searchResult", true);
+                    } else {
+                        content.putRequestAttribute("searchResult", false);
+                    }
+                } else {
+                    content.putRequestAttribute("searchResult", false);
+                }
+            } catch (DaoException e) {
+                throw new ServiceException(e);
+            } finally {
+                transactionManager.endTransaction();
+            }
+        } catch (DaoException | ServiceException e1) {
+            throw new ServiceException(e1);
         }
     }
 }

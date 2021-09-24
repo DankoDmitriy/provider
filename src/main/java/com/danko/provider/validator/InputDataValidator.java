@@ -32,6 +32,7 @@ public class InputDataValidator {
     private static final String PAYMENTS_CARD_SERIES_REGEX = "^[A-Z]{3,5}$";
     private static final String PAYMENTS_CARD_AMOUNT_REGEX = "^[1-9]{1}[0-9]{0,4}$";
     private static final String PAYMENTS_CARD_COUNT_REGEX = "^[1-9]{1}[0-9]{0,4}$";
+    private static final String PAYMENT_CARD_NUMBER_REGEX = "^[A-Z]{3,5}[0-9]{7}$";
 
     private static final String ID_CHECK_REGEX = "^[1-9]{1}[0-9]{0,16}$";
 
@@ -124,6 +125,10 @@ public class InputDataValidator {
 
     public boolean isPaymentCardCountValid(String count) {
         return count != null && count.matches(PAYMENTS_CARD_COUNT_REGEX);
+    }
+
+    public boolean isPaymentCardNumberValid(String number) {
+        return number != null && number.matches(PAYMENT_CARD_NUMBER_REGEX);
     }
 
     public boolean isPaymentCardDateExpiredValid(String dateExpiredStr) {

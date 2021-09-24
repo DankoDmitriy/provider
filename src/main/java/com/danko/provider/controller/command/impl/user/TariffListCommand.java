@@ -39,6 +39,7 @@ public class TariffListCommand implements Command {
                 request.setAttribute(USER_TARIFF_LIST, tariffs);
                 router.setPageUrl(USER_TARIFFS_LIST);
             } catch (ServiceException e) {
+//                FIXME - переписать. нельзя использовать исключение, как флаг для действия.
                 logger.log(Level.ERROR, "Could not find tariffs in database: {}", e);
                 router.setPageUrl(HOME_PAGE);
             }

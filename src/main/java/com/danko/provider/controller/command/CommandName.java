@@ -27,10 +27,11 @@ public final class CommandName {
     public static final String COMMAND_ADMIN_USER_CHANGE_ROLE = "CHANGE_ROLE";
     public static final String COMMAND_ADMIN_USER_PERSONAL_FINANCE = "USER_FINANCE";
     public static final String COMMAND_ADMIN_USER_ACTION = "USER_ACTION";
+    public static final String COMMAND_ADMIN_CARD_SEARCH = "CARD_SEARCH";
 
     //    TODO - Не реализованны.
     public static final String COMMAND_ADMIN_USER_SEARCH = "USER_SEARCH";
-    public static final String COMMAND_ADMIN_CARD_SEARCH = "CARD_SEARCH";
+
     public static final String COMMAND_ADMIN_STATISTICS = "STATISTICS";
 
     //    Commands for User role
@@ -58,7 +59,8 @@ public final class CommandName {
                     COMMAND_ADMIN_TARIFF_ADD,
                     COMMAND_ADMIN_TARIFF_EDIT,
                     COMMAND_ADMIN_EMPLOYEE_LIST,
-                    COMMAND_ADMIN_CARD_ADD
+                    COMMAND_ADMIN_CARD_ADD,
+                    COMMAND_ADMIN_CARD_SEARCH
             ));
 
 

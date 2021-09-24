@@ -14,7 +14,7 @@
 
         <%--                Menu for actions--%>
         <li class="breadcrumb-item">
-            <a href="${pageContext.request.contextPath}/controller?command=PERSONAL_FINANCE_OPERATIONS">
+            <a href="${pageContext.request.contextPath}/controller?command=PERSONAL_FINANCE_OPERATIONS&user_id=${sessionScope.user.userId}&nextPage=0&previewPage=-1">
                 <fmt:message key="label.user.navbar.finance"/>
             </a></li>
         <li class="breadcrumb-item">
@@ -22,7 +22,7 @@
                 <fmt:message key="label.user.navbar.tariffs"/>
             </a></li>
         <li class="breadcrumb-item">
-            <a href="${pageContext.request.contextPath}/controller?command=USER_ACTION_LIST">
+            <a href="${pageContext.request.contextPath}/controller?command=USER_ACTION_LIST&user_id=${sessionScope.user.userId}&nextPage=0&previewPage=-1">
                 <fmt:message key="label.user.navbar.actions"/>
             </a></li>
         <li class="breadcrumb-item">

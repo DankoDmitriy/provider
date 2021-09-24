@@ -40,8 +40,7 @@ public class PayCommand implements Command {
                 user.setBalance(newBalance);
                 session.setAttribute(SESSION_USER, user);
             } catch (ServiceException e) {
-                logger.log(Level.ERROR, "Payment card can not activated: {}", e);
-                throw new CommandException("Payment card can not activated.", e);
+                throw new CommandException(e);
             }
             router.setPageUrl(HOME_PAGE);
         } else {

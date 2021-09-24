@@ -8,10 +8,7 @@ import com.danko.provider.domain.service.ServiceProvider;
 import com.danko.provider.domain.service.UserService;
 import com.danko.provider.exception.DaoException;
 import com.danko.provider.exception.ServiceException;
-import com.danko.provider.util.PasswordGenerator;
-import com.danko.provider.util.PasswordHasher;
-import com.danko.provider.util.UniqueStringGenerator;
-import com.danko.provider.util.UrlUtil;
+import com.danko.provider.util.*;
 import com.danko.provider.validator.InputDataValidator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -22,10 +19,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.danko.provider.controller.command.PageUrl.*;
 import static com.danko.provider.controller.command.ParamName.*;
@@ -44,6 +38,7 @@ public class UserServiceImpl implements UserService {
     private final AccountTransactionDao accountTransactionDao;
     private final TransactionManager transactionManager;
     private final InputDataValidator inputDataValidator;
+    private final PaginationCalculate paginationCalculate;
 
 
     public UserServiceImpl(UserDao userDao, TariffDao tariffDao, UserActionDao userActionDao, PaymentCardDao paymentCardDao, AccountTransactionDao accountTransactionDao, TransactionManager transactionManager) {
@@ -54,6 +49,7 @@ public class UserServiceImpl implements UserService {
         this.accountTransactionDao = accountTransactionDao;
         this.transactionManager = transactionManager;
         this.inputDataValidator = InputDataValidator.getInstance();
+        this.paginationCalculate = PaginationCalculate.getInstance();
     }
 
     @Override
@@ -74,40 +70,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void findPageByUserRole(InputContent content, long rowsOnPage) throws ServiceException {
-        List<User> users;
-        long previewPage;
-        long rowsInTable;
-        long nextPage;
-        long startPosition;
         String userRoleStr = content.getRequestParameter(PAGINATION_USER_ROLE)[0];
         String nextPageStr = content.getRequestParameter(PAGINATION_NEXT_PAGE)[0];
         try {
             try {
                 transactionManager.startTransaction();
                 if (inputDataValidator.isUserRoleValid(userRoleStr.toUpperCase())) {
-                    nextPage = Long.parseLong(nextPageStr);
-                    if (nextPage <= 0) {
-                        rowsInTable = userDao.rowsInTableByUserRole(UserRole.valueOf(userRoleStr.toUpperCase()));
-                        nextPage = 0;
-                        previewPage = -1;
-                        startPosition = nextPage * rowsOnPage;
-                        users = userDao.findAllByUserRolePageLimit(UserRole.valueOf(userRoleStr.toUpperCase()), startPosition, rowsOnPage);
-                        if (rowsInTable > rowsOnPage) {
-                            nextPage++;
-                        }
-                    } else {
-                        rowsInTable = userDao.rowsInTableByUserRole(UserRole.valueOf(userRoleStr.toUpperCase()));
-                        startPosition = nextPage * rowsOnPage;
-                        users = userDao.findAllByUserRolePageLimit(UserRole.valueOf(userRoleStr.toUpperCase()), startPosition, rowsOnPage);
-                        if (rowsInTable > (rowsOnPage * (nextPage + 1))) {
-                            previewPage = nextPage - 1;
-                            nextPage++;
-                        } else {
-                            previewPage = nextPage - 1;
-                        }
-                    }
-                    content.putRequestAttribute(PAGINATION_NEXT_PAGE, nextPage);
-                    content.putRequestAttribute(PAGINATION_PREVIEW_PAGE, previewPage);
+                    long nextPage = Long.parseLong(nextPageStr);
+
+                    long rowsInTable = userDao.rowsInTableByUserRole(UserRole.valueOf(userRoleStr.toUpperCase()));
+                    Map<String, Long> calculatedData = paginationCalculate.calculateNextAndPreviewPageValue(
+                            nextPage, rowsInTable, rowsOnPage);
+
+                    List<User> users = userDao.findAllByUserRolePageLimit(
+                            UserRole.valueOf(userRoleStr.toUpperCase()),
+                            calculatedData.get(PaginationCalculate.START_POSITION),
+                            rowsOnPage);
+
+                    content.putRequestAttribute(PAGINATION_NEXT_PAGE,
+                            calculatedData.get(PaginationCalculate.NEXT_PAGE));
+                    content.putRequestAttribute(PAGINATION_PREVIEW_PAGE,
+                            calculatedData.get(PaginationCalculate.PREVIEW_PAGE));
                     content.putRequestAttribute(PAGINATION_RESULT_LIST, users);
                     content.putRequestAttribute(PAGINATION_USER_ROLE, userRoleStr);
                     content.setPageUrl(ADMIN_USERS_LIST_PAGE);
@@ -126,14 +109,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findByNameAndPassword(String name, String password) throws ServiceException {
-        Optional<User> optionalUser = Optional.empty();
         try {
             try {
                 //TODO - ADD CHECK FOR VALIDATION LOGIN AND PASSWORD
                 String passwordHash = PasswordHasher.hashString(password);
                 transactionManager.startTransaction();
-                optionalUser = userDao.findByNameAndPassword(name, passwordHash);
-                return optionalUser;
+                return userDao.findByNameAndPassword(name, passwordHash);
             } catch (DaoException e) {
                 throw new ServiceException(e);
             } finally {
@@ -204,7 +185,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
     @Override
     public boolean verificationOfActivationCode(String activateCode) throws ServiceException {
         try {
@@ -273,60 +253,55 @@ public class UserServiceImpl implements UserService {
     public BigDecimal activatePaymentCard(String cardNumber, String cardPin, long userId, BigDecimal userBalance, long tariffId) throws ServiceException {
         BigDecimal newUserBalance;
         try {
-            transactionManager.startTransaction();
+            try {
+                transactionManager.startTransaction();
 
-            String cardNumberHash = PasswordHasher.hashString(cardNumber);
-            String cardPinHash = PasswordHasher.hashString(cardPin);
-            Optional<PaymentCard> paymentCardOptional = paymentCardDao.findByCardNumberAndPin(cardNumberHash, cardPinHash);
+                String cardNumberHash = PasswordHasher.hashString(cardNumber);
+                String cardPinHash = PasswordHasher.hashString(cardPin);
+                Optional<PaymentCard> paymentCardOptional = paymentCardDao.findByCardNumberAndPin(cardNumberHash, cardPinHash);
 
-            if (!paymentCardOptional.isEmpty()) {
-                PaymentCard paymentCard = paymentCardOptional.get();
-                if (paymentCard.getCardStatus().equals(PaymentCard.CardStatus.NOT_USED)) {
+                if (!paymentCardOptional.isEmpty()) {
+                    PaymentCard paymentCard = paymentCardOptional.get();
+                    if (paymentCard.getCardStatus().equals(PaymentCard.CardStatus.NOT_USED)) {
 
-                    LocalDateTime localDateTimeNow = LocalDateTime.now();
-                    paymentCard.setCardStatus(PaymentCard.CardStatus.USED);
-                    paymentCard.setActivationDate(localDateTimeNow);
+                        LocalDateTime localDateTimeNow = LocalDateTime.now();
+                        paymentCard.setCardStatus(PaymentCard.CardStatus.USED);
+                        paymentCard.setActivationDate(localDateTimeNow);
 
-                    UserAction userAction = UserAction.builder().
-                            setActionType(UserAction.ActionType.CARD_ACTIVATE)
-                            .setDateTime(localDateTimeNow).build();
+                        UserAction userAction = UserAction.builder().
+                                setActionType(UserAction.ActionType.CARD_ACTIVATE)
+                                .setDateTime(localDateTimeNow).build();
 
-                    AccountTransaction accountTransaction = AccountTransaction.builder()
-                            .setSum(paymentCard.getAmount())
-                            .setDate(localDateTimeNow)
-                            .setUserId(userId)
-                            .setType(TransactionType.REFILL).build();
+                        AccountTransaction accountTransaction = AccountTransaction.builder()
+                                .setSum(paymentCard.getAmount())
+                                .setDate(localDateTimeNow)
+                                .setUserId(userId)
+                                .setType(TransactionType.REFILL).build();
 
-                    newUserBalance = userBalance.add(paymentCard.getAmount());
+                        newUserBalance = userBalance.add(paymentCard.getAmount());
 
-                    userActionDao.add(userAction, userId, tariffId);
-                    accountTransactionDao.add(accountTransaction);
-                    paymentCardDao.activateCard(paymentCard.getCardId(), userId, localDateTimeNow);
-                    userDao.balanceReplenishment(userId, newUserBalance);
+                        userActionDao.add(userAction, userId, tariffId);
+                        accountTransactionDao.add(accountTransaction);
+                        paymentCardDao.activateCard(paymentCard.getCardId(), userId, localDateTimeNow);
+                        userDao.balanceReplenishment(userId, newUserBalance);
 
-                    transactionManager.commit();
+                        transactionManager.commit();
+                    } else {
+//                        FIXME - Удалить и переписать
+                        throw new ServiceException("Balance has not been replenished.");
+                    }
                 } else {
+//                        FIXME - Удалить и переписать
                     throw new ServiceException("Balance has not been replenished.");
                 }
-            } else {
-                throw new ServiceException("Balance has not been replenished.");
-            }
-        } catch (DaoException e) {
-            logger.log(Level.ERROR, "Balance has not been replenished: {}", e);
-            try {
-                transactionManager.rollback();
-            } catch (DaoException e1) {
-                logger.log(Level.ERROR, "Rollback error: {}", e1);
-                throw new ServiceException("Rollback error.", e);
-            }
-            throw new ServiceException("Balance has not been replenished.", e);
-        } finally {
-            try {
-                transactionManager.endTransaction();
             } catch (DaoException e) {
-                logger.log(Level.ERROR, "End transaction error: {}", e);
-                throw new ServiceException("End transaction error", e);
+                transactionManager.rollback();
+                throw new ServiceException(e);
+            } finally {
+                transactionManager.endTransaction();
             }
+        } catch (DaoException | ServiceException e1) {
+            throw new ServiceException(e1);
         }
         return newUserBalance;
     }

@@ -28,7 +28,6 @@ public class ActivationCommand implements Command {
         try {
             userService.updateActivationCodeStatus(activationCode, UserStatus.ACTIVE);
         } catch (ServiceException e) {
-            logger.log(Level.ERROR, "Error with activation code or it status update: {}", e);
             throw new CommandException(e);
         }
         return router;

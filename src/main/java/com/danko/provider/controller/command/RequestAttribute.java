@@ -56,6 +56,11 @@ public final class RequestAttribute {
     public static final String ADMIN_USER_EDIT = "user";
     public static final String ADMIN_USER_EDIT_ORIGINAL = "userOrigin";
 
+    //    Admin user profile Page
+    public static final String ADMIN_USER_PROFILE_USER ="userProfile";
+    public static final String ADMIN_USER_PROFILE_TRANSACTIONS ="transactionList";
+    public static final String ADMIN_USER_PROFILE_ACTIONS ="userActionList";
+
     private RequestAttribute() {
     }
 }

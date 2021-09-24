@@ -18,4 +18,6 @@ public interface PaymentCardDao extends BaseDao<Long, PaymentCard> {
     boolean activateCard(long cardId, long userId, LocalDateTime activationDate) throws DaoException;
 
     void add(BigDecimal amount, String cardNumber, String cardPin, PaymentCard.CardStatus cardStatus, LocalDateTime expiredDate) throws DaoException;
+
+    long getUserIdActivatedCard(long cardId) throws DaoException;
 }

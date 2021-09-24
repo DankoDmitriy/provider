@@ -7,14 +7,17 @@ import com.danko.provider.domain.dao.TransactionManager;
 import com.danko.provider.domain.dao.mapper.impl.PaymentCardResultSetHandler;
 import com.danko.provider.domain.entity.PaymentCard;
 import com.danko.provider.exception.DaoException;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import static com.danko.provider.domain.dao.ColumnName.PAYMENT_CARD_USER_ID;
 
 public class PaymentCardDaoImpl implements PaymentCardDao {
     private static Logger logger = LogManager.getLogger();
@@ -76,6 +79,15 @@ public class PaymentCardDaoImpl implements PaymentCardDao {
             card_id=?
             """;
 
+    private static final String SQL_GET_USER_ID_ACTIVATED_THIS_CARD = """
+            SELECT
+            users_user_id
+            FROM
+            express_payment_cards            
+            WHERE
+            card_id=?
+            """;
+
     public PaymentCardDaoImpl() {
         jdbcTemplate = new JdbcTemplate<PaymentCard>(new PaymentCardResultSetHandler());
     }
@@ -131,5 +143,24 @@ public class PaymentCardDaoImpl implements PaymentCardDao {
     @Override
     public void add(BigDecimal amount, String cardNumber, String cardPin, PaymentCard.CardStatus cardStatus, LocalDateTime expiredDate) throws DaoException {
         jdbcTemplate.executeInsertQuery(SQL_ADD_PAYMENT_CARD, amount, cardNumber, cardPin, expiredDate, cardStatus.name());
+    }
+
+    @Override
+    public long getUserIdActivatedCard(long cardId) throws DaoException {
+        TransactionManager transactionManager = TransactionManager.getInstance();
+        Connection connection = transactionManager.getConnection();
+        long userId = 0;
+        try (PreparedStatement statement = connection.prepareStatement(SQL_GET_USER_ID_ACTIVATED_THIS_CARD)) {
+            statement.setObject(1, cardId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.isBeforeFirst()) {
+                resultSet.next();
+                userId = resultSet.getLong(PAYMENT_CARD_USER_ID);
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Error...Message: {}", e.getMessage());
+            throw new DaoException(e);
+        }
+        return userId;
     }
 }

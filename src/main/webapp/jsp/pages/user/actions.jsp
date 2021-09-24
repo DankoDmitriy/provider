@@ -24,7 +24,7 @@
         <div class="card mb-3">
             <div class="card-body">
 
-                <c:forEach items="${actions}" var="action">
+                <c:forEach items="${resultList}" var="action">
                     <div class="row">
                         <div class="col-sm-3">
                             <h6 class="mb-0"><small><fmt:message key="label.user.action.title"/></small>
@@ -42,9 +42,22 @@
                     <hr>
                 </c:forEach>
 
+                <center>
+                    <br>
+                    <c:if test="${previewPage >=0}">
+                        <a class="btn btn-info "
+                           href="${pageContext.request.contextPath}/controller?command=USER_ACTION_LIST&user_id=${sessionScope.user.userId}&nextPage=${previewPage}">
+                            <fmt:message key="label.admin.userActions.button.previousPage"/></a>
+                    </c:if>
+                    <a class="btn btn-info "
+                       href="${pageContext.request.contextPath}/controller?command=USER_ACTION_LIST&user_id=${sessionScope.user.userId}&nextPage=${nextPage}">
+                        <fmt:message key="label.admin.userActions.button.nextPage"/></a>
+                </center>
+
             </div>
         </div>
     </div>
+
     <%--END All transactions--%>
 </div>
 <%--FOOTER--%>
