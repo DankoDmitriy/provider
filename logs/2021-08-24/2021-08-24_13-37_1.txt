@@ -1,3 +1,0 @@
-2021-08-24 13:37:06 [main] [<clinit>] [46] INFO  com.danko.provider.pool.ConnectionFactory - Properties for database have loaded...
-2021-08-24 13:37:06 [main] [<init>] [71] INFO  com.danko.provider.pool.ConnectionPool - Connection pool created.
-2021-08-24 13:37:07 [main] [executeInsertQuery] [77] ERROR danko.provider.domain.dao.JdbcTemplate - Error...Message: Incorrect string value: '\xAC\xED\x00\x05~r...' for column 'type' at row 1

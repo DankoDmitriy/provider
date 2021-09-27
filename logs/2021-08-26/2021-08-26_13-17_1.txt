@@ -1,3 +1,0 @@
-2021-08-26 13:17:27 [main] [<clinit>] [46] INFO  com.danko.provider.pool.ConnectionFactory - Properties for database have loaded...
-2021-08-26 13:17:27 [main] [<init>] [71] INFO  com.danko.provider.pool.ConnectionPool - Connection pool created.
-2021-08-26 13:17:28 [main] [executeInsertQuery] [77] ERROR danko.provider.domain.dao.JdbcTemplate - Error...Message: No value specified for parameter 14

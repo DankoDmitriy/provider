@@ -32,9 +32,8 @@ public class TariffListCommand implements Command {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SESSION_USER);
         if (user.getRole().equals(UserRole.USER)) {
-            List<Tariff> tariffs = null;
             try {
-                tariffs = tariffService.findAllByStatus(TariffStatus.ACTIVE);
+                List<Tariff> tariffs = tariffService.findAllByStatus(TariffStatus.ACTIVE);
                 request.setAttribute(USER_TARIFF_LIST, tariffs);
                 router.setPageUrl(USER_TARIFFS_LIST);
             } catch (ServiceException e) {

@@ -6,27 +6,22 @@ import com.danko.provider.domain.entity.AccountTransaction;
 import com.danko.provider.domain.entity.User;
 import com.danko.provider.domain.service.AccountTransactionService;
 import com.danko.provider.domain.service.ServiceProvider;
-import com.danko.provider.domain.service.TariffService;
-import com.danko.provider.domain.service.UserService;
 import com.danko.provider.exception.CommandException;
 import com.danko.provider.exception.ServiceException;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import java.util.List;
 
-import static com.danko.provider.controller.command.PageUrl.*;
-import static com.danko.provider.controller.command.SessionAttribute.*;
-import static com.danko.provider.controller.command.RequestAttribute.*;
+import static com.danko.provider.controller.command.PageUrl.ADMIN_MAIN_PAGE;
+import static com.danko.provider.controller.command.PageUrl.USER_PROFILE_PAGE;
+import static com.danko.provider.controller.command.RequestAttribute.USER_PERSONAL_TRANSACTIONS_LIMIT;
+import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
 
 public class HomeCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
-    private final UserService userService = ServiceProvider.getInstance().getUserService();
-    private final TariffService tariffService = ServiceProvider.getInstance().getTariffService();
     private final AccountTransactionService accountTransactionService = ServiceProvider.getInstance().getAccountTransactionService();
 
     @Override

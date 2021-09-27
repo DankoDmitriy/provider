@@ -30,6 +30,10 @@ public class SessionRequestContent {
         requestAttributes.put(key, value);
     }
 
+    public void putSessionAttribute(String key, Object value) {
+        sessionAttributes.put(key, value);
+    }
+
     public String[] getRequestParameter(String name) {
         return requestParameters.get(name);
     }
@@ -70,6 +74,12 @@ public class SessionRequestContent {
         requestAttributes.forEach((s, o) -> {
             request.setAttribute(s, o);
         });
+
+        HttpSession session = request.getSession();
+        sessionAttributes.forEach((s, o) -> {
+            session.setAttribute(s, o);
+        });
+        
         if (isRedirect()) {
             router.setRouteType(Router.RouteType.REDIRECT);
             router.setPageUrl(request.getContextPath() + pageUrl);

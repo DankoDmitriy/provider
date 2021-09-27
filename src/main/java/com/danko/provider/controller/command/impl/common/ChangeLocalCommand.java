@@ -2,7 +2,6 @@ package com.danko.provider.controller.command.impl.common;
 
 import com.danko.provider.controller.Router;
 import com.danko.provider.controller.command.Command;
-import com.danko.provider.domain.entity.User;
 import com.danko.provider.exception.CommandException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;

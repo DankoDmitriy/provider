@@ -1,5 +1,6 @@
 package com.danko.provider.domain.service.impl;
 
+import com.danko.provider.controller.Router;
 import com.danko.provider.controller.command.SessionRequestContent;
 import com.danko.provider.domain.dao.*;
 import com.danko.provider.domain.entity.*;
@@ -24,6 +25,8 @@ import java.util.*;
 import static com.danko.provider.controller.command.PageUrl.*;
 import static com.danko.provider.controller.command.ParamName.*;
 import static com.danko.provider.controller.command.RequestAttribute.*;
+import static com.danko.provider.controller.command.SessionAttribute.IS_LOGIN_ERROR;
+import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
 
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger();
@@ -110,13 +113,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByNameAndPassword(String name, String password) throws ServiceException {
+    public void login(SessionRequestContent content) throws ServiceException {
+        String[] name = content.getRequestParameter(LOGIN_FORM_NAME);
+        String[] password = content.getRequestParameter(LOGIN_FORM_PASSWORD);
         try {
             try {
-                //TODO - ADD CHECK FOR VALIDATION LOGIN AND PASSWORD
-                String passwordHash = StringHasher.hashString(password);
-                transactionManager.startTransaction();
-                return userDao.findByNameAndPassword(name, passwordHash);
+                if (name != null && password != null) {
+                    String passwordHash = StringHasher.hashString(password[0]);
+                    transactionManager.startTransaction();
+                    Optional<User> optionalUser = userDao.findByNameAndPassword(name[0], passwordHash);
+                    if (optionalUser.isPresent()) {
+                        User user = optionalUser.get();
+                        Optional<Tariff> tariffOptional = tariffDao.findById(user.getTariffId());
+                        user.setTariff(tariffOptional.get());
+                        content.putSessionAttribute(SESSION_USER, user);
+                        content.putSessionAttribute(IS_LOGIN_ERROR, false);
+                        content.setPageUrl(HOME_PAGE);
+                    } else {
+                        content.putSessionAttribute(IS_LOGIN_ERROR, true);
+                        content.setRedirect(true);
+                        content.setPageUrl("");
+                    }
+                }
             } catch (DaoException e) {
                 throw new ServiceException(e);
             } finally {

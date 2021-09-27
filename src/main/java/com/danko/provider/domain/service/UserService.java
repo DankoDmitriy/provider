@@ -15,7 +15,7 @@ public interface UserService {
 
     void findPageByUserRole(SessionRequestContent content, long rowsOnPage) throws ServiceException;
 
-    Optional<User> findByNameAndPassword(String name, String password) throws ServiceException;
+    void login(SessionRequestContent content) throws ServiceException;
 
     boolean updatePassword(long userId, String password, String email, String contextPath, String requestUrl, long tariffId) throws ServiceException;
 

@@ -7,8 +7,6 @@ import com.danko.provider.exception.CommandException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import static com.danko.provider.controller.command.PageUrl.*;
-
 public class LogoutCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

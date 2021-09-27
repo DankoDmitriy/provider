@@ -1,4 +1,0 @@
-2021-08-23 17:54:00 [main] [<init>] [71] INFO  com.danko.provider.pool.ConnectionPool - Connection pool created.
-2021-08-23 17:54:00 [main] [executeSelectQuery] [39] ERROR danko.provider.domain.dao.JdbcTemplate - Error...Message: Unknown column 'tr.tariff_id' in 'field list'
-2021-08-23 17:54:14 [main] [<clinit>] [46] INFO  com.danko.provider.pool.ConnectionFactory - Properties for database have loaded...
-2021-08-23 17:54:14 [main] [<init>] [71] INFO  com.danko.provider.pool.ConnectionPool - Connection pool created.
