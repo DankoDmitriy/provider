@@ -1,6 +1,6 @@
 package com.danko.provider.domain.dao;
 
-import com.danko.provider.connection.ConnectionPool;
+import com.danko.provider.pool.ConnectionPool;
 import com.danko.provider.exception.DaoException;
 import com.danko.provider.exception.DatabaseConnectionException;
 import org.apache.logging.log4j.Level;

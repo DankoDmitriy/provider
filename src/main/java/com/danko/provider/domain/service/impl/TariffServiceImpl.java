@@ -1,6 +1,6 @@
 package com.danko.provider.domain.service.impl;
 
-import com.danko.provider.controller.command.InputContent;
+import com.danko.provider.controller.command.SessionRequestContent;
 import com.danko.provider.domain.dao.TariffDao;
 import com.danko.provider.domain.dao.TransactionManager;
 import com.danko.provider.domain.entity.PeriodicityWriteOff;
@@ -88,7 +88,7 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public void addTariff(InputContent content) throws ServiceException {
+    public void addTariff(SessionRequestContent content) throws ServiceException {
         String[] tariffName = content.getRequestParameter(TARIFF_ADD_NAME);
         String[] maxSpeed = content.getRequestParameter(TARIFF_ADD_MAX_SPEED);
         String[] minSpeed = content.getRequestParameter(TARIFF_ADD_MIN_SPEED);
@@ -146,7 +146,7 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public void update(InputContent content) throws ServiceException {
+    public void update(SessionRequestContent content) throws ServiceException {
         InputDataValidator validator = InputDataValidator.getInstance();
 
         String[] tariffId = content.getRequestParameter(TARIFF_EDIT_ID);
@@ -229,7 +229,7 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public void findPageTariff(InputContent content, long rowsOnPage) throws ServiceException {
+    public void findPageTariff(SessionRequestContent content, long rowsOnPage) throws ServiceException {
         try {
             try {
                 String nextPageStr = content.getRequestParameter(PAGINATION_NEXT_PAGE)[0];

@@ -1,6 +1,6 @@
 package com.danko.provider.domain.service.impl;
 
-import com.danko.provider.controller.command.InputContent;
+import com.danko.provider.controller.command.SessionRequestContent;
 import com.danko.provider.domain.dao.TransactionManager;
 import com.danko.provider.domain.dao.UserActionDao;
 import com.danko.provider.domain.entity.User;
@@ -14,7 +14,6 @@ import com.danko.provider.validator.InputDataValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -119,7 +118,7 @@ public class UserActionServiceImpl implements UserActionService {
     }
 
     @Override
-    public void findPageByUserId(InputContent content, long rowsOnPage) throws ServiceException {
+    public void findPageByUserId(SessionRequestContent content, long rowsOnPage) throws ServiceException {
         String userIdStr = content.getRequestParameter(PAGINATION_USER_ID)[0];
         String nextPageStr = content.getRequestParameter(PAGINATION_NEXT_PAGE)[0];
         InputDataValidator inputDataValidator = InputDataValidator.getInstance();

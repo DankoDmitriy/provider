@@ -1,6 +1,5 @@
 package com.danko.provider.domain.dao.impl;
 
-import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.domain.dao.JdbcTemplate;
 import com.danko.provider.domain.dao.PaymentCardDao;
 import com.danko.provider.domain.dao.TransactionManager;

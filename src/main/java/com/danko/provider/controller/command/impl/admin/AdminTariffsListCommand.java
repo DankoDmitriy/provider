@@ -2,7 +2,7 @@ package com.danko.provider.controller.command.impl.admin;
 
 import com.danko.provider.controller.Router;
 import com.danko.provider.controller.command.Command;
-import com.danko.provider.controller.command.InputContent;
+import com.danko.provider.controller.command.SessionRequestContent;
 import com.danko.provider.domain.service.ServiceProvider;
 import com.danko.provider.domain.service.TariffService;
 import com.danko.provider.exception.CommandException;
@@ -20,16 +20,13 @@ public class AdminTariffsListCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
-        InputContent inputContent = new InputContent(request);
+        SessionRequestContent content = new SessionRequestContent(request);
         try {
-            tariffService.findPageTariff(inputContent, ROWS_ON_PAGE);
-            router.setPageUrl(inputContent.getPageUrl());
-            inputContent.getRequestAttributes().forEach((s, o) -> {
-                request.setAttribute(s, o);
-            });
+            tariffService.findPageTariff(content, ROWS_ON_PAGE);
+            content.setResultParametersInRequestAndRouter(request, router);
+            return router;
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        return router;
     }
 }

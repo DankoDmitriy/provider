@@ -13,11 +13,10 @@
         <div class="col-md-4 mb-3">
             <label for="validationServer01"><fmt:message key="label.admin.paymentCardSearch.interCardNumber"/></label>
             <input type="text" class="form-control is-valid" id="validationServer01" placeholder=""
-                   name="cardNumber"  pattern="[A-Z]{3,5}[0-9]{7} required>
+                   name="cardNumber" pattern="[A-Z]{3,5}[0-9]{7}" required>
         </div>
-        <button class="btn btn-primary" type="submit">
-            <fmt:message key="label.admin.paymentCardSearch.button.search"/>
-        </button>
+        <button class="btn btn-primary" type="submit"><fmt:message
+                key="label.admin.paymentCardSearch.button.search"/></button>
     </form>
 
     <c:if test="${searchResult == true}">

@@ -17,7 +17,7 @@ import static com.danko.provider.controller.command.ParamName.USER_PROFILE_ID;
 
 public class AdminUserRoleChangeCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
-    private static final String ID_CHECK_REGEX = "^[1-9]{1}[0-9]*$";
+    private static final String ID_CHECK_REGEX = "^[1-9]{1}[0-9]{0,15}$";
     private final UserService userService = ServiceProvider.getInstance().getUserService();
 
     @Override

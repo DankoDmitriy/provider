@@ -1,8 +1,8 @@
-package com.danko.provider.controller.command.impl.admin;
+package com.danko.provider.Main.TMP;
 
 import com.danko.provider.controller.Router;
 import com.danko.provider.controller.command.Command;
-import com.danko.provider.controller.command.InputContent;
+import com.danko.provider.controller.command.SessionRequestContent;
 import com.danko.provider.domain.service.ServiceProvider;
 import com.danko.provider.domain.service.UserService;
 import com.danko.provider.exception.CommandException;
@@ -20,11 +20,11 @@ public class AdminEmployeeListCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         Router router = new Router();
-        InputContent inputContent = new InputContent(request);
+        SessionRequestContent sessionRequestContent = new SessionRequestContent(request);
         try {
-            userService.findPageByUserRole(inputContent, ROWS_ON_PAGE);
-            router.setPageUrl(inputContent.getPageUrl());
-            inputContent.getRequestAttributes().forEach((s, o) -> {
+            userService.findPageByUserRole(sessionRequestContent, ROWS_ON_PAGE);
+            router.setPageUrl(sessionRequestContent.getPageUrl());
+            sessionRequestContent.getRequestAttributes().forEach((s, o) -> {
                 request.setAttribute(s, o);
             });
         } catch (ServiceException e) {

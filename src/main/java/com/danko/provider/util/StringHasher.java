@@ -9,12 +9,12 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public final class PasswordHasher {
+public final class StringHasher {
     private static Logger logger = LogManager.getLogger();
     private static final String ENCRYPTION_TYPE = "MD5";
     private static final String ENCODING = "utf8";
 
-    private PasswordHasher() {
+    private StringHasher() {
     }
 
     public static String hashString(String s) {

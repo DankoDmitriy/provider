@@ -1,17 +1,19 @@
 package com.danko.provider.controller.command;
 
+import com.danko.provider.controller.Router;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
-public class InputContent {
+public class SessionRequestContent {
     private final HashMap<String, Object> requestAttributes;
     private final Map<String, String[]> requestParameters;
     private final Map<String, Object> sessionAttributes;
     private String pageUrl;
     private boolean redirect;
 
-    public InputContent(HttpServletRequest request) {
+    public SessionRequestContent(HttpServletRequest request) {
         requestParameters = request.getParameterMap();
         requestAttributes = new HashMap<>();
         sessionAttributes = new HashMap<>();
@@ -62,5 +64,17 @@ public class InputContent {
 
     public void setRedirect(boolean redirect) {
         this.redirect = redirect;
+    }
+
+    public void setResultParametersInRequestAndRouter(HttpServletRequest request, Router router) {
+        requestAttributes.forEach((s, o) -> {
+            request.setAttribute(s, o);
+        });
+        if (isRedirect()) {
+            router.setRouteType(Router.RouteType.REDIRECT);
+            router.setPageUrl(request.getContextPath() + pageUrl);
+        } else {
+            router.setPageUrl(pageUrl);
+        }
     }
 }

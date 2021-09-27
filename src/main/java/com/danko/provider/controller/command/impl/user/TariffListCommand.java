@@ -10,16 +10,15 @@ import com.danko.provider.domain.service.ServiceProvider;
 import com.danko.provider.domain.service.TariffService;
 import com.danko.provider.exception.CommandException;
 import com.danko.provider.exception.ServiceException;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import java.util.List;
 
-import static com.danko.provider.controller.command.PageUrl.*;
+import static com.danko.provider.controller.command.PageUrl.LOGIN_PAGE;
+import static com.danko.provider.controller.command.PageUrl.USER_TARIFFS_LIST;
 import static com.danko.provider.controller.command.RequestAttribute.USER_TARIFF_LIST;
 import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
 
@@ -39,9 +38,7 @@ public class TariffListCommand implements Command {
                 request.setAttribute(USER_TARIFF_LIST, tariffs);
                 router.setPageUrl(USER_TARIFFS_LIST);
             } catch (ServiceException e) {
-//                FIXME - переписать. нельзя использовать исключение, как флаг для действия.
-                logger.log(Level.ERROR, "Could not find tariffs in database: {}", e);
-                router.setPageUrl(HOME_PAGE);
+                throw new CommandException(e);
             }
         } else {
             router.setPageUrl(LOGIN_PAGE);

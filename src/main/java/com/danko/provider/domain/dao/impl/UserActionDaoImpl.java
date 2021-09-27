@@ -1,9 +1,6 @@
 package com.danko.provider.domain.dao.impl;
 
-import cn.hutool.core.date.DateTime;
-import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.domain.dao.JdbcTemplate;
-import com.danko.provider.domain.dao.TransactionManager;
 import com.danko.provider.domain.dao.UserActionDao;
 import com.danko.provider.domain.dao.mapper.impl.UserActionResultSetHandler;
 import com.danko.provider.domain.entity.UserAction;
@@ -11,8 +8,6 @@ import com.danko.provider.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 

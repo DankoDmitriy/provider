@@ -1,26 +1,19 @@
 package com.danko.provider.domain.service;
 
-import com.danko.provider.controller.command.InputContent;
-import com.danko.provider.domain.entity.TransferObject;
+import com.danko.provider.controller.command.SessionRequestContent;
 import com.danko.provider.domain.entity.User;
-import com.danko.provider.domain.entity.UserRole;
 import com.danko.provider.domain.entity.UserStatus;
 import com.danko.provider.exception.ServiceException;
 
-import javax.management.relation.Role;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-
-import static com.danko.provider.controller.command.ParamName.USER_EDIT_LAST_NAME;
-import static com.danko.provider.controller.command.ParamName.USER_EDIT_PATRONYMIC;
 
 public interface UserService {
 
     List<User> findAllUsers() throws ServiceException;
 
-    void findPageByUserRole(InputContent content, long rowsOnPage) throws ServiceException;
+    void findPageByUserRole(SessionRequestContent content, long rowsOnPage) throws ServiceException;
 
     Optional<User> findByNameAndPassword(String name, String password) throws ServiceException;
 
@@ -38,13 +31,15 @@ public interface UserService {
                                    BigDecimal userBalance,
                                    long tariffId) throws ServiceException;
 
-    void addUser(InputContent content) throws ServiceException;
+    void addUser(SessionRequestContent content) throws ServiceException;
 
     Optional<User> findById(long id) throws ServiceException;
 
-    void updateUserPersonalData(InputContent content) throws ServiceException;
+    void updateUserPersonalData(SessionRequestContent content) throws ServiceException;
 
     boolean blockOrUnblock(long userId) throws ServiceException;
 
     boolean changeRole(long userId) throws ServiceException;
+
+    void searchUsers(SessionRequestContent content) throws ServiceException;
 }

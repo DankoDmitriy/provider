@@ -1,4 +1,4 @@
-package com.danko.provider.connection;
+package com.danko.provider.pool;
 
 import com.danko.provider.exception.DatabaseConnectionException;
 

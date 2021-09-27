@@ -1,9 +1,7 @@
 package com.danko.provider.domain.dao.impl;
 
-import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.domain.dao.AccountTransactionDao;
 import com.danko.provider.domain.dao.JdbcTemplate;
-import com.danko.provider.domain.dao.TransactionManager;
 import com.danko.provider.domain.entity.AccountTransaction;
 import com.danko.provider.domain.dao.mapper.impl.AccountTransactionResultSetHandler;
 import com.danko.provider.exception.DaoException;

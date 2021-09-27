@@ -39,6 +39,14 @@ public final class ParamName {
     public static final String USER_ADD_TARIFF_ID = "tariff_id";
     public static final String USER_ADD_E_MAIL = "e_mail";
 
+    //   Admin User search page.
+    public static final String USER_SEARCH_FIRST_NAME = "first_name";
+    public static final String USER_SEARCH_LAST_NAME = "last_name";
+    public static final String USER_SEARCH_PATRONYMIC = "patronymic";
+    public static final String USER_SEARCH_CONTRACT_NUMBER = "contract_number";
+    public static final String USER_SEARCH_E_MAIL = "e_mail";
+
+
     //   Admin Tariff add page.
     public static final String TARIFF_ADD_NAME = "tariff_name";
     public static final String TARIFF_ADD_MAX_SPEED = "max_speed";

@@ -1,4 +1,4 @@
-package com.danko.provider.connection;
+package com.danko.provider.pool;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;

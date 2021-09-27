@@ -4,6 +4,7 @@ import com.danko.provider.domain.entity.PeriodicityWriteOff;
 import com.danko.provider.domain.entity.TariffStatus;
 import com.danko.provider.domain.entity.UserRole;
 
+import java.net.FileNameMap;
 import java.sql.Struct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,6 +24,8 @@ public class InputDataValidator {
     private static final String PATRONYMIC_REGEX = "[a-zA-ZА-Яа-я]{2,55}";
     private static final String EMAIL_REGEX = "^([A-Za-z0-9_-]+\\.)*[A-Za-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
     private static final String EMAIL_SYMBOL_NUMBER = ".{8,60}";
+    private static final String CONTRACT_NUMBER_SEARCH_REGEX = "^[0-9]{2,15}$";
+    private static final String EMAIL_SEARCH_REGEX = "^[A-Za-z0-9_-]{5,15}$";
 
     private static final String TARIFF_DESCRIPTION_REGEX = "[0-9a-zA-ZА-Яа-я -]{2,100}";
     private static final String TARIFF_PRICE_REGEX = "^[0-9]+[.][0-9]{1}[1-9]{1}$";
@@ -151,6 +154,12 @@ public class InputDataValidator {
         return false;
     }
 
+    public boolean isContractNumberForSearchValid(String contractSearch) {
+        return contractSearch != null && contractSearch.matches(CONTRACT_NUMBER_SEARCH_REGEX);
+    }
 
+    public boolean isEmailForSearchValid(String email) {
+        return email != null && email.matches(EMAIL_SEARCH_REGEX);
+    }
 }
 

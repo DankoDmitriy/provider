@@ -1,6 +1,5 @@
 package com.danko.provider.Main.TMP;
 
-import com.danko.provider.connection.ConnectionPool;
 import com.danko.provider.domain.dao.JdbcTemplate;
 import com.danko.provider.exception.DaoException;
 import org.apache.logging.log4j.LogManager;

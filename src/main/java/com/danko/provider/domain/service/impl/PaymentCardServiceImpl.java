@@ -1,11 +1,10 @@
 package com.danko.provider.domain.service.impl;
 
-import com.danko.provider.controller.command.InputContent;
+import com.danko.provider.controller.command.SessionRequestContent;
 import com.danko.provider.domain.dao.PaymentCardDao;
 import com.danko.provider.domain.dao.PaymentCardSerialDao;
 import com.danko.provider.domain.dao.TransactionManager;
 import com.danko.provider.domain.dao.UserDao;
-import com.danko.provider.domain.dao.impl.PaymentCardDaoImpl;
 import com.danko.provider.domain.entity.PaymentCard;
 import com.danko.provider.domain.entity.PaymentCardSerial;
 import com.danko.provider.domain.entity.User;
@@ -13,7 +12,7 @@ import com.danko.provider.domain.service.PaymentCardService;
 import com.danko.provider.exception.DaoException;
 import com.danko.provider.exception.ServiceException;
 import com.danko.provider.util.PasswordGenerator;
-import com.danko.provider.util.PasswordHasher;
+import com.danko.provider.util.StringHasher;
 import com.danko.provider.validator.InputDataValidator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -58,8 +57,8 @@ public class PaymentCardServiceImpl implements PaymentCardService {
         try {
             //        TODO - Добавить валидацию номера и пина карты.
             transactionManager.startTransaction();
-            String cardNumberHash = PasswordHasher.hashString(cardNumber);
-            String cardPinHash = PasswordHasher.hashString(cardPin);
+            String cardNumberHash = StringHasher.hashString(cardNumber);
+            String cardPinHash = StringHasher.hashString(cardPin);
             return paymentCardDao.findByCardNumberAndPin(cardNumberHash, cardPinHash);
         } catch (DaoException e) {
             logger.log(Level.ERROR, "Could not find payment card in database: {}", e);
@@ -75,7 +74,7 @@ public class PaymentCardServiceImpl implements PaymentCardService {
     }
 
     @Override
-    public void addCards(InputContent content) throws ServiceException {
+    public void addCards(SessionRequestContent content) throws ServiceException {
         String[] series = content.getRequestParameter(PAYMENT_CARD_ADD_SERIES);
         String[] amount = content.getRequestParameter(PAYMENT_CARD_ADD_AMOUNT);
         String[] count = content.getRequestParameter(PAYMENT_CARD_ADD_COUNT);
@@ -107,11 +106,11 @@ public class PaymentCardServiceImpl implements PaymentCardService {
                                     .append(String.format("%0" + PAYMENT_CARD_NUMBER_LENGTH + "d", i)).toString();
                             String cardPin = passwordGenerator.generate(PAYMENT_CARD_PIN_LENGTH);
                             cardsMap.put(cardNumber, cardPin);
-                            String cardNumberHash = PasswordHasher.hashString(cardNumber);
-                            String cardPinHash = PasswordHasher.hashString(cardPin);
+                            String cardNumberHash = StringHasher.hashString(cardNumber);
+                            String cardPinHash = StringHasher.hashString(cardPin);
                             paymentCardDao.add(new BigDecimal(amount[0]), cardNumberHash, cardPinHash, PaymentCard.CardStatus.NOT_USED, cardExpiredDate);
                         }
-                        paymentCardSerialDao.add(PasswordHasher.hashString(series[0]));
+                        paymentCardSerialDao.add(StringHasher.hashString(series[0]));
                         transactionManager.commit();
                         content.putRequestAttribute(ADMIN_NEW_PAYMENT_CARDS_LIST, cardsMap);
                         content.putRequestAttribute(ADMIN_NEW_PAYMENT_CARDS_EXPIRED_DATE, cardExpiredDate);
@@ -135,14 +134,14 @@ public class PaymentCardServiceImpl implements PaymentCardService {
     }
 
     @Override
-    public void findByNumber(InputContent content) throws ServiceException {
+    public void findByNumber(SessionRequestContent content) throws ServiceException {
         String[] cardNumber = content.getRequestParameter("cardNumber");
         content.setPageUrl(ADMIN_PAYMENTS_CARD_SEARCH);
         try {
             try {
                 transactionManager.startTransaction();
                 if (cardNumber != null && validator.isPaymentCardNumberValid(cardNumber[0])) {
-                    String cardNumberHash = PasswordHasher.hashString(cardNumber[0]);
+                    String cardNumberHash = StringHasher.hashString(cardNumber[0]);
                     Optional<PaymentCard> paymentCardOptional = paymentCardDao.findByCardNumber(cardNumberHash);
                     if (!paymentCardOptional.isEmpty()) {
                         PaymentCard card = paymentCardOptional.get();

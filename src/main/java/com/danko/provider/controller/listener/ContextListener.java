@@ -1,6 +1,6 @@
 package com.danko.provider.controller.listener;
 
-import com.danko.provider.connection.ConnectionPool;
+import com.danko.provider.pool.ConnectionPool;
 import com.danko.provider.domain.dao.TransactionManager;
 import com.danko.provider.domain.service.DaoProvider;
 import com.danko.provider.domain.service.ServiceProvider;

@@ -1,7 +1,5 @@
 package com.danko.provider.util;
 
-import com.danko.provider.connection.ConnectionPool;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -10,7 +8,7 @@ public class PaginationCalculate {
     public static final String START_POSITION = "startPosition";
     public static final String NEXT_PAGE = "nextPage";
     public static final String PREVIEW_PAGE = "previewPage";
-    private static final AtomicBoolean isConnectionPoolCreated = new AtomicBoolean(false);
+    private static final AtomicBoolean isCreated = new AtomicBoolean(false);
     private static PaginationCalculate instance;
 
     private PaginationCalculate() {
@@ -18,7 +16,7 @@ public class PaginationCalculate {
 
     public static PaginationCalculate getInstance() {
         while (instance == null) {
-            if (isConnectionPoolCreated.compareAndSet(false, true)) {
+            if (isCreated.compareAndSet(false, true)) {
                 instance = new PaginationCalculate();
             }
         }

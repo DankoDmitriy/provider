@@ -223,52 +223,40 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> findAll() throws DaoException {
-        List<User> list;
-        list = jdbcTemplate.executeSelectQuery(SQL_FIND_ALL_USERS);
-        return list;
+        return jdbcTemplate.executeSelectQuery(SQL_FIND_ALL_USERS);
     }
 
     @Override
     public List<User> findAllByRole(UserRole role) throws DaoException {
-        List<User> list;
-        list = jdbcTemplate.executeSelectQuery(SQL_FIND_ALL_USERS_BY_ROLE, role.name());
-        return list;
+        return jdbcTemplate.executeSelectQuery(SQL_FIND_ALL_USERS_BY_ROLE, role.name());
     }
 
     @Override
     public Optional<User> findById(Long id) throws DaoException {
-        Optional<User> userOptional;
-        userOptional = jdbcTemplate.executeSelectQueryForSingleResult(SQL_FIND_USER_BY_ID, id);
-        return userOptional;
+        return jdbcTemplate.executeSelectQueryForSingleResult(SQL_FIND_USER_BY_ID, id);
     }
 
     @Override
     public Optional<User> findByNameAndPassword(String name, String password) throws DaoException {
-        Optional<User> userOptional;
-        userOptional = jdbcTemplate.executeSelectQueryForSingleResult(SQL_FIND_USER_BY_NAME_AND_PASSWORD, name, password);
-        return userOptional;
+        return jdbcTemplate.executeSelectQueryForSingleResult(SQL_FIND_USER_BY_NAME_AND_PASSWORD, name, password);
     }
 
     @Override
     public boolean updatePassword(long userId, String password, String newActivateCode, UserStatus userStatus) throws DaoException {
-        boolean result;
-        result = jdbcTemplate.executeUpdateQuery(SQL_UPDATE_PASSWORD,
+        return jdbcTemplate.executeUpdateQuery(SQL_UPDATE_PASSWORD,
                 password,
                 newActivateCode,
                 false,
                 userStatus.name(),
                 userId);
-        return result;
     }
 
     @Override
     public boolean updateActivationCodeStatus(String activateCode, UserStatus userStatus) throws DaoException {
-        boolean result;
-        result = jdbcTemplate.executeUpdateQuery(SQL_UPDATE_ACTIVATION_CODE_STATUS,
+        return jdbcTemplate.executeUpdateQuery(SQL_UPDATE_ACTIVATION_CODE_STATUS,
                 true,
                 userStatus.name(),
                 activateCode);
-        return result;
     }
 
     @Override
@@ -283,8 +271,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean update(User user) throws DaoException {
-        boolean result;
-        result = jdbcTemplate.executeUpdateQuery(SQL_UPDATE_USER,
+        return jdbcTemplate.executeUpdateQuery(SQL_UPDATE_USER,
                 user.getFirstName(),
                 user.getLastName(),
                 user.getPatronymic(),
@@ -298,7 +285,6 @@ public class UserDaoImpl implements UserDao {
                 user.getStatus().getStatus(),
                 user.getTariffId(),
                 user.getUserId());
-        return result;
     }
 
     @Override
@@ -328,13 +314,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean updateTariffAndTrafficAndBalanceValue(long userId, long tariffId, BigDecimal traffic, BigDecimal balance) throws DaoException {
-        boolean result;
-        result = jdbcTemplate.executeUpdateQuery(SQL_UPDATE_TARIFF_AND_TRAFFIC_AND_BALANCE,
+        return jdbcTemplate.executeUpdateQuery(SQL_UPDATE_TARIFF_AND_TRAFFIC_AND_BALANCE,
                 tariffId,
                 traffic,
                 balance,
                 userId);
-        return result;
     }
 
     @Override
@@ -401,5 +385,10 @@ public class UserDaoImpl implements UserDao {
                 role.name(),
                 startPosition,
                 rows);
+    }
+
+    @Override
+    public List<User> search(String searchParameter) throws DaoException {
+        return jdbcTemplate.executeSelectQuery(SQL_FIND_ALL_USERS + searchParameter);
     }
 }

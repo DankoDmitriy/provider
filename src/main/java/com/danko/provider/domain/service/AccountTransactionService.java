@@ -1,6 +1,6 @@
 package com.danko.provider.domain.service;
 
-import com.danko.provider.controller.command.InputContent;
+import com.danko.provider.controller.command.SessionRequestContent;
 import com.danko.provider.domain.entity.AccountTransaction;
 import com.danko.provider.exception.ServiceException;
 
@@ -18,5 +18,5 @@ public interface AccountTransactionService {
 
     long rowsInTableForUser(long userId) throws ServiceException;
 
-    void findPageByUserId(InputContent content, long rowsOnPage) throws ServiceException;
+    void findPageByUserId(SessionRequestContent content, long rowsOnPage) throws ServiceException;
 }

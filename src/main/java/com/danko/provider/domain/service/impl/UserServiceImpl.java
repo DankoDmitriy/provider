@@ -1,6 +1,6 @@
 package com.danko.provider.domain.service.impl;
 
-import com.danko.provider.controller.command.InputContent;
+import com.danko.provider.controller.command.SessionRequestContent;
 import com.danko.provider.domain.dao.*;
 import com.danko.provider.domain.entity.*;
 import com.danko.provider.domain.service.EmailService;
@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
     private final TransactionManager transactionManager;
     private final InputDataValidator inputDataValidator;
     private final PaginationCalculate paginationCalculate;
+    private final SearchUserSqlGeneration searchUserSqlGeneration;
 
 
     public UserServiceImpl(UserDao userDao, TariffDao tariffDao, UserActionDao userActionDao, PaymentCardDao paymentCardDao, AccountTransactionDao accountTransactionDao, TransactionManager transactionManager) {
@@ -50,6 +51,7 @@ public class UserServiceImpl implements UserService {
         this.transactionManager = transactionManager;
         this.inputDataValidator = InputDataValidator.getInstance();
         this.paginationCalculate = PaginationCalculate.getInstance();
+        this.searchUserSqlGeneration = SearchUserSqlGeneration.getInstance();
     }
 
     @Override
@@ -69,7 +71,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void findPageByUserRole(InputContent content, long rowsOnPage) throws ServiceException {
+    public void findPageByUserRole(SessionRequestContent content, long rowsOnPage) throws ServiceException {
         String userRoleStr = content.getRequestParameter(PAGINATION_USER_ROLE)[0];
         String nextPageStr = content.getRequestParameter(PAGINATION_NEXT_PAGE)[0];
         try {
@@ -112,7 +114,7 @@ public class UserServiceImpl implements UserService {
         try {
             try {
                 //TODO - ADD CHECK FOR VALIDATION LOGIN AND PASSWORD
-                String passwordHash = PasswordHasher.hashString(password);
+                String passwordHash = StringHasher.hashString(password);
                 transactionManager.startTransaction();
                 return userDao.findByNameAndPassword(name, passwordHash);
             } catch (DaoException e) {
@@ -133,7 +135,7 @@ public class UserServiceImpl implements UserService {
                 if (password != null && inputDataValidator.isPasswordValid(password)) {
                     transactionManager.startTransaction();
 
-                    String passwordHash = PasswordHasher.hashString(password);
+                    String passwordHash = StringHasher.hashString(password);
                     String newActivateCode = UniqueStringGenerator.generationUniqueString();
                     result = userDao.updatePassword(userId, passwordHash, newActivateCode, UserStatus.WAIT_ACTIVATE);
 
@@ -256,8 +258,8 @@ public class UserServiceImpl implements UserService {
             try {
                 transactionManager.startTransaction();
 
-                String cardNumberHash = PasswordHasher.hashString(cardNumber);
-                String cardPinHash = PasswordHasher.hashString(cardPin);
+                String cardNumberHash = StringHasher.hashString(cardNumber);
+                String cardPinHash = StringHasher.hashString(cardPin);
                 Optional<PaymentCard> paymentCardOptional = paymentCardDao.findByCardNumberAndPin(cardNumberHash, cardPinHash);
 
                 if (!paymentCardOptional.isEmpty()) {
@@ -307,7 +309,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUser(InputContent content) throws ServiceException {
+    public void addUser(SessionRequestContent content) throws ServiceException {
         String[] firstName = content.getRequestParameter(USER_ADD_FIRST_NAME);
         String[] lastName = content.getRequestParameter(USER_ADD_LAST_NAME);
         String[] patronymic = content.getRequestParameter(USER_ADD_PATRONYMIC);
@@ -334,7 +336,7 @@ public class UserServiceImpl implements UserService {
                             .build();
 
                     String password = strGenerator.generate(PASSWORD_LENGTH);
-                    String passwordHash = PasswordHasher.hashString(password);
+                    String passwordHash = StringHasher.hashString(password);
                     LocalDateTime contractDateLocalDateTime = LocalDate.parse(contractDate[0], dateTimeFormatter).atStartOfDay();
 
                     transactionManager.startTransaction();
@@ -419,7 +421,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserPersonalData(InputContent content) throws ServiceException {
+    public void updateUserPersonalData(SessionRequestContent content) throws ServiceException {
         String[] firstName = content.getRequestParameter(USER_EDIT_FIRST_NAME);
         String[] lastName = content.getRequestParameter(USER_EDIT_LAST_NAME);
         String[] patronymic = content.getRequestParameter(USER_EDIT_PATRONYMIC);
@@ -587,6 +589,35 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException(e1);
         }
         return result;
+    }
+
+    @Override
+    public void searchUsers(SessionRequestContent content) throws ServiceException {
+        if (content.getRequestParameters().size() == 1 &&
+                content.getRequestParameters().containsKey(COMMAND)) {
+            content.setPageUrl(ADMIN_USER_SEARCH);
+        } else {
+            String criteriaForDao = searchUserSqlGeneration.generateSearchSqlCriteria(content.getRequestParameters());
+            System.out.println(criteriaForDao);
+            if (criteriaForDao != null) {
+                try {
+                    try {
+                        transactionManager.startTransaction();
+                        List<User> users = userDao.search(criteriaForDao);
+                        content.putRequestAttribute(PAGINATION_RESULT_LIST, users);
+                        content.setPageUrl(ADMIN_USERS_LIST_PAGE);
+                    } catch (DaoException e) {
+                        throw new ServiceException(e);
+                    } finally {
+                        transactionManager.endTransaction();
+                    }
+                } catch (DaoException | ServiceException e1) {
+                    throw new ServiceException(e1);
+                }
+            } else {
+                content.setPageUrl(ADMIN_USER_SEARCH);
+            }
+        }
     }
 
     private String objectUserToString(User user) {

@@ -73,7 +73,8 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item"
-                       href="${pageContext.request.contextPath}/controller?command=EMPLOYEE_LIST&userRole=ADMIN&nextPage=0&previewPage=-1">
+<%--                       href="${pageContext.request.contextPath}/controller?command=EMPLOYEE_LIST&userRole=ADMIN&nextPage=0&previewPage=-1">--%>
+                       href="${pageContext.request.contextPath}/controller?command=USERS_LIST&userRole=ADMIN&nextPage=0&previewPage=-1">
                         <fmt:message key="label.admin.navBar.employee.all"/></a>
                 </div>
             </li>

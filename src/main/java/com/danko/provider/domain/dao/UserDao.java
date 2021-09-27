@@ -41,4 +41,6 @@ public interface UserDao extends BaseDao<Long, User> {
     long rowsInTableByUserRole(UserRole role) throws DaoException;
 
     List<User> findAllByUserRolePageLimit(UserRole role, long startPosition, long rows) throws DaoException;
+
+    List<User> search(String searchParameter) throws DaoException;
 }

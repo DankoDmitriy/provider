@@ -5,6 +5,9 @@ public final class PageUrl {
     public static final String ADMIN_USERS_LIST_PAGE = "/jsp/pages/admin/admin_users_list.jsp";
     public static final String ADMIN_USERS_LIST_PAGE_REDIRECT = "/controller?command=USERS_LIST&USER_ROLE=USER&nextPage=0&previewPage=-1";
 
+    public static final String ADMIN_USER_SEARCH = "/jsp/pages/admin/admin_user_search.jsp";
+    public static final String ADMIN_USER_SEARCH_REDIRECT = "/controller?command=USER_SEARCH";
+
     public static final String ADMIN_USER_ADD_PAGE = "/jsp/pages/admin/admin_user_add.jsp";
     public static final String ADMIN_USER_ADD_PAGE_REDIRECT = "/controller?command=USER_ADD";
     public static final String ADMIN_USER_ADD_CARD = "/jsp/pages/admin/admin_new_user_card.jsp";
