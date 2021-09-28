@@ -10,15 +10,16 @@ import com.danko.provider.domain.service.TariffService;
 import com.danko.provider.domain.service.UserService;
 import com.danko.provider.exception.CommandException;
 import com.danko.provider.exception.ServiceException;
+import com.danko.provider.validator.InputDataValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import java.util.List;
 
-import static com.danko.provider.controller.command.PageUrl.*;
+import static com.danko.provider.controller.command.PageUrl.HOME_PAGE;
+import static com.danko.provider.controller.command.PageUrl.USER_TARIFFS_LIST;
 import static com.danko.provider.controller.command.ParamName.USER_CHANGE_TARIFF_NEW_TARIFF_ID;
 import static com.danko.provider.controller.command.RequestAttribute.USER_TARIFF_LIST;
 import static com.danko.provider.controller.command.RequestAttribute.USER_TARIFF_LIST_RESULT_FOR_MESSAGE;
@@ -26,7 +27,7 @@ import static com.danko.provider.controller.command.SessionAttribute.SESSION_USE
 
 public class ChangeTariffCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
-    private static final String ID_CHECK_REGEX = "^[1-9]{1}[0-9]{0,15}$";
+    private final InputDataValidator validator = InputDataValidator.getInstance();
     private final UserService userService = ServiceProvider.getInstance().getUserService();
     private final TariffService tariffService = ServiceProvider.getInstance().getTariffService();
 
@@ -37,10 +38,9 @@ public class ChangeTariffCommand implements Command {
         User user = (User) session.getAttribute(SESSION_USER);
         String newTariffIdStr = request.getParameter(USER_CHANGE_TARIFF_NEW_TARIFF_ID);
         try {
-            if (newTariffIdStr.matches(ID_CHECK_REGEX)) {
+            if (validator.isIdValid(newTariffIdStr)) {
                 long newTariffId = Long.parseLong(newTariffIdStr);
-                boolean relust = userService.updateTariffPlan(user.getUserId(), newTariffId);
-                if (relust) {
+                if (userService.updateTariffPlan(user.getUserId(), newTariffId)) {
                     User userUpdate = userService.findById(user.getUserId()).get();
                     userUpdate.setTariff(tariffService.findById(newTariffId).get());
                     session.setAttribute(SESSION_USER, userUpdate);

@@ -20,7 +20,6 @@ public final class CommandName {
     public static final String COMMAND_ADMIN_TARIFF_LIST = "TARIFF_LIST";
     public static final String COMMAND_ADMIN_TARIFF_ADD = "TARIFF_ADD";
     public static final String COMMAND_ADMIN_TARIFF_EDIT = "TARIFF_EDIT";
-//    public static final String COMMAND_ADMIN_EMPLOYEE_LIST = "EMPLOYEE_LIST";
     public static final String COMMAND_ADMIN_CARD_ADD = "CARD_ADD";
     public static final String COMMAND_ADMIN_USER_PROFILE = "USER_PROFILE";
     public static final String COMMAND_ADMIN_USER_BAN = "USER_BAN";
@@ -31,8 +30,6 @@ public final class CommandName {
     public static final String COMMAND_ADMIN_USER_SEARCH = "USER_SEARCH";
 
     //    TODO - Не реализованны.
-
-
     public static final String COMMAND_ADMIN_STATISTICS = "STATISTICS";
 
     //    Commands for User role
@@ -45,9 +42,6 @@ public final class CommandName {
 
     public static Set<String> adminCommands = new HashSet<String>
             (Arrays.asList(
-//                    COMMAND_HOME,
-//                    COMMAND_LOGOUT,
-//                    COMMAND_CHANGE_LOCAL,
                     COMMAND_ADMIN_USER_LIST,
                     COMMAND_ADMIN_USER_ADD,
                     COMMAND_ADMIN_USER_EDIT,
@@ -60,7 +54,6 @@ public final class CommandName {
                     COMMAND_ADMIN_TARIFF_LIST,
                     COMMAND_ADMIN_TARIFF_ADD,
                     COMMAND_ADMIN_TARIFF_EDIT,
-//                    COMMAND_ADMIN_EMPLOYEE_LIST,
                     COMMAND_ADMIN_CARD_ADD,
                     COMMAND_ADMIN_CARD_SEARCH
             ));
@@ -68,9 +61,6 @@ public final class CommandName {
 
     public static Set<String> userCommands = new HashSet<String>
             (Arrays.asList(
-//                    COMMAND_HOME,
-//                    COMMAND_LOGOUT,
-//                    COMMAND_CHANGE_LOCAL,
                     COMMAND_USER_PERSONAL_FINANCE_OPERATIONS,
                     COMMAND_USER_CHANGE_PASSWORD,
                     COMMAND_USER_CHANGE_TARIFF,

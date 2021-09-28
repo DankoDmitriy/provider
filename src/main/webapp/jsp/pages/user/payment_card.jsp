@@ -22,13 +22,9 @@
     <div class="col-lg-8">
         <div class="card">
             <div class="card-body">
-
-
-                <c:if test="${not empty errorMessage}">
-                    <div style="text-align: center;">${errorMessage}</div>
+                <c:if test="${resultWork == false}">
+                    <p><fmt:message key="label.user.pay.errorMessage"/></p>
                 </c:if>
-
-
                 <form action="${pageContext.request.contextPath}/controller" method="post">
                     <input type="hidden" name="command" value="PAY">
                     <div class="row mb-3">
@@ -39,7 +35,7 @@
                         <div class="col-sm-9 text-secondary">
                             <input type="text"
                                    placeholder="<fmt:message key="label.user.pay.cardNumber"/>"
-                                   class="form-control" name="cardNumber">
+                                   class="form-control" name="cardNumber" pattern="[A-Z]{3,5}[0-9]{7}" required>
                         </div>
                         <br>
                         <div class="col-sm-3">
@@ -48,11 +44,9 @@
                         <div class="col-sm-9 text-secondary">
                             <input type="text"
                                    placeholder="<fmt:message key="label.user.pay.cardPin"/>"
-                                   class="form-control" name="cardPin">
+                                   class="form-control" name="cardPin" pattern="[0-9]{8}" required>
                         </div>
-
                     </div>
-
                     <div class="row">
                         <div class="col-sm-3"></div>
                         <div class="col-sm-9 text-secondary">

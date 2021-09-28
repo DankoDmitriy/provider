@@ -1,6 +1,5 @@
 package com.danko.provider.domain.service.impl;
 
-import com.danko.provider.controller.Router;
 import com.danko.provider.controller.command.SessionRequestContent;
 import com.danko.provider.domain.dao.*;
 import com.danko.provider.domain.entity.*;
@@ -33,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
     private static final int CONTRACT_LENGTH = 11;
     private static final int PASSWORD_LENGTH = 11;
+    private static final int PAYMENT_CARD_PIN_LENGTH = 8;
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
     private final UserDao userDao;
     private final TariffDao tariffDao;
@@ -146,7 +146,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updatePassword(long userId, String password, String email, String contextPath, String requestUrl, long tariffId) throws ServiceException {
+    public boolean updatePassword(long userId,
+                                  String password,
+                                  String email,
+                                  String contextPath,
+                                  String requestUrl,
+                                  long tariffId) throws ServiceException {
         boolean result = true;
         try {
             try {
@@ -270,20 +275,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BigDecimal activatePaymentCard(String cardNumber, String cardPin, long userId, BigDecimal userBalance, long tariffId) throws ServiceException {
-        BigDecimal newUserBalance;
+    public void activatePaymentCard(SessionRequestContent content) throws ServiceException {
+        User user = (User) content.getSessionAttribute(SESSION_USER);
+        String[] cardNumber = content.getRequestParameter(CARD_NUMBER);
+        String[] cardPin = content.getRequestParameter(CARD_PIN);
         try {
             try {
                 transactionManager.startTransaction();
+                if (cardNumber != null &&
+                        cardPin != null &&
+                        inputDataValidator.isPaymentCardNumberValid(cardNumber[0]) &&
+                        cardPin[0].length() == PAYMENT_CARD_PIN_LENGTH) {
+                    String cardNumberHash = StringHasher.hashString(cardNumber[0]);
+                    String cardPinHash = StringHasher.hashString(cardPin[0]);
+                    Optional<PaymentCard> paymentCardOptional = paymentCardDao.findByCardNumberAndPin(cardNumberHash, cardPinHash);
+                    if (!paymentCardOptional.isEmpty() &&
+                            paymentCardOptional.get().getCardStatus().equals(PaymentCard.CardStatus.NOT_USED)) {
 
-                String cardNumberHash = StringHasher.hashString(cardNumber);
-                String cardPinHash = StringHasher.hashString(cardPin);
-                Optional<PaymentCard> paymentCardOptional = paymentCardDao.findByCardNumberAndPin(cardNumberHash, cardPinHash);
-
-                if (!paymentCardOptional.isEmpty()) {
-                    PaymentCard paymentCard = paymentCardOptional.get();
-                    if (paymentCard.getCardStatus().equals(PaymentCard.CardStatus.NOT_USED)) {
-
+                        PaymentCard paymentCard = paymentCardOptional.get();
                         LocalDateTime localDateTimeNow = LocalDateTime.now();
                         paymentCard.setCardStatus(PaymentCard.CardStatus.USED);
                         paymentCard.setActivationDate(localDateTimeNow);
@@ -295,24 +304,27 @@ public class UserServiceImpl implements UserService {
                         AccountTransaction accountTransaction = AccountTransaction.builder()
                                 .setSum(paymentCard.getAmount())
                                 .setDate(localDateTimeNow)
-                                .setUserId(userId)
+                                .setUserId(user.getUserId())
                                 .setType(TransactionType.REFILL).build();
 
-                        newUserBalance = userBalance.add(paymentCard.getAmount());
+                        BigDecimal newUserBalance = user.getBalance().add(paymentCard.getAmount());
 
-                        userActionDao.add(userAction, userId, tariffId);
+                        userActionDao.add(userAction, user.getUserId(), user.getTariffId());
                         accountTransactionDao.add(accountTransaction);
-                        paymentCardDao.activateCard(paymentCard.getCardId(), userId, localDateTimeNow);
-                        userDao.balanceReplenishment(userId, newUserBalance);
-
+                        paymentCardDao.activateCard(paymentCard.getCardId(), user.getUserId(), localDateTimeNow);
+                        userDao.balanceReplenishment(user.getUserId(), newUserBalance);
                         transactionManager.commit();
+                        user.setBalance(newUserBalance);
+                        content.putSessionAttribute(SESSION_USER, user);
+                        content.setPageUrl(HOME_PAGE);
+
                     } else {
-//                        FIXME - Удалить и переписать
-                        throw new ServiceException("Balance has not been replenished.");
+                        content.putRequestAttribute(USER_RESULT_ACTION, false);
+                        content.setPageUrl(USER_ACTIVATE_PAYMENT_CARD);
                     }
                 } else {
-//                        FIXME - Удалить и переписать
-                    throw new ServiceException("Balance has not been replenished.");
+                    content.putRequestAttribute(USER_RESULT_ACTION, true);
+                    content.setPageUrl(USER_ACTIVATE_PAYMENT_CARD);
                 }
             } catch (DaoException e) {
                 transactionManager.rollback();
@@ -323,7 +335,6 @@ public class UserServiceImpl implements UserService {
         } catch (DaoException | ServiceException e1) {
             throw new ServiceException(e1);
         }
-        return newUserBalance;
     }
 
     @Override
@@ -485,14 +496,14 @@ public class UserServiceImpl implements UserService {
                         content.putRequestAttribute(ADMIN_USERS_LIST_RESULT_WORK_FOR_MESSAGE, true);
                         content.setPageUrl(ADMIN_USERS_LIST_PAGE);
                     } else {
-//              FIXME - тут, если подмени ID пользователя
+//              TODO - тут, если подмени ID пользователя
                         content.putRequestAttribute(ADMIN_USERS_LIST, Arrays.asList(user));
                         content.putRequestAttribute(ADMIN_USERS_LIST_RESULT_WORK_FOR_MESSAGE, false);
                         content.setPageUrl(ADMIN_USERS_LIST_PAGE);
                     }
                 } else {
                     if (userIdStr != null && inputDataValidator.isIdValid(userIdStr[0])) {
-//                FIXME Тут выбираем пользователя для редакирования и необходимые данные для формы
+//                TODO Тут выбираем пользователя для редакирования и необходимые данные для формы
                         transactionManager.startTransaction();
                         Optional<User> optionalUser = userDao.findById(Long.parseLong(userIdStr[0]));
                         if (!optionalUser.isEmpty()) {
@@ -502,12 +513,12 @@ public class UserServiceImpl implements UserService {
                             content.putRequestAttribute(ADMIN_USER_EDIT, user);
                             content.setPageUrl(ADMIN_USER_EDIT_PAGE);
                         } else {
-//                   FIXME Тут если Пользователя нет. отправляем на страницу пользователей.
+//                   TODO Тут если Пользователя нет. отправляем на страницу пользователей.
                             content.setRedirect(true);
                             content.setPageUrl(ADMIN_USERS_LIST_PAGE_REDIRECT);
                         }
                     } else {
-//                FIXME    Некорректный ID Пользователя на страницу с пользователями.
+//                TODO    Некорректный ID Пользователя на страницу с пользователями.
                         content.setRedirect(true);
                         content.setPageUrl(ADMIN_USERS_LIST_PAGE_REDIRECT);
                     }

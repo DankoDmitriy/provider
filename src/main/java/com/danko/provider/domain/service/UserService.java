@@ -25,11 +25,7 @@ public interface UserService {
 
     boolean updateTariffPlan(long userId, long tariffId) throws ServiceException;
 
-    BigDecimal activatePaymentCard(String cardNumber,
-                                   String cardPin,
-                                   long userId,
-                                   BigDecimal userBalance,
-                                   long tariffId) throws ServiceException;
+    void activatePaymentCard(SessionRequestContent content) throws ServiceException;
 
     void addUser(SessionRequestContent content) throws ServiceException;
 

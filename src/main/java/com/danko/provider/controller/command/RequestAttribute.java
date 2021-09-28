@@ -19,6 +19,7 @@ public final class RequestAttribute {
     public static final String USER_TARIFF_LIST_RESULT_FOR_MESSAGE = "resultWork";
     //User Actions list page
     public static final String USER_ACTION_LIST = "actions";
+    public static final String USER_RESULT_ACTION = "resultWork";
 
     //    Activation attribute
     public static final String ACTIVATION_CODE = "activationCode";
@@ -57,9 +58,14 @@ public final class RequestAttribute {
     public static final String ADMIN_USER_EDIT_ORIGINAL = "userOrigin";
 
     //    Admin user profile Page
-    public static final String ADMIN_USER_PROFILE_USER ="userProfile";
-    public static final String ADMIN_USER_PROFILE_TRANSACTIONS ="transactionList";
-    public static final String ADMIN_USER_PROFILE_ACTIONS ="userActionList";
+    public static final String ADMIN_USER_PROFILE_USER = "userProfile";
+    public static final String ADMIN_USER_PROFILE_TRANSACTIONS = "transactionList";
+    public static final String ADMIN_USER_PROFILE_ACTIONS = "userActionList";
+
+    //    Admin search payment card by number result Page
+    public static final String ADMIN_SEARCH_PAYMENT_CARD_RESULT = "searchResult";
+    public static final String ADMIN_SEARCH_PAYMENT_CARD_CARD = "card";
+    public static final String ADMIN_SEARCH_PAYMENT_CARD_USER = "user";
 
     private RequestAttribute() {
     }

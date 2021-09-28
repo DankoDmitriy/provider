@@ -88,6 +88,24 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
+    public void findAllTariffForCustomer(SessionRequestContent content) throws ServiceException {
+        try {
+            try {
+                transactionManager.startTransaction();
+                List<Tariff> tariffs = tariffDao.findAllByStatus(TariffStatus.ACTIVE);
+                content.putRequestAttribute(USER_TARIFF_LIST, tariffs);
+                content.setPageUrl(USER_TARIFFS_LIST);
+            } catch (DaoException e) {
+                throw new ServiceException(e);
+            } finally {
+                transactionManager.endTransaction();
+            }
+        } catch (DaoException | ServiceException e1) {
+            throw new ServiceException(e1);
+        }
+    }
+
+    @Override
     public void addTariff(SessionRequestContent content) throws ServiceException {
         String[] tariffName = content.getRequestParameter(TARIFF_ADD_NAME);
         String[] maxSpeed = content.getRequestParameter(TARIFF_ADD_MAX_SPEED);

@@ -15,6 +15,8 @@ public interface TariffService {
 
     List<Tariff> findAllByStatus(TariffStatus status) throws ServiceException;
 
+    void findAllTariffForCustomer(SessionRequestContent content) throws ServiceException;
+
     void addTariff(SessionRequestContent content) throws ServiceException;
 
     void update(SessionRequestContent content) throws ServiceException;

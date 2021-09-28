@@ -48,6 +48,7 @@ public class Controller extends HttpServlet {
 //            FIXME -  resp.sendRedirect(ERROR_500_PAGE);
         }
     }
+
     @Override
     public void destroy() {
     }

@@ -25,7 +25,6 @@ public class CommandAccessFilter implements Filter {
     private final Set<String> adminCommands = new HashSet<>();
     private final Set<String> userCommands = new HashSet<>();
     private final Set<String> guestCommands = new HashSet<>();
-//    private final Set<String> allCommands = new HashSet<>();
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -33,10 +32,6 @@ public class CommandAccessFilter implements Filter {
         adminCommands.addAll(CommandName.adminCommands);
         userCommands.addAll(CommandName.userCommands);
         guestCommands.addAll(CommandName.guestCommands);
-//        allCommands.addAll(commonCommand);
-//        allCommands.addAll(adminCommands);
-//        allCommands.addAll(userCommands);
-//        allCommands.addAll(guestCommands);
     }
 
     @Override
@@ -58,9 +53,6 @@ public class CommandAccessFilter implements Filter {
 
         if (userRole.equals(UserRole.GUEST) && command != null) {
             logger.log(Level.DEBUG, "GUEST IF: COMMAND {},ROLE {},User {}", command, userRole, user);
-//            FIXME - del SOUT
-            System.out.println(user);
-            System.out.println(command);
             if (!guestCommands.contains(command)) {
                 response.sendRedirect(request.getContextPath() + ACCESS_ERROR_403_PAGE);
                 return;
@@ -69,22 +61,15 @@ public class CommandAccessFilter implements Filter {
 
         if (!userRole.equals(UserRole.USER) && userCommands.contains(command)) {
             logger.log(Level.DEBUG, "USER IF: COMMAND {},ROLE {},User {}", command, userRole, user);
-//            FIXME - del SOUT
-            System.out.println(user);
-            System.out.println(command);
             response.sendRedirect(request.getContextPath() + ACCESS_ERROR_403_PAGE);
             return;
         }
 
         if (!userRole.equals(UserRole.ADMIN) && adminCommands.contains(command)) {
             logger.log(Level.DEBUG, "ADMIN IF: COMMAND {},ROLE {},User {}", command, userRole, user);
-//            FIXME - del SOUT
-            System.out.println(user);
-            System.out.println(command);
             response.sendRedirect(request.getContextPath() + ACCESS_ERROR_403_PAGE);
             return;
         }
-
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }

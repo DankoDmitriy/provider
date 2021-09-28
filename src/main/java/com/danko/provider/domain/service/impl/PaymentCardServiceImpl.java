@@ -14,7 +14,6 @@ import com.danko.provider.exception.ServiceException;
 import com.danko.provider.util.PasswordGenerator;
 import com.danko.provider.util.StringHasher;
 import com.danko.provider.validator.InputDataValidator;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,8 +27,7 @@ import java.util.Optional;
 
 import static com.danko.provider.controller.command.PageUrl.*;
 import static com.danko.provider.controller.command.ParamName.*;
-import static com.danko.provider.controller.command.RequestAttribute.ADMIN_NEW_PAYMENT_CARDS_EXPIRED_DATE;
-import static com.danko.provider.controller.command.RequestAttribute.ADMIN_NEW_PAYMENT_CARDS_LIST;
+import static com.danko.provider.controller.command.RequestAttribute.*;
 
 public class PaymentCardServiceImpl implements PaymentCardService {
     private static final Logger logger = LogManager.getLogger();
@@ -61,14 +59,12 @@ public class PaymentCardServiceImpl implements PaymentCardService {
             String cardPinHash = StringHasher.hashString(cardPin);
             return paymentCardDao.findByCardNumberAndPin(cardNumberHash, cardPinHash);
         } catch (DaoException e) {
-            logger.log(Level.ERROR, "Could not find payment card in database: {}", e);
-            throw new ServiceException("Could not find payment card in database.", e);
+            throw new ServiceException(e);
         } finally {
             try {
                 transactionManager.endTransaction();
             } catch (DaoException e) {
-                logger.log(Level.ERROR, "End transaction error: {}", e);
-                throw new ServiceException("End transaction error", e);
+                throw new ServiceException(e);
             }
         }
     }
@@ -108,7 +104,11 @@ public class PaymentCardServiceImpl implements PaymentCardService {
                             cardsMap.put(cardNumber, cardPin);
                             String cardNumberHash = StringHasher.hashString(cardNumber);
                             String cardPinHash = StringHasher.hashString(cardPin);
-                            paymentCardDao.add(new BigDecimal(amount[0]), cardNumberHash, cardPinHash, PaymentCard.CardStatus.NOT_USED, cardExpiredDate);
+                            paymentCardDao.add(new BigDecimal(amount[0]),
+                                    cardNumberHash,
+                                    cardPinHash,
+                                    PaymentCard.CardStatus.NOT_USED,
+                                    cardExpiredDate);
                         }
                         paymentCardSerialDao.add(StringHasher.hashString(series[0]));
                         transactionManager.commit();
@@ -135,7 +135,7 @@ public class PaymentCardServiceImpl implements PaymentCardService {
 
     @Override
     public void findByNumber(SessionRequestContent content) throws ServiceException {
-        String[] cardNumber = content.getRequestParameter("cardNumber");
+        String[] cardNumber = content.getRequestParameter(FIND_CARD_NUMBER_CARD);
         content.setPageUrl(ADMIN_PAYMENTS_CARD_SEARCH);
         try {
             try {
@@ -145,17 +145,17 @@ public class PaymentCardServiceImpl implements PaymentCardService {
                     Optional<PaymentCard> paymentCardOptional = paymentCardDao.findByCardNumber(cardNumberHash);
                     if (!paymentCardOptional.isEmpty()) {
                         PaymentCard card = paymentCardOptional.get();
-                        content.putRequestAttribute("card", card);
+                        content.putRequestAttribute(ADMIN_SEARCH_PAYMENT_CARD_CARD, card);
                         if (card.getCardStatus().equals(PaymentCard.CardStatus.USED)) {
                             User user = userDao.findById(paymentCardDao.getUserIdActivatedCard(card.getCardId())).get();
-                            content.putRequestAttribute("user", user);
+                            content.putRequestAttribute(ADMIN_SEARCH_PAYMENT_CARD_USER, user);
                         }
-                        content.putRequestAttribute("searchResult", true);
+                        content.putRequestAttribute(ADMIN_SEARCH_PAYMENT_CARD_RESULT, true);
                     } else {
-                        content.putRequestAttribute("searchResult", false);
+                        content.putRequestAttribute(ADMIN_SEARCH_PAYMENT_CARD_RESULT, false);
                     }
                 } else {
-                    content.putRequestAttribute("searchResult", false);
+                    content.putRequestAttribute(ADMIN_SEARCH_PAYMENT_CARD_RESULT, true);
                 }
             } catch (DaoException e) {
                 throw new ServiceException(e);

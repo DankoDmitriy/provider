@@ -31,6 +31,9 @@ public final class ParamName {
     //   Admin Tariffs_list page.
     public static final String TARIFF_ID = "tariff_id";
 
+    //   Admin find card by number Page
+    public static final String FIND_CARD_NUMBER_CARD = "cardNumber";
+
     //   Admin User add page.
     public static final String USER_ADD_FIRST_NAME = "first_name";
     public static final String USER_ADD_LAST_NAME = "last_name";

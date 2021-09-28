@@ -44,8 +44,6 @@ public class EmailSender {
 
                     Transport.send(message);
                     logger.log(Level.INFO,"Email Sent successfully....");
-//                    FIXME- удалить. SOUT.
-                    System.out.println("Email Sent successfully....");
                 } else {
                     result = false;
                 }
