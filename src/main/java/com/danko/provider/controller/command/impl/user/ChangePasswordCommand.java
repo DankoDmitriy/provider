@@ -7,7 +7,6 @@ import com.danko.provider.domain.service.ServiceProvider;
 import com.danko.provider.domain.service.UserService;
 import com.danko.provider.exception.CommandException;
 import com.danko.provider.exception.ServiceException;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,28 +31,26 @@ public class ChangePasswordCommand implements Command {
         String newPassword = request.getParameter(USER_CHANGE_PASSWORD_NEW_PASSWORD);
         String contextPath = request.getContextPath();
         String requestUrl = request.getRequestURL().toString();
-
-        if (newPassword != null) {
-            try {
-                boolean updateResult = userService.updatePassword(user.getUserId(),
+        try {
+            if (newPassword != null) {
+                if (userService.updatePassword(user.getUserId(),
                         newPassword,
                         user.getEmail(),
                         contextPath,
                         requestUrl,
-                        user.getTariffId());
-                if (updateResult) {
+                        user.getTariffId())) {
                     router.setPageUrl(request.getContextPath() + LOGOUT_PAGE);
                     router.setRouteType(Router.RouteType.REDIRECT);
                 } else {
                     router.setPageUrl(USER_CHANGE_PASSWORD_PAGE);
-                    request.setAttribute(USER_PERSONAL_MESSAGE_ERROR, "Input password is not correct.");
+                    request.setAttribute(USER_PERSONAL_MESSAGE_ERROR, true);
                 }
-            } catch (ServiceException e) {
-                throw new CommandException(e);
+            } else {
+                router.setPageUrl(USER_CHANGE_PASSWORD_PAGE);
             }
-        } else {
-            router.setPageUrl(USER_CHANGE_PASSWORD_PAGE);
+            return router;
+        } catch (ServiceException e) {
+            throw new CommandException(e);
         }
-        return router;
     }
 }

@@ -171,7 +171,7 @@ public class UserServiceImpl implements UserService {
                     EmailService emailService = ServiceProvider.getInstance().getEmailService();
                     String domain = UrlUtil.requestUrlToDomain(requestUrl) + contextPath;
 //                TODO - Расскомментировать отправку почты. Убрарно что бы не спамить самому себе.
-//                emailService.sendActivateMail(email, domain, newActivateCode);
+                    //                emailService.sendActivateMail(email, domain, newActivateCode);
                 } else {
                     result = false;
                 }

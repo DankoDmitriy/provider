@@ -23,7 +23,10 @@
         <div class="card">
             <div class="card-body">
                 <c:if test="${not empty errorMessage}">
-                    <div style="text-align: center;">${errorMessage}</div>
+                    <div style="text-align: center;">
+                        <fmt:message key="label.user.changePassword.message"/>
+                            ${errorMessage}
+                    </div>
                 </c:if>
                 <form action="${pageContext.request.contextPath}/controller" method="post">
                     <input type="hidden" name="command" value="USER_CHANGE_PASSWORD">
@@ -39,7 +42,8 @@
                     <div class="row">
                         <div class="col-sm-3"></div>
                         <div class="col-sm-9 text-secondary">
-                            <input type="submit" class="btn btn-primary px-4" value="<fmt:message key="label.user.changePassword.changeButton"/>">
+                            <input type="submit" class="btn btn-primary px-4"
+                                   value="<fmt:message key="label.user.changePassword.changeButton"/>">
                         </div>
                     </div>
                 </form>
