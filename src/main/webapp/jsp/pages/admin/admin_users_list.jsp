@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${sessionScope.local}" scope="session"/>
 <fmt:setBundle basename="local.pagecontent"/>
-
+<%@ taglib prefix="ctg" uri="customtag" %>
 <%@include file="../../../WEB-INF/parts/admin/header.jsp" %>
 <%@include file="../../../WEB-INF/parts/admin/navbar.jsp" %>
 
@@ -44,9 +44,7 @@
                 <td>
                         ${user.contractNumber}
                     </br>
-                    <fmt:parseDate value="${user.contractDate}" pattern="yyyy-MM-dd"
-                                   var="parsedDateTime" type="both"/>
-                    <fmt:formatDate pattern="dd.MM.yyyy" value="${parsedDateTime}"/>
+                    <ctg:datetag localDateTime="${user.contractDate}" fullFormat="false"/>
                 </td>
                 <td>${user.balance}</td>
                 <td>${user.email}</td>

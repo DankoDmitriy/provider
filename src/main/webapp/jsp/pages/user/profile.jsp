@@ -62,11 +62,7 @@
                         </h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                        <fmt:parseDate value="${sessionScope.user.contractDate}" pattern="yyyy-MM-dd"
-                                       var="parsedDateTime" type="both"/>
-                        <fmt:formatDate pattern="dd.MM.yyyy" value="${parsedDateTime}"/>
-<%--                        <ctg:datetag localDateTime="${sessionScope.user.contractDate}"/>--%>
-                        <ctg:datetag localDateTime="${sessionScope.user.contractDate}" fullFormat="true"/>
+                        <ctg:datetag localDateTime="${sessionScope.user.contractDate}" fullFormat="false"/>
                     </div>
                 </div>
                 <hr>
@@ -168,9 +164,7 @@
                             <small>
                                     ${transaction.type}:
                                 <b>${transaction.sum}$</b>
-                                <fmt:parseDate value="${transaction.date}" pattern="yyyy-MM-dd'T'HH:mm"
-                                               var="parsedDateTime" type="both"/>
-                                <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedDateTime}"/>
+                                <ctg:datetag localDateTime="${transaction.date}" fullFormat="true"/>
                             </small>
                             <div class="progress mb-3" style="height: 5px">
                                 <div class="progress-bar bg-primary" role="progressbar" style="width: 0%"

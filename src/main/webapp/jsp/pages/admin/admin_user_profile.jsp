@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${sessionScope.local}" scope="session"/>
 <fmt:setBundle basename="local.pagecontent"/>
-
+<%@ taglib prefix="ctg" uri="customtag" %>
 <%@include file="../../../WEB-INF/parts/admin/header.jsp" %>
 <%@include file="../../../WEB-INF/parts/admin/navbar.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/profile.css">
@@ -47,9 +47,8 @@
                             </div>
                             <div class="col-sm-9 text-secondary">
                                 ${requestScope.userProfile.contractNumber}<br>
-                                <fmt:parseDate value="${requestScope.userProfile.contractDate}" pattern="yyyy-MM-dd"
-                                               var="parsedDateTime" type="both"/>
-                                <fmt:formatDate pattern="dd.MM.yyyy" value="${parsedDateTime}"/>
+                                <ctg:datetag localDateTime="${requestScope.userProfile.contractDate}"
+                                             fullFormat="false"/>
                             </div>
                         </div>
                         <hr>
@@ -143,9 +142,8 @@
                                     <small>
                                             ${transaction.type}:
                                         <b>${transaction.sum}$</b>
-                                        <fmt:parseDate value="${transaction.date}" pattern="yyyy-MM-dd'T'HH:mm"
-                                                       var="parsedDateTime" type="both"/>
-                                        <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedDateTime}"/>
+                                        <ctg:datetag localDateTime="${transaction.date}"
+                                                     fullFormat="true"/>
                                     </small>
                                     <div class="progress mb-3" style="height: 5px">
                                         <div class="progress-bar bg-primary" role="progressbar" style="width: 0%"
@@ -176,9 +174,7 @@
                                     <small>
                                             ${action.actionType}:
                                         <b>${action.tariffName}</b>
-                                        <fmt:parseDate value="${action.dateTime}" pattern="yyyy-MM-dd'T'HH:mm"
-                                                       var="parsedDateTime" type="both"/>
-                                        <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedDateTime}"/>
+                                        <ctg:datetag localDateTime="${action.dateTime}" fullFormat="true"/>
                                     </small>
                                     <div class="progress mb-3" style="height: 5px">
                                         <div class="progress-bar bg-primary" role="progressbar" style="width: 0%"

@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${sessionScope.local}" scope="session"/>
 <fmt:setBundle basename="local.pagecontent"/>
-
+<%@ taglib prefix="ctg" uri="customtag" %>
 <%@include file="../../../WEB-INF/parts/admin/header.jsp" %>
 <%@include file="../../../WEB-INF/parts/admin/navbar.jsp" %>
 
@@ -28,9 +28,7 @@
             <div class="col-sm-9 text-secondary">
                 <fmt:message key="label.admin.paymentCardSearch.paymentCard.amount"/> <b>${requestScope.card.amount}</b><br>
                 <fmt:message key="label.admin.paymentCardSearch.paymentCarDate"/>
-                <fmt:parseDate value="${requestScope.card.activationDate}" pattern="yyyy-MM-dd'T'HH:mm"
-                               var="parsedDateTime" type="both"/>
-                <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedDateTime}"/><br>
+                <ctg:datetag localDateTime="${requestScope.card.activationDate}" fullFormat="true"/><br>
                 <fmt:message key="label.admin.paymentCardSearch.paymentCardStatus"/>
                 <b>${requestScope.card.cardStatus}</b>
             </div>
