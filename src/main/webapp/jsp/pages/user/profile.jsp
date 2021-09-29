@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${sessionScope.local}" scope="session"/>
 <fmt:setBundle basename="local.pagecontent"/>
+<%@ taglib prefix="ctg" uri="customtag" %>
 
 <%--HEADER--%>
 <%@include file="../../../WEB-INF/parts/user/header.jsp" %>
@@ -64,6 +65,8 @@
                         <fmt:parseDate value="${sessionScope.user.contractDate}" pattern="yyyy-MM-dd"
                                        var="parsedDateTime" type="both"/>
                         <fmt:formatDate pattern="dd.MM.yyyy" value="${parsedDateTime}"/>
+<%--                        <ctg:datetag localDateTime="${sessionScope.user.contractDate}"/>--%>
+                        <ctg:datetag localDateTime="${sessionScope.user.contractDate}" fullFormat="true"/>
                     </div>
                 </div>
                 <hr>

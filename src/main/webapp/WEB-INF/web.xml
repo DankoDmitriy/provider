@@ -34,6 +34,13 @@
         <url-pattern>/controller</url-pattern>
     </filter-mapping>
 
+    <jsp-config>
+        <taglib>
+            <taglib-uri>customtag</taglib-uri>
+            <taglib-location>/WEB-INF/tld/custom.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+
 
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
