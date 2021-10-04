@@ -49,26 +49,6 @@ public class PaymentCardServiceImpl implements PaymentCardService {
         this.validator = InputDataValidator.getInstance();
     }
 
-    //    FIXME - Наверное вообще не нужен будет этот метод.
-    @Override
-    public Optional<PaymentCard> findByCardNumberAndPin(String cardNumber, String cardPin) throws ServiceException {
-        try {
-            //        TODO - Добавить валидацию номера и пина карты.
-            transactionManager.startTransaction();
-            String cardNumberHash = StringHasher.hashString(cardNumber);
-            String cardPinHash = StringHasher.hashString(cardPin);
-            return paymentCardDao.findByCardNumberAndPin(cardNumberHash, cardPinHash);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        } finally {
-            try {
-                transactionManager.endTransaction();
-            } catch (DaoException e) {
-                throw new ServiceException(e);
-            }
-        }
-    }
-
     @Override
     public void addCards(SessionRequestContent content) throws ServiceException {
         String[] series = content.getRequestParameter(PAYMENT_CARD_ADD_SERIES);
@@ -116,7 +96,6 @@ public class PaymentCardServiceImpl implements PaymentCardService {
                         content.putRequestAttribute(ADMIN_NEW_PAYMENT_CARDS_EXPIRED_DATE, cardExpiredDate);
                         content.setPageUrl(ADMIN_PAYMENTS_CARD_GENERATED_PAGE);
                     } else {
-//                TODO - тут можно добавить сообщение, что уже есть такая серия Или проверить и выдать какой параметр не верен полностью
                         content.setPageUrl(ADMIN_PAYMENTS_CARD_ADD_PAGE);
                     }
                 } catch (DaoException e) {
@@ -155,7 +134,8 @@ public class PaymentCardServiceImpl implements PaymentCardService {
                         content.putRequestAttribute(ADMIN_SEARCH_PAYMENT_CARD_RESULT, false);
                     }
                 } else {
-                    content.putRequestAttribute(ADMIN_SEARCH_PAYMENT_CARD_RESULT, true);
+                    content.putRequestAttribute(ADMIN_SEARCH_PAYMENT_CARD_RESULT, false);
+                    content.setPageUrl(ADMIN_PAYMENTS_CARD_SEARCH);
                 }
             } catch (DaoException e) {
                 throw new ServiceException(e);

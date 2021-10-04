@@ -58,6 +58,7 @@ public final class PageUrl {
 
     //Access error page
     public static final String ACCESS_ERROR_403_PAGE = "/jsp/pages/static_pages/error_403.jsp";
+    public static final String EXCEPTION_ERROR_PAGE = "/jsp/pages/static_pages/error_throwable.jsp";
 
     private PageUrl() {
     }

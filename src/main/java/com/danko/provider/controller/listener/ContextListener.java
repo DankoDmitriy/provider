@@ -21,7 +21,6 @@ public class ContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         TransactionManager.getInstance();
         ConnectionPool.getInstance();
-
         DaoProvider.getInstance();
         ServiceProvider.getInstance();
         InputDataValidator.getInstance();

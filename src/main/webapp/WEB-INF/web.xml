@@ -34,6 +34,28 @@
         <url-pattern>/controller</url-pattern>
     </filter-mapping>
 
+    <filter>
+        <filter-name>PagesAccessFilter</filter-name>
+        <filter-class>com.danko.provider.controller.filter.PagesAccessFilter</filter-class>
+        <init-param>
+            <param-name>page</param-name>
+            <param-value>/index.jsp</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>PagesAccessFilter</filter-name>
+        <url-pattern>/jsp/*</url-pattern>
+    </filter-mapping>
+
+<!--    <filter>-->
+<!--        <filter-name>ResponseCacheFilter</filter-name>-->
+<!--        <filter-class>com.danko.provider.controller.filter.ResponseCacheFilter</filter-class>-->
+<!--    </filter>-->
+<!--    <filter-mapping>-->
+<!--        <filter-name>ResponseCacheFilter</filter-name>-->
+<!--        <url-pattern>/controller</url-pattern>-->
+<!--    </filter-mapping>-->
+
     <jsp-config>
         <taglib>
             <taglib-uri>customtag</taglib-uri>
@@ -41,10 +63,19 @@
         </taglib>
     </jsp-config>
 
+    <error-page>
+        <error-code>403</error-code>
+        <location>/jsp/pages/static_pages/error_403.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/jsp/pages/static_pages/error_404.jsp</location>
+    </error-page>
 
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
-        <location>/jsp/pages/test.jsp</location>
+        <location>/jsp/pages/static_pages/error_throwable.jsp</location>
     </error-page>
 
     <!--    <error-page>-->

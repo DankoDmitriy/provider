@@ -14,15 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.danko.provider.controller.command.PageUrl.EXCEPTION_ERROR_PAGE;
 import static com.danko.provider.controller.command.ParamName.COMMAND;
 
 @WebServlet(name = "controller", urlPatterns = "/controller")
 public class Controller extends HttpServlet {
     private static Logger logger = LogManager.getLogger();
-
-    @Override
-    public void init() throws ServletException {
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -44,12 +41,8 @@ public class Controller extends HttpServlet {
                 case REDIRECT -> resp.sendRedirect(router.getPageUrl());
             }
         } catch (CommandException e) {
-            logger.log(Level.ERROR, "Internal error: {}", e);
-//            FIXME -  resp.sendRedirect(ERROR_500_PAGE);
+            logger.log(Level.ERROR, e);
+            req.getRequestDispatcher(EXCEPTION_ERROR_PAGE).forward(req, resp);
         }
-    }
-
-    @Override
-    public void destroy() {
     }
 }
