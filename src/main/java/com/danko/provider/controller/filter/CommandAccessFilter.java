@@ -3,6 +3,7 @@ package com.danko.provider.controller.filter;
 import com.danko.provider.controller.command.CommandName;
 import com.danko.provider.domain.entity.User;
 import com.danko.provider.domain.entity.UserRole;
+import com.danko.provider.domain.entity.UserStatus;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,12 +16,14 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.danko.provider.controller.command.CommandName.COMMAND_HOME;
 import static com.danko.provider.controller.command.PageUrl.ACCESS_ERROR_403_PAGE;
 import static com.danko.provider.controller.command.ParamName.COMMAND;
 import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
 
 public class CommandAccessFilter implements Filter {
     private static Logger logger = LogManager.getLogger();
+    private final static String ACCESS_COMMAND_FOR_BANNED_USER = COMMAND_HOME;
     private final Set<String> commonCommand = new HashSet<>();
     private final Set<String> adminCommands = new HashSet<>();
     private final Set<String> userCommands = new HashSet<>();
@@ -49,6 +52,23 @@ public class CommandAccessFilter implements Filter {
             userRole = UserRole.GUEST;
         } else {
             userRole = user.getRole();
+        }
+
+        if (userRole.equals(UserRole.USER) &&
+                user.getStatus().equals(UserStatus.BLOCK) &&
+                !commonCommand.contains(command)) {
+            logger.log(Level.DEBUG, "Banned user action: USER IF: COMMAND {},ROLE {},User {}",
+                    command, userRole, user);
+            response.sendRedirect(request.getContextPath() + ACCESS_ERROR_403_PAGE);
+            return;
+        }
+
+        if (userRole.equals(UserRole.ADMIN) &&
+                user.getStatus().equals(UserStatus.BLOCK)) {
+            logger.log(Level.DEBUG, "Banned Admin action: USER IF: COMMAND {},ROLE {},User {}",
+                    command, userRole, user);
+            response.sendRedirect(request.getContextPath() + ACCESS_ERROR_403_PAGE);
+            return;
         }
 
         if (userRole.equals(UserRole.GUEST) && command != null) {

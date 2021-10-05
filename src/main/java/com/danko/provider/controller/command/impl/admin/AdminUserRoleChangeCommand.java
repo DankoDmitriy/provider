@@ -28,10 +28,9 @@ public class AdminUserRoleChangeCommand implements Command {
         try {
             if (userIdStr.matches(ID_CHECK_REGEX)) {
                 long userId = Long.parseLong(userIdStr);
-                if (userService.changeRole(userId)) {
-                    router.setRouteType(Router.RouteType.REDIRECT);
-                    router.setPageUrl(request.getContextPath() + ADMIN_USER_PROFILE_PAGE_REDIRECT + userId);
-                }
+                userService.changeUserRole(userId);
+                router.setRouteType(Router.RouteType.REDIRECT);
+                router.setPageUrl(request.getContextPath() + ADMIN_USER_PROFILE_PAGE_REDIRECT + userId);
             }
         } catch (ServiceException e) {
             throw new CommandException(e);

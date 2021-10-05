@@ -48,17 +48,6 @@ public class PaymentCardDaoImpl implements PaymentCardDao {
             card_number=? AND card_pin=?
             """;
 
-    private static final String SQL_FIND_PAYMENT_CARD_BY_USER_ID = """
-            SELECT
-            card_id, amount, activation_date, cs.status
-            FROM
-            express_payment_cards            
-            JOIN
-            card_status AS cs ON express_payment_cards.card_status_card_status_id = cs.card_status_id
-            WHERE
-            users_user_id=?
-            """;
-
     private static final String SQL_FIND_PAYMENT_CARD_BY_NUMBER = """
             SELECT
             card_id, amount, activation_date, cs.status
@@ -115,11 +104,6 @@ public class PaymentCardDaoImpl implements PaymentCardDao {
     public Optional<PaymentCard> findByCardNumberAndPin(String cardNumber, String cardPin) throws DaoException {
         return jdbcTemplate.executeSelectQueryForSingleResult
                 (SQL_FIND_PAYMENT_CARD_BY_NUMBER_AND_PIN, cardNumber, cardPin);
-    }
-
-    @Override
-    public List<PaymentCard> findByUserId(long userId) throws DaoException {
-        return jdbcTemplate.executeSelectQuery(SQL_FIND_PAYMENT_CARD_BY_USER_ID, userId);
     }
 
     @Override

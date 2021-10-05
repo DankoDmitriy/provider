@@ -23,18 +23,6 @@ public class AccountTransactionDaoImpl implements AccountTransactionDao {
             ORDER BY date DESC
             """;
 
-    private static final String SQL_FIND_ALL_ACCOUNT_TRANSACTIONS_BY_USER_ID = """
-            SELECT
-            transaction_id, sum, date, transaction_type_type_id, tt.type, users_user_id
-            FROM
-            account_transactions
-            JOIN
-            transaction_type AS tt ON account_transactions.transaction_type_type_id = tt.type_id
-            WHERE
-            users_user_id=?
-            ORDER BY date DESC 
-            """;
-
     private static final String SQL_FIND_ALL_ACCOUNT_TRANSACTIONS_BY_USER_ID_LIMIT_5 = """
             SELECT
             transaction_id, sum, date, transaction_type_type_id, tt.type, users_user_id
@@ -107,12 +95,7 @@ public class AccountTransactionDaoImpl implements AccountTransactionDao {
         return list;
     }
 
-    @Override
-    public List<AccountTransaction> findAllByUserId(long userId) throws DaoException {
-        List<AccountTransaction> list;
-        list = jdbcTemplate.executeSelectQuery(SQL_FIND_ALL_ACCOUNT_TRANSACTIONS_BY_USER_ID, userId);
-        return list;
-    }
+
 
     @Override
     public List<AccountTransaction> findAllByUserIdLimit(long userId) throws DaoException {

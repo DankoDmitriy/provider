@@ -16,7 +16,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.danko.provider.controller.command.PageUrl.*;
 import static com.danko.provider.controller.command.RequestAttribute.*;
@@ -35,75 +34,11 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
     }
 
     @Override
-    public List<AccountTransaction> findAll() throws ServiceException {
-        try {
-            try {
-                transactionManager.startTransaction();
-                return accountTransactionDao.findAll();
-            } catch (DaoException e) {
-                throw new ServiceException(e);
-            } finally {
-                transactionManager.endTransaction();
-            }
-        } catch (DaoException | ServiceException e1) {
-            throw new ServiceException(e1);
-        }
-    }
-
-    @Override
-    public List<AccountTransaction> findAllByUserId(long userId) throws ServiceException {
-        try {
-            try {
-                transactionManager.startTransaction();
-                return accountTransactionDao.findAllByUserId(userId);
-            } catch (DaoException e) {
-                throw new ServiceException(e);
-            } finally {
-                transactionManager.endTransaction();
-            }
-        } catch (DaoException | ServiceException e1) {
-            throw new ServiceException(e1);
-        }
-    }
-
-    @Override
     public List<AccountTransaction> findAllByUserIdLimit(long userId) throws ServiceException {
         try {
             try {
                 transactionManager.startTransaction();
                 return accountTransactionDao.findAllByUserIdLimit(userId);
-            } catch (DaoException e) {
-                throw new ServiceException(e);
-            } finally {
-                transactionManager.endTransaction();
-            }
-        } catch (DaoException | ServiceException e1) {
-            throw new ServiceException(e1);
-        }
-    }
-
-    @Override
-    public Optional<AccountTransaction> findById(long id) throws ServiceException {
-        try {
-            try {
-                transactionManager.startTransaction();
-                return accountTransactionDao.findById(id);
-            } catch (DaoException e) {
-                throw new ServiceException(e);
-            } finally {
-                transactionManager.endTransaction();
-            }
-        } catch (DaoException | ServiceException e1) {
-            throw new ServiceException(e1);
-        }
-    }
-
-    @Override
-    public long rowsInTableForUser(long userId) throws ServiceException {
-        try {
-            try {
-                transactionManager.startTransaction();
-                return accountTransactionDao.rowsInTableForUser(userId);
             } catch (DaoException e) {
                 throw new ServiceException(e);
             } finally {

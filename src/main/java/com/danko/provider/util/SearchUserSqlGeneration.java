@@ -48,7 +48,7 @@ public class SearchUserSqlGeneration {
             addCriteriaParameter(andAdd, sb, USER_LAST_NAME, lastName[0]);
             andAdd = true;
         }
-        if (patronymic != null && validator.isPatronymic(patronymic[0])) {
+        if (patronymic != null && validator.isPatronymicValid(patronymic[0])) {
             addCriteriaParameter(andAdd, sb, USER_PATRONYMIC, patronymic[0]);
             andAdd = true;
         }

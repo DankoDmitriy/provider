@@ -24,7 +24,7 @@ public interface UserDao extends BaseDao<Long, User> {
 
     boolean updateContractNumberAndUserName(long userId, String contractNumber, String userName) throws DaoException;
 
-    List<User> findAllByRole(UserRole role) throws DaoException;
+
 
     boolean updateFirstName(long userId, String firstName) throws DaoException;
 
@@ -42,5 +42,5 @@ public interface UserDao extends BaseDao<Long, User> {
 
     List<User> findAllByUserRolePageLimit(UserRole role, long startPosition, long rows) throws DaoException;
 
-    List<User> search(String searchParameter) throws DaoException;
+    List<User> searchUsersByParameters(String searchParameter) throws DaoException;
 }

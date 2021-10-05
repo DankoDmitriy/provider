@@ -5,13 +5,9 @@ import com.danko.provider.domain.entity.User;
 import com.danko.provider.domain.entity.UserStatus;
 import com.danko.provider.exception.ServiceException;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-
-    List<User> findAllUsers() throws ServiceException;
-
     void findPageByUserRole(SessionRequestContent content, long rowsOnPage) throws ServiceException;
 
     void login(SessionRequestContent content) throws ServiceException;
@@ -23,7 +19,7 @@ public interface UserService {
                            String requestUrl,
                            long tariffId) throws ServiceException;
 
-    boolean updateActivationCodeStatus(String activateCode, UserStatus userStatus) throws ServiceException;
+    void updateActivationCodeStatus(String activateCode, UserStatus userStatus) throws ServiceException;
 
     boolean verificationOfActivationCode(String activateCode) throws ServiceException;
 
@@ -37,9 +33,9 @@ public interface UserService {
 
     void updateUserPersonalData(SessionRequestContent content) throws ServiceException;
 
-    boolean blockOrUnblock(long userId) throws ServiceException;
+    void blockOrUnblockUser(long userId) throws ServiceException;
 
-    boolean changeRole(long userId) throws ServiceException;
+    void changeUserRole(long userId) throws ServiceException;
 
     void searchUsers(SessionRequestContent content) throws ServiceException;
 }

@@ -58,22 +58,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllUsers() throws ServiceException {
-        try {
-            try {
-                transactionManager.startTransaction();
-                return userDao.findAll();
-            } catch (DaoException e) {
-                throw new ServiceException(e);
-            } finally {
-                transactionManager.endTransaction();
-            }
-        } catch (DaoException | ServiceException e1) {
-            throw new ServiceException(e1);
-        }
-    }
-
-    @Override
     public void findPageByUserRole(SessionRequestContent content, long rowsOnPage) throws ServiceException {
         String userRoleStr = content.getRequestParameter(PAGINATION_USER_ROLE)[0];
         String nextPageStr = content.getRequestParameter(PAGINATION_NEXT_PAGE)[0];
@@ -189,16 +173,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateActivationCodeStatus(String activateCode, UserStatus userStatus) throws ServiceException {
-        boolean result = false;
+    public void updateActivationCodeStatus(String activateCode, UserStatus userStatus) throws ServiceException {
         try {
             try {
                 transactionManager.startTransaction();
                 if (userDao.verificationOfActivationCode(activateCode)) {
-                    result = userDao.updateActivationCodeStatus(activateCode, userStatus);
+                    userDao.updateActivationCodeStatus(activateCode, userStatus);
                     transactionManager.commit();
                 }
-                return result;
             } catch (DaoException e) {
                 transactionManager.rollback();
                 throw new ServiceException(e);
@@ -355,7 +337,7 @@ public class UserServiceImpl implements UserService {
                         email != null &&
                         inputDataValidator.isFirstNameValid(firstName[0]) &&
                         inputDataValidator.isLastNameValid(lastName[0]) &&
-                        inputDataValidator.isPatronymic(patronymic[0]) &&
+                        inputDataValidator.isPatronymicValid(patronymic[0]) &&
                         inputDataValidator.isEmailValid(email[0]) &&
                         inputDataValidator.isIdValid(tariffId[0])) {
                     PasswordGenerator strGenerator = new PasswordGenerator.Builder()
@@ -468,7 +450,7 @@ public class UserServiceImpl implements UserService {
                         userOriginStr != null &&
                         inputDataValidator.isFirstNameValid(firstName[0]) &&
                         inputDataValidator.isLastNameValid(lastName[0]) &&
-                        inputDataValidator.isPatronymic(patronymic[0]) &&
+                        inputDataValidator.isPatronymicValid(patronymic[0]) &&
                         inputDataValidator.isEmailValid(email[0]) &&
                         inputDataValidator.isIdValid(userIdStr[0])) {
                     long userId = Long.parseLong(userIdStr[0]);
@@ -535,8 +517,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean blockOrUnblock(long userId) throws ServiceException {
-        boolean result = true;
+    public void blockOrUnblockUser(long userId) throws ServiceException {
         try {
             try {
                 transactionManager.startTransaction();
@@ -546,15 +527,12 @@ public class UserServiceImpl implements UserService {
                     UserStatus userStatus = user.getStatus();
                     switch (userStatus) {
                         case ACTIVE, WAIT_ACTIVATE: {
-                            result = userDao.updateStatus(userId, UserStatus.BLOCK);
+                            userDao.updateStatus(userId, UserStatus.BLOCK);
                             break;
                         }
                         case BLOCK: {
-                            result = userDao.updateStatus(userId, UserStatus.WAIT_ACTIVATE);
+                            userDao.updateStatus(userId, UserStatus.WAIT_ACTIVATE);
                             break;
-                        }
-                        default: {
-                            result = false;
                         }
                     }
                     Tariff tariff = tariffDao.findById(user.getTariffId()).get();
@@ -574,12 +552,10 @@ public class UserServiceImpl implements UserService {
         } catch (DaoException | ServiceException e1) {
             throw new ServiceException(e1);
         }
-        return result;
     }
 
     @Override
-    public boolean changeRole(long userId) throws ServiceException {
-        boolean result = true;
+    public void changeUserRole(long userId) throws ServiceException {
         try {
             try {
                 transactionManager.startTransaction();
@@ -589,15 +565,12 @@ public class UserServiceImpl implements UserService {
                     UserRole userRole = user.getRole();
                     switch (userRole) {
                         case USER: {
-                            result = userDao.updateRole(userId, UserRole.ADMIN);
+                            userDao.updateRole(userId, UserRole.ADMIN);
                             break;
                         }
                         case ADMIN: {
-                            result = userDao.updateRole(userId, UserRole.USER);
+                            userDao.updateRole(userId, UserRole.USER);
                             break;
-                        }
-                        default: {
-                            result = false;
                         }
                     }
                     Tariff tariff = tariffDao.findById(user.getTariffId()).get();
@@ -617,7 +590,6 @@ public class UserServiceImpl implements UserService {
         } catch (DaoException | ServiceException e1) {
             throw new ServiceException(e1);
         }
-        return result;
     }
 
     @Override
@@ -632,7 +604,7 @@ public class UserServiceImpl implements UserService {
                 try {
                     try {
                         transactionManager.startTransaction();
-                        List<User> users = userDao.search(criteriaForDao);
+                        List<User> users = userDao.searchUsersByParameters(criteriaForDao);
                         content.putRequestAttribute(PAGINATION_RESULT_LIST, users);
                         content.setPageUrl(ADMIN_USERS_LIST_PAGE);
                     } catch (DaoException e) {

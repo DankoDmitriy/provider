@@ -44,17 +44,17 @@
     </filter>
     <filter-mapping>
         <filter-name>PagesAccessFilter</filter-name>
-        <url-pattern>/jsp/*</url-pattern>
+        <url-pattern>/jsp/pages/*</url-pattern>
     </filter-mapping>
 
-<!--    <filter>-->
-<!--        <filter-name>ResponseCacheFilter</filter-name>-->
-<!--        <filter-class>com.danko.provider.controller.filter.ResponseCacheFilter</filter-class>-->
-<!--    </filter>-->
-<!--    <filter-mapping>-->
-<!--        <filter-name>ResponseCacheFilter</filter-name>-->
-<!--        <url-pattern>/controller</url-pattern>-->
-<!--    </filter-mapping>-->
+    <filter>
+        <filter-name>ResponseCacheFilter</filter-name>
+        <filter-class>com.danko.provider.controller.filter.ResponseCacheFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ResponseCacheFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <jsp-config>
         <taglib>
@@ -65,17 +65,17 @@
 
     <error-page>
         <error-code>403</error-code>
-        <location>/jsp/pages/static_pages/error_403.jsp</location>
+        <location>/jsp/static_pages/error_403.jsp</location>
     </error-page>
 
     <error-page>
         <error-code>404</error-code>
-        <location>/jsp/pages/static_pages/error_404.jsp</location>
+        <location>/jsp/static_pages/error_404.jsp</location>
     </error-page>
 
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
-        <location>/jsp/pages/static_pages/error_throwable.jsp</location>
+        <location>/jsp/static_pages/error_throwable.jsp</location>
     </error-page>
 
     <!--    <error-page>-->

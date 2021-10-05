@@ -1,6 +1,6 @@
 package com.danko.provider.Main.TMP;
 
-public class TMP_NOT_USED_PARTS {
+public class TMP_NOT_USED_PaymentCardService {
 
 //    PaymentCardService
     //    Optional<PaymentCard> findByCardNumberAndPin(String cardNumber, String cardPin) throws ServiceException;

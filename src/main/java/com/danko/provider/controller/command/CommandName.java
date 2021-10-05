@@ -71,6 +71,7 @@ public final class CommandName {
 
     public static Set<String> commonCommands = new HashSet<String>
             (Arrays.asList(
+                    COMMAND_LOGIN,
                     COMMAND_HOME,
                     COMMAND_LOGOUT,
                     COMMAND_ACTIVATION,

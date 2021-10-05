@@ -40,22 +40,6 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public List<Tariff> findAllTariffs() throws ServiceException {
-        try {
-            try {
-                transactionManager.startTransaction();
-                return tariffDao.findAll();
-            } catch (DaoException e) {
-                throw new ServiceException(e);
-            } finally {
-                transactionManager.endTransaction();
-            }
-        } catch (DaoException | ServiceException e1) {
-            throw new ServiceException(e1);
-        }
-    }
-
-    @Override
     public Optional<Tariff> findById(long id) throws ServiceException {
         try {
             try {
@@ -164,7 +148,7 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public void update(SessionRequestContent content) throws ServiceException {
+    public void updateTariff(SessionRequestContent content) throws ServiceException {
         InputDataValidator validator = InputDataValidator.getInstance();
 
         String[] tariffId = content.getRequestParameter(TARIFF_EDIT_ID);

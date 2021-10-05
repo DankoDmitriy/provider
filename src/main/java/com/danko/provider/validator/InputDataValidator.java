@@ -72,7 +72,7 @@ public class InputDataValidator {
         return lastName != null && lastName.matches(LAST_NAME_REGEX);
     }
 
-    public boolean isPatronymic(String patronymic) {
+    public boolean isPatronymicValid(String patronymic) {
         return patronymic != null && patronymic.matches(PATRONYMIC_REGEX);
     }
 

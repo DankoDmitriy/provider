@@ -38,20 +38,6 @@ public class UserActionDaoImpl implements UserActionDao {
             action_id=?
             """;
 
-    private static final String SQL_FIND_ALL_ACTIONS_BY_USER_ID = """
-            SELECT
-            action_id, date, at.type, tp.description
-            FROM
-            actions
-            JOIN
-            action_type AS at ON actions.action_type_type_id = at.action_type_id
-            JOIN
-            tariffs AS tp ON actions.tariffs_tariff_id = tp.tariff_id
-            WHERE
-            users_user_id=?
-            ORDER BY date DESC
-            """;
-
     private static final String SQL_FIND_ALL_ACTIONS_BY_USER_ID_LIMIT_5 = """
             SELECT
             action_id, date, at.type, tp.description
@@ -142,13 +128,6 @@ public class UserActionDaoImpl implements UserActionDao {
     public List<UserAction> findAllByUserIdLimit(long userId) throws DaoException {
         List<UserAction> list;
         list = jdbcTemplate.executeSelectQuery(SQL_FIND_ALL_ACTIONS_BY_USER_ID_LIMIT_5, userId);
-        return list;
-    }
-
-    @Override
-    public List<UserAction> findAllByUserId(long userId) throws DaoException {
-        List<UserAction> list;
-        list = jdbcTemplate.executeSelectQuery(SQL_FIND_ALL_ACTIONS_BY_USER_ID, userId);
         return list;
     }
 

@@ -16,7 +16,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.danko.provider.controller.command.PageUrl.*;
 import static com.danko.provider.controller.command.RequestAttribute.*;
@@ -35,79 +34,12 @@ public class UserActionServiceImpl implements UserActionService {
     }
 
     @Override
-    public List<UserAction> findAll() throws ServiceException {
-        try {
-            try {
-                transactionManager.startTransaction();
-                return userActionDao.findAll();
-            } catch (DaoException e) {
-                throw new ServiceException(e);
-            } finally {
-                transactionManager.endTransaction();
-            }
-        } catch (DaoException | ServiceException e1) {
-            throw new ServiceException(e1);
-        }
-    }
-
-    @Override
-    public Optional<UserAction> findById(Long id) throws ServiceException {
-        try {
-            try {
-                transactionManager.startTransaction();
-                return userActionDao.findById(id);
-            } catch (DaoException e) {
-                throw new ServiceException(e);
-            } finally {
-                transactionManager.endTransaction();
-            }
-        } catch (DaoException | ServiceException e1) {
-            throw new ServiceException(e1);
-        }
-    }
-
-    @Override
-    public List<UserAction> findAllByUserId(long userId) throws ServiceException {
-        try {
-            try {
-                transactionManager.startTransaction();
-                return userActionDao.findAllByUserId(userId);
-            } catch (DaoException e) {
-                throw new ServiceException(e);
-            } finally {
-                transactionManager.endTransaction();
-            }
-        } catch (DaoException | ServiceException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
     public List<UserAction> findAllByUserIdLimit(long userId) throws ServiceException {
         try {
             try {
                 transactionManager.startTransaction();
                 return userActionDao.findAllByUserIdLimit(userId);
             } catch (DaoException e) {
-                throw new ServiceException(e);
-            } finally {
-                transactionManager.endTransaction();
-            }
-        } catch (DaoException | ServiceException e1) {
-            throw new ServiceException(e1);
-        }
-    }
-
-    @Override
-    public long add(UserAction userAction, long userId, long tariffId) throws ServiceException {
-        try {
-            try {
-                transactionManager.startTransaction();
-                long generatedId = userActionDao.add(userAction, userId, tariffId);
-                transactionManager.commit();
-                return generatedId;
-            } catch (DaoException e) {
-                transactionManager.rollback();
                 throw new ServiceException(e);
             } finally {
                 transactionManager.endTransaction();

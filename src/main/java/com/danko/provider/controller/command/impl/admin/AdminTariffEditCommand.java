@@ -21,7 +21,7 @@ public class AdminTariffEditCommand implements Command {
         Router router = new Router();
         SessionRequestContent content = new SessionRequestContent(request);
         try {
-            tariffService.update(content);
+            tariffService.updateTariff(content);
             content.setResultParametersInRequestAndRouter(request, router);
             return router;
         } catch (ServiceException e) {

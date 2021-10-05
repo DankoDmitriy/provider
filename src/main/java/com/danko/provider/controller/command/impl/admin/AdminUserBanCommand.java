@@ -28,10 +28,9 @@ public class AdminUserBanCommand implements Command {
         try {
             if (userIdStr.matches(ID_CHECK_REGEX)) {
                 long userId = Long.parseLong(userIdStr);
-                if (userService.blockOrUnblock(userId)) {
-                    router.setRouteType(Router.RouteType.REDIRECT);
-                    router.setPageUrl(request.getContextPath() + ADMIN_USER_PROFILE_PAGE_REDIRECT + userId);
-                }
+                userService.blockOrUnblockUser(userId);
+                router.setRouteType(Router.RouteType.REDIRECT);
+                router.setPageUrl(request.getContextPath() + ADMIN_USER_PROFILE_PAGE_REDIRECT + userId);
             }
         } catch (ServiceException e) {
             throw new CommandException(e);

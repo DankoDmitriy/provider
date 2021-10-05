@@ -3,7 +3,6 @@ package com.danko.provider.domain.dao.impl;
 import com.danko.provider.domain.dao.JdbcTemplate;
 import com.danko.provider.domain.dao.PaymentCardSerialDao;
 import com.danko.provider.domain.dao.mapper.impl.PaymentCardSerialResultSetHandler;
-import com.danko.provider.domain.entity.PaymentCard;
 import com.danko.provider.domain.entity.PaymentCardSerial;
 import com.danko.provider.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
@@ -52,7 +51,7 @@ public class PaymentCardSerialDaoImpl implements PaymentCardSerialDao {
 
     @Override
     public long add(PaymentCardSerial paymentCardSerial) throws DaoException {
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
     @Override

@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TariffService {
-    List<Tariff> findAllTariffs() throws ServiceException;
-
     Optional<Tariff> findById(long id) throws ServiceException;
 
     List<Tariff> findAllByStatus(TariffStatus status) throws ServiceException;
@@ -19,7 +17,7 @@ public interface TariffService {
 
     void addTariff(SessionRequestContent content) throws ServiceException;
 
-    void update(SessionRequestContent content) throws ServiceException;
+    void updateTariff(SessionRequestContent content) throws ServiceException;
 
     void findPageTariff(SessionRequestContent content, long rowsOnPage) throws ServiceException;
 }
