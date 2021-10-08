@@ -27,7 +27,8 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
     private final TransactionManager transactionManager;
     private final PaginationCalculate paginationCalculate;
 
-    public AccountTransactionServiceImpl(AccountTransactionDao accountTransactionDao, TransactionManager transactionManager) {
+    public AccountTransactionServiceImpl(AccountTransactionDao accountTransactionDao,
+                                         TransactionManager transactionManager) {
         this.accountTransactionDao = accountTransactionDao;
         this.transactionManager = transactionManager;
         this.paginationCalculate = PaginationCalculate.getInstance();

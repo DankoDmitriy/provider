@@ -2,7 +2,7 @@ package com.danko.provider.controller.listener;
 
 import com.danko.provider.pool.ConnectionPool;
 import com.danko.provider.domain.dao.TransactionManager;
-import com.danko.provider.domain.service.DaoProvider;
+import com.danko.provider.domain.dao.DaoProvider;
 import com.danko.provider.domain.service.ServiceProvider;
 import com.danko.provider.validator.InputDataValidator;
 import org.apache.logging.log4j.Level;

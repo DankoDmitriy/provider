@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="ScriptForFullCycle" verbose="1">
+    <test name="Test: Services">
+        <classes>
+            <class name="com.danko.provider.domain.service.impl.AccountTransactionServiceImplTest"/>
+            <class name="com.danko.provider.domain.service.impl.PaymentCardServiceImplTest"/>
+            <class name="com.danko.provider.domain.service.impl.TariffServiceImplTest"/>
+            <class name="com.danko.provider.domain.service.impl.UserActionServiceImplTest"/>
+            <class name="com.danko.provider.domain.service.impl.UserServiceImplTest"/>
+        </classes>
+    </test>
+
+    <test name="Test: Connection Pool">
+        <classes>
+            <class name="com.danko.provider.pool.ConnectionPoolTest"/>
+        </classes>
+    </test>
+
+    <test name="Test: Input data validator">
+        <classes>
+            <class name="com.danko.provider.validator.InputDataValidatorTest"/>
+        </classes>
+    </test>
+</suite>

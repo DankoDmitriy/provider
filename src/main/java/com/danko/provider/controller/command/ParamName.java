@@ -1,8 +1,7 @@
 package com.danko.provider.controller.command;
 
-import com.sun.mail.imap.protocol.ID;
-
 public final class ParamName {
+
     //    General type Actions parameter
     public static final String COMMAND = "command";
 

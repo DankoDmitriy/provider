@@ -1,6 +1,5 @@
-package com.danko.provider.domain.service;
+package com.danko.provider.domain.dao;
 
-import com.danko.provider.domain.dao.*;
 import com.danko.provider.domain.dao.impl.*;
 
 import java.util.concurrent.atomic.AtomicBoolean;

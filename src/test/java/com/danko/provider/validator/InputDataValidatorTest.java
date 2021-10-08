@@ -27,6 +27,8 @@ public class InputDataValidatorTest {
     @DataProvider(name = "password_data_provider")
     public Object[][] passwordDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"1234567", false},
                 {"123456789011111111111", false},
                 {"фывфвфывувфы", false},
@@ -38,6 +40,8 @@ public class InputDataValidatorTest {
     @DataProvider(name = "first_name_data_provider")
     public Object[][] firstNameDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"a", false},
                 {"publicbooleanisPaymentCardDateExpiredValidStringdateExpiredStr", false},
                 {"1234567", false},
@@ -51,6 +55,8 @@ public class InputDataValidatorTest {
     @DataProvider(name = "last_name_data_provider")
     public Object[][] lastNameDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"a", false},
                 {"publicbooleanisPaymentCardDateExpiredValidStringdateExpiredStr", false},
                 {"1234567", false},
@@ -64,6 +70,8 @@ public class InputDataValidatorTest {
     @DataProvider(name = "patronymic_data_provider")
     public Object[][] patronymicDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"a", false},
                 {"publicbooleanisPaymentCardDateExpiredValidStringdateExpiredStr", false},
                 {"1234567", false},
@@ -77,6 +85,8 @@ public class InputDataValidatorTest {
     @DataProvider(name = "email_data_provider")
     public Object[][] emailDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"sd@a.ru", false},
                 {"publicbooleanisPaymentCardDateExpiredValidStringdate@expired.com", false},
                 {"myemail->@gmail.com", false},
@@ -89,6 +99,8 @@ public class InputDataValidatorTest {
     @DataProvider(name = "tariff_description_data_provider")
     public Object[][] tariffDescriptionDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"s", false},
                 {"publicbooleanisPaymentCardDateExpiredValidStringdatewefadfsdfdsafsdfsfaasdferfrbbye45yrtgdfgddsfadsfadf", false},
                 {"dsdsf!", false},
@@ -101,6 +113,8 @@ public class InputDataValidatorTest {
     @DataProvider(name = "tariff_price_data_provider")
     public Object[][] tariffPriceDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"0.00", false},
                 {"0.000", false},
                 {"0.01", true},
@@ -112,6 +126,8 @@ public class InputDataValidatorTest {
     @DataProvider(name = "tariff_traffic_data_provider")
     public Object[][] tariffTrafficDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"123456789", false},
                 {"012345678", false},
                 {"0", false},
@@ -123,6 +139,8 @@ public class InputDataValidatorTest {
     @DataProvider(name = "tariff_speed_data_provider")
     public Object[][] tariffSpeedDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"123456", false},
                 {"01234", false},
                 {"0", false},
@@ -134,6 +152,8 @@ public class InputDataValidatorTest {
     @DataProvider(name = "tariff_status_data_provider")
     public Object[][] tariffStatusDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"base", false},
                 {"block", false},
                 {"active", false},
@@ -147,6 +167,8 @@ public class InputDataValidatorTest {
     @DataProvider(name = "tariff_periodicity_write_off_data_provider")
     public Object[][] tariffPeriodicityWriteOffDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"day", false},
                 {"month", false},
                 {"never", false},
@@ -158,8 +180,10 @@ public class InputDataValidatorTest {
     }
 
     @DataProvider(name = "payment_card_series_data_provider")
-    public Object[][] PaymentCardSeriesDataProvider() {
+    public Object[][] paymentCardSeriesDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"da", false},
                 {"aaaaaa", false},
                 {"qs1sd", false},
@@ -172,8 +196,10 @@ public class InputDataValidatorTest {
     }
 
     @DataProvider(name = "payment_card_amount_data_provider")
-    public Object[][] PaymentCardAmountDataProvider() {
+    public Object[][] paymentCardAmountDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"012", false},
                 {"123456", false},
                 {"1a233", false},
@@ -186,8 +212,10 @@ public class InputDataValidatorTest {
     }
 
     @DataProvider(name = "payment_card_count_data_provider")
-    public Object[][] PaymentCardCountDataProvider() {
+    public Object[][] paymentCardCountDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"012", false},
                 {"123456", false},
                 {"1a233", false},
@@ -200,8 +228,10 @@ public class InputDataValidatorTest {
     }
 
     @DataProvider(name = "payment_card_number_data_provider")
-    public Object[][] PaymentCardNumberDataProvider() {
+    public Object[][] paymentCardNumberDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"AAA000000", false},
                 {"AA0000000", false},
                 {"AAA0000000000000", false},
@@ -216,7 +246,7 @@ public class InputDataValidatorTest {
     }
 
     @DataProvider(name = "payment_card_date_expired_data_provider")
-    public Object[][] PaymentCardDateExpiredDataProvider() {
+    public Object[][] paymentCardDateExpiredDataProvider() {
         return new Object[][]{
                 {"2021-01-01", false},
                 {"2022-01-01", false},
@@ -225,8 +255,10 @@ public class InputDataValidatorTest {
     }
 
     @DataProvider(name = "id_data_provider")
-    public Object[][] IdDataProvider() {
+    public Object[][] idDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"1000000000000000001", false},
                 {"0112", false},
                 {"1", true},
@@ -235,8 +267,9 @@ public class InputDataValidatorTest {
     }
 
     @DataProvider(name = "user_role_provider")
-    public Object[][] UserRoleDataProvider() {
+    public Object[][] userRoleDataProvider() {
         return new Object[][]{
+                {"", false},
                 {"guest", false},
                 {"user", false},
                 {"admin", false},
@@ -248,8 +281,10 @@ public class InputDataValidatorTest {
     }
 
     @DataProvider(name = "contract_number_for_search_data_provider")
-    public Object[][] ContractNumberForSearchDataProvider() {
+    public Object[][] contractNumberForSearchDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"1", false},
                 {"11111111111111111", false},
                 {"asdasd", false},
@@ -258,8 +293,10 @@ public class InputDataValidatorTest {
     }
 
     @DataProvider(name = "email_for_search_data_provider")
-    public Object[][] EmailForSearchDataProvider() {
+    public Object[][] emailForSearchDataProvider() {
         return new Object[][]{
+                {"", false},
+                {null, false},
                 {"a", false},
                 {"aaaaaaaaaaaaaaaaaaaa", false},
                 {"asd<asd", false},

@@ -45,7 +45,12 @@ public class UserServiceImpl implements UserService {
     private final SearchUserSqlGeneration searchUserSqlGeneration;
 
 
-    public UserServiceImpl(UserDao userDao, TariffDao tariffDao, UserActionDao userActionDao, PaymentCardDao paymentCardDao, AccountTransactionDao accountTransactionDao, TransactionManager transactionManager) {
+    public UserServiceImpl(UserDao userDao,
+                           TariffDao tariffDao,
+                           UserActionDao userActionDao,
+                           PaymentCardDao paymentCardDao,
+                           AccountTransactionDao accountTransactionDao,
+                           TransactionManager transactionManager) {
         this.userDao = userDao;
         this.tariffDao = tariffDao;
         this.userActionDao = userActionDao;

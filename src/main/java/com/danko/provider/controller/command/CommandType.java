@@ -8,12 +8,14 @@ import com.danko.provider.controller.command.impl.common.LogoutCommand;
 import com.danko.provider.controller.command.impl.user.*;
 
 public enum CommandType {
+
     //    Common
     LOGIN(new LoginCommand()),
     LOGOUT(new LogoutCommand()),
     HOME(new HomeCommand()),
     LOCAL(new ChangeLocalCommand()),
     ACTIVATION(new ActivationCommand()),
+
     //User
     USER_CHANGE_PASSWORD(new ChangePasswordCommand()),
     USER_CHANGE_TARIFF(new ChangeTariffCommand()),
@@ -21,6 +23,7 @@ public enum CommandType {
     USER_ACTION_LIST(new ActionCommand()),
     PERSONAL_FINANCE_OPERATIONS(new PersonalFinanceOperationsCommand()),
     PAY(new PayCommand()),
+
     //    Admin
     USERS_LIST(new AdminUsersListCommand()),
     USER_SEARCH(new AdminUserSearch()),
@@ -36,7 +39,7 @@ public enum CommandType {
     TARIFF_EDIT(new AdminTariffEditCommand()),
     CARD_ADD(new AdminPaymentCardAddCommand()),
     CARD_SEARCH(new AdminPaymentCardSearchCommand());
-    //    Дефлотная комманда добавить.
+
     private Command command;
 
     CommandType(Command command) {

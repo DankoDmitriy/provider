@@ -1,5 +1,6 @@
 package com.danko.provider.domain.service;
 
+import com.danko.provider.domain.dao.DaoProvider;
 import com.danko.provider.domain.dao.TransactionManager;
 import com.danko.provider.domain.service.impl.*;
 

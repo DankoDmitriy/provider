@@ -41,7 +41,10 @@ public class PaymentCardServiceImpl implements PaymentCardService {
     private final TransactionManager transactionManager;
     private final InputDataValidator validator;
 
-    public PaymentCardServiceImpl(PaymentCardDao paymentCardDao, PaymentCardSerialDao paymentCardSerialDao, UserDao userDao, TransactionManager transactionManager) {
+    public PaymentCardServiceImpl(PaymentCardDao paymentCardDao,
+                                  PaymentCardSerialDao paymentCardSerialDao,
+                                  UserDao userDao,
+                                  TransactionManager transactionManager) {
         this.paymentCardDao = paymentCardDao;
         this.paymentCardSerialDao = paymentCardSerialDao;
         this.userDao = userDao;
