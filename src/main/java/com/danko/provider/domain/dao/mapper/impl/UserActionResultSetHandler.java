@@ -7,8 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-import static com.danko.provider.domain.dao.ColumnName.*;
-
+import static com.danko.provider.domain.dao.ColumnName.ACTION_DATE;
+import static com.danko.provider.domain.dao.ColumnName.ACTION_ID;
+import static com.danko.provider.domain.dao.ColumnName.ACTION_TYPE_ACTION_TYPE;
+import static com.danko.provider.domain.dao.ColumnName.TARIFF_DESCRIPTION;
 
 public class UserActionResultSetHandler implements ResultSetHandler<UserAction> {
     @Override

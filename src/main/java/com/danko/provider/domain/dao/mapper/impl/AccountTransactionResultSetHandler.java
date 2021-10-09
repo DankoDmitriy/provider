@@ -9,7 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-import static com.danko.provider.domain.dao.ColumnName.*;
+import static com.danko.provider.domain.dao.ColumnName.TRANSACTION_DATE;
+import static com.danko.provider.domain.dao.ColumnName.TRANSACTION_ID;
+import static com.danko.provider.domain.dao.ColumnName.TRANSACTION_SUM;
+import static com.danko.provider.domain.dao.ColumnName.TRANSACTION_TYPE_TYPE;
+import static com.danko.provider.domain.dao.ColumnName.TRANSACTION_USER_ID;
 
 public class AccountTransactionResultSetHandler implements ResultSetHandler<AccountTransaction> {
     @Override

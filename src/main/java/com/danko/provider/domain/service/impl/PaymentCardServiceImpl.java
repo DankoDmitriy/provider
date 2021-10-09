@@ -25,9 +25,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.danko.provider.controller.command.PageUrl.*;
-import static com.danko.provider.controller.command.ParamName.*;
-import static com.danko.provider.controller.command.RequestAttribute.*;
+//import static com.danko.provider.controller.command.PageUrl.*;
+import static com.danko.provider.controller.command.PageUrl.ADMIN_PAYMENTS_CARD_ADD_PAGE;
+import static com.danko.provider.controller.command.PageUrl.ADMIN_PAYMENTS_CARD_GENERATED_PAGE;
+import static com.danko.provider.controller.command.PageUrl.ADMIN_PAYMENTS_CARD_SEARCH;
+//import static com.danko.provider.controller.command.ParamName.*;
+import static com.danko.provider.controller.command.ParamName.FIND_CARD_NUMBER_CARD;
+import static com.danko.provider.controller.command.ParamName.PAYMENT_CARD_ADD_AMOUNT;
+import static com.danko.provider.controller.command.ParamName.PAYMENT_CARD_ADD_COUNT;
+import static com.danko.provider.controller.command.ParamName.PAYMENT_CARD_ADD_DATE_EXPIRED;
+import static com.danko.provider.controller.command.ParamName.PAYMENT_CARD_ADD_SERIES;
+import static com.danko.provider.controller.command.RequestAttribute.ADMIN_NEW_PAYMENT_CARDS_EXPIRED_DATE;
+import static com.danko.provider.controller.command.RequestAttribute.ADMIN_NEW_PAYMENT_CARDS_LIST;
+import static com.danko.provider.controller.command.RequestAttribute.ADMIN_SEARCH_PAYMENT_CARD_CARD;
+import static com.danko.provider.controller.command.RequestAttribute.ADMIN_SEARCH_PAYMENT_CARD_RESULT;
+import static com.danko.provider.controller.command.RequestAttribute.ADMIN_SEARCH_PAYMENT_CARD_USER;
+//import static com.danko.provider.controller.command.RequestAttribute.*;
 
 public class PaymentCardServiceImpl implements PaymentCardService {
     private static final Logger logger = LogManager.getLogger();

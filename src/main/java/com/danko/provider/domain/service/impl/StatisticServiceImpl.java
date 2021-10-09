@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static com.danko.provider.controller.command.PageUrl.ADMIN_BASE_STATISTIC;
+import static com.danko.provider.controller.command.RequestAttribute.ADMIN_BASE_STATISTIC_RESULT;
 
 public class StatisticServiceImpl implements StatisticService {
     private static final Logger logger = LogManager.getLogger();
@@ -37,7 +38,7 @@ public class StatisticServiceImpl implements StatisticService {
                 baseStatistic.setUsersByStatus(userCountStatisticDao.findAllUsersByStatusStatistic());
                 baseStatistic.setPaymentCardsGenerated(paymentCardCountStatisticDao.findFullStatisticByGeneratedPaymentCards());
                 baseStatistic.setPaymentCardsNotActivated(paymentCardCountStatisticDao.findAllStatisticNotActivatedPaymentCards());
-                content.putRequestAttribute("baseStatistic", baseStatistic);
+                content.putRequestAttribute(ADMIN_BASE_STATISTIC_RESULT, baseStatistic);
                 content.setPageUrl(ADMIN_BASE_STATISTIC);
             } catch (DaoException e) {
                 throw new ServiceException(e);

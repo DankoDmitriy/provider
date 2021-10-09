@@ -67,6 +67,9 @@ public final class RequestAttribute {
     public static final String ADMIN_SEARCH_PAYMENT_CARD_CARD = "card";
     public static final String ADMIN_SEARCH_PAYMENT_CARD_USER = "user";
 
+    //    Admin Base statistic Page
+    public static final String ADMIN_BASE_STATISTIC_RESULT = "baseStatistic";
+
     private RequestAttribute() {
     }
 }

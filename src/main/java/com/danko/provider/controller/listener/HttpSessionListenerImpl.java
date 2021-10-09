@@ -8,7 +8,9 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import static com.danko.provider.controller.command.SessionAttribute.*;
+import static com.danko.provider.controller.command.SessionAttribute.DEFAULT_LOCAL;
+import static com.danko.provider.controller.command.SessionAttribute.SESSION_LOCAL;
+import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
 
 @WebListener
 public class HttpSessionListenerImpl implements HttpSessionListener {

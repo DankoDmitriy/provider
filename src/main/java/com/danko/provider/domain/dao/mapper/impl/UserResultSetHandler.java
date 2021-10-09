@@ -1,14 +1,29 @@
 package com.danko.provider.domain.dao.mapper.impl;
 
-import com.danko.provider.domain.entity.*;
 import com.danko.provider.domain.dao.mapper.ResultSetHandler;
+import com.danko.provider.domain.entity.Tariff;
+import com.danko.provider.domain.entity.User;
+import com.danko.provider.domain.entity.UserRole;
+import com.danko.provider.domain.entity.UserStatus;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-import static com.danko.provider.domain.dao.ColumnName.*;
+import static com.danko.provider.domain.dao.ColumnName.USER_BALANCE;
+import static com.danko.provider.domain.dao.ColumnName.USER_CONTRACT_DATE;
+import static com.danko.provider.domain.dao.ColumnName.USER_CONTRACT_NUMBER;
+import static com.danko.provider.domain.dao.ColumnName.USER_EMAIL;
+import static com.danko.provider.domain.dao.ColumnName.USER_FIRST_NAME;
+import static com.danko.provider.domain.dao.ColumnName.USER_ID;
+import static com.danko.provider.domain.dao.ColumnName.USER_LAST_NAME;
+import static com.danko.provider.domain.dao.ColumnName.USER_NAME;
+import static com.danko.provider.domain.dao.ColumnName.USER_PATRONYMIC;
+import static com.danko.provider.domain.dao.ColumnName.USER_ROLES_ROLE;
+import static com.danko.provider.domain.dao.ColumnName.USER_STATUSES_STATUS;
+import static com.danko.provider.domain.dao.ColumnName.USER_TARIFF_ID;
+import static com.danko.provider.domain.dao.ColumnName.USER_TRAFFIC;
 
 public class UserResultSetHandler implements ResultSetHandler<User> {
 
@@ -23,11 +38,9 @@ public class UserResultSetHandler implements ResultSetHandler<User> {
         BigDecimal balance = resultSet.getBigDecimal(USER_BALANCE);
         String name = resultSet.getString(USER_NAME);
         String email = resultSet.getString(USER_EMAIL);
-//        String activationCode = resultSet.getString(USER_ACTIVATION_CODE);
         BigDecimal traffic = resultSet.getBigDecimal(USER_TRAFFIC);
         UserRole role = UserRole.valueOf(resultSet.getString(USER_ROLES_ROLE));
         UserStatus status = UserStatus.valueOf(resultSet.getString(USER_STATUSES_STATUS));
-//        boolean activationCodeUsed = resultSet.getBoolean(USER_ACTIVATE_CODE_USED);
         long tariffId = resultSet.getLong(USER_TARIFF_ID);
         Tariff tariff = null;
         User user = User.builder().setUserId(userId)
@@ -39,10 +52,8 @@ public class UserResultSetHandler implements ResultSetHandler<User> {
                 .setBalance(balance)
                 .setName(name)
                 .setEmail(email)
-//                .setActivationCode(activationCode)
                 .setRole(role)
                 .setStatus(status)
-//                .setActivationCodeUsed(activationCodeUsed)
                 .setTraffic(traffic)
                 .setTariffId(tariffId)
                 .setTariff(tariff)

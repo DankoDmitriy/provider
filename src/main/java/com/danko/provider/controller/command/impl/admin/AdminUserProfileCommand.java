@@ -20,7 +20,10 @@ import java.util.Optional;
 import static com.danko.provider.controller.command.PageUrl.ADMIN_USERS_LIST_PAGE_REDIRECT;
 import static com.danko.provider.controller.command.PageUrl.ADMIN_USER_PROFILE_PAGE;
 import static com.danko.provider.controller.command.ParamName.USER_PROFILE_ID;
-import static com.danko.provider.controller.command.RequestAttribute.*;
+import static com.danko.provider.controller.command.RequestAttribute.ADMIN_USER_PROFILE_ACTIONS;
+import static com.danko.provider.controller.command.RequestAttribute.ADMIN_USER_PROFILE_TRANSACTIONS;
+import static com.danko.provider.controller.command.RequestAttribute.ADMIN_USER_PROFILE_USER;
+//import static com.danko.provider.controller.command.RequestAttribute.*;
 
 public class AdminUserProfileCommand implements Command {
     private static final Logger logger = LogManager.getLogger();

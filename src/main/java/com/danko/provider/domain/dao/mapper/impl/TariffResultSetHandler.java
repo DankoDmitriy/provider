@@ -9,7 +9,14 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.danko.provider.domain.dao.ColumnName.*;
+import static com.danko.provider.domain.dao.ColumnName.PERIODICITY_PERIOD;
+import static com.danko.provider.domain.dao.ColumnName.TARIFF_DESCRIPTION;
+import static com.danko.provider.domain.dao.ColumnName.TARIFF_MAX_SPEED;
+import static com.danko.provider.domain.dao.ColumnName.TARIFF_MIN_SPEED;
+import static com.danko.provider.domain.dao.ColumnName.TARIFF_PRICE;
+import static com.danko.provider.domain.dao.ColumnName.TARIFF_STATUSES_STATUS;
+import static com.danko.provider.domain.dao.ColumnName.TARIFF_TARIFF_ID;
+import static com.danko.provider.domain.dao.ColumnName.TARIFF_TRAFFIC;
 
 public class TariffResultSetHandler implements ResultSetHandler<Tariff> {
     @Override

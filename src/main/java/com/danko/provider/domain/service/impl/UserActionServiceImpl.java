@@ -17,8 +17,16 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Map;
 
-import static com.danko.provider.controller.command.PageUrl.*;
-import static com.danko.provider.controller.command.RequestAttribute.*;
+//import static com.danko.provider.controller.command.PageUrl.*;
+import static com.danko.provider.controller.command.PageUrl.ADMIN_USERS_LIST_PAGE_REDIRECT;
+import static com.danko.provider.controller.command.PageUrl.ADMIN_USER_ACTIONS_PAGE;
+import static com.danko.provider.controller.command.PageUrl.HOME_PAGE;
+import static com.danko.provider.controller.command.PageUrl.USER_ACTIONS_PAGE;
+//import static com.danko.provider.controller.command.RequestAttribute.*;
+import static com.danko.provider.controller.command.RequestAttribute.PAGINATION_NEXT_PAGE;
+import static com.danko.provider.controller.command.RequestAttribute.PAGINATION_PREVIEW_PAGE;
+import static com.danko.provider.controller.command.RequestAttribute.PAGINATION_RESULT_LIST;
+import static com.danko.provider.controller.command.RequestAttribute.PAGINATION_USER_ID;
 import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
 
 public class UserActionServiceImpl implements UserActionService {

@@ -8,7 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-import static com.danko.provider.domain.dao.ColumnName.*;
+import static com.danko.provider.domain.dao.ColumnName.CARD_STATUS_STATUS;
+import static com.danko.provider.domain.dao.ColumnName.PAYMENT_CARD_ACTIVATION_DATE;
+import static com.danko.provider.domain.dao.ColumnName.PAYMENT_CARD_AMOUNT;
+import static com.danko.provider.domain.dao.ColumnName.PAYMENT_CARD_ID;
 
 public class PaymentCardResultSetHandler implements ResultSetHandler<PaymentCard> {
     @Override
