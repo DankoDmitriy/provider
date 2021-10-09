@@ -1,8 +1,8 @@
 Final project in Java EPAM course in Minsk, Belarus. 
 
-#Internet Service provider
+# Internet Service provider
 
-####The system allows you to keep records of customers, user balance, a list of tariffs, service payment cards and basic analytical statistics. The system also records all actions performed under a user contract and financial transactions. The system has 3 types of roles: Guest, User, Admin.
+#### The system allows you to keep records of customers, user balance, a list of tariffs, service payment cards and basic analytical statistics. The system also records all actions performed under a user contract and financial transactions. The system has 3 types of roles: Guest, User, Admin.
 
 ### Guest role
 - Go to the login page
