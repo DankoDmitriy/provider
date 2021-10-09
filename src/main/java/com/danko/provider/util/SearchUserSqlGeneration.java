@@ -5,7 +5,12 @@ import com.danko.provider.validator.InputDataValidator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.danko.provider.controller.command.ParamName.*;
+//import static com.danko.provider.controller.command.ParamName.*;
+import static com.danko.provider.controller.command.ParamName.USER_SEARCH_CONTRACT_NUMBER;
+import static com.danko.provider.controller.command.ParamName.USER_SEARCH_E_MAIL;
+import static com.danko.provider.controller.command.ParamName.USER_SEARCH_FIRST_NAME;
+import static com.danko.provider.controller.command.ParamName.USER_SEARCH_LAST_NAME;
+import static com.danko.provider.controller.command.ParamName.USER_SEARCH_PATRONYMIC;
 import static com.danko.provider.domain.dao.ColumnName.*;
 
 public class SearchUserSqlGeneration {
