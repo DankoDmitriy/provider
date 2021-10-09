@@ -38,7 +38,8 @@ public enum CommandType {
     TARIFF_ADD(new AdminTariffAddCommand()),
     TARIFF_EDIT(new AdminTariffEditCommand()),
     CARD_ADD(new AdminPaymentCardAddCommand()),
-    CARD_SEARCH(new AdminPaymentCardSearchCommand());
+    CARD_SEARCH(new AdminPaymentCardSearchCommand()),
+    STATISTICS(new AdminBaseStatisticCommand());
 
     private Command command;
 

@@ -1,6 +1,13 @@
 package com.danko.provider.domain.dao;
 
-import com.danko.provider.domain.dao.impl.*;
+import com.danko.provider.domain.dao.impl.AccountTransactionDaoImpl;
+import com.danko.provider.domain.dao.impl.PaymentCardCountStatisticDaoImpl;
+import com.danko.provider.domain.dao.impl.PaymentCardDaoImpl;
+import com.danko.provider.domain.dao.impl.PaymentCardSerialDaoImpl;
+import com.danko.provider.domain.dao.impl.TariffDaoImpl;
+import com.danko.provider.domain.dao.impl.UserActionDaoImpl;
+import com.danko.provider.domain.dao.impl.UserCountStatisticDaoImpl;
+import com.danko.provider.domain.dao.impl.UserDaoImpl;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -13,6 +20,8 @@ public class DaoProvider {
     private UserActionDao userActionDao = new UserActionDaoImpl();
     private UserDao userDao = new UserDaoImpl();
     private PaymentCardSerialDao paymentCardSerialDao = new PaymentCardSerialDaoImpl();
+    private PaymentCardCountStatisticDao paymentCardCountStatisticDao = new PaymentCardCountStatisticDaoImpl();
+    private UserCountStatisticDao userCountStatisticDao = new UserCountStatisticDaoImpl();
 
     private DaoProvider() {
     }
@@ -48,5 +57,13 @@ public class DaoProvider {
 
     public PaymentCardSerialDao getPaymentCardSerialDao() {
         return paymentCardSerialDao;
+    }
+
+    public PaymentCardCountStatisticDao getPaymentCardCountStatisticDao() {
+        return paymentCardCountStatisticDao;
+    }
+
+    public UserCountStatisticDao getUserCountStatisticDao() {
+        return userCountStatisticDao;
     }
 }

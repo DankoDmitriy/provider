@@ -41,6 +41,8 @@ public final class PageUrl {
 
     public static final String ADMIN_MAIN_PAGE = "/jsp/pages/admin/admin_main.jsp";
 
+    public static final String ADMIN_BASE_STATISTIC = "/jsp/pages/admin/admin_base_statistic.jsp";
+
     //    Commons pages
     public static final String LOGIN_PAGE = "/jsp/pages/login.jsp";
     public static final String HOME_PAGE = "/controller?command=home";

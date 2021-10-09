@@ -1,13 +1,17 @@
 package com.danko.provider.domain.dao;
 
-import com.danko.provider.domain.entity.AbstractEntity;
 import com.danko.provider.domain.dao.mapper.ResultSetHandler;
+import com.danko.provider.domain.entity.AbstractEntity;
 import com.danko.provider.exception.DaoException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

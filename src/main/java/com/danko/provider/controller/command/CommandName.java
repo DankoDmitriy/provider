@@ -12,7 +12,6 @@ public final class CommandName {
     public static final String COMMAND_ACTIVATION = "ACTIVATION";
     public static final String COMMAND_CHANGE_LOCAL = "LOCAL";
 
-
     //    Commands for Admin role
     public static final String COMMAND_ADMIN_USER_LIST = "USERS_LIST";
     public static final String COMMAND_ADMIN_USER_ADD = "USER_ADD";
@@ -28,8 +27,6 @@ public final class CommandName {
     public static final String COMMAND_ADMIN_USER_ACTION = "USER_ACTION";
     public static final String COMMAND_ADMIN_CARD_SEARCH = "CARD_SEARCH";
     public static final String COMMAND_ADMIN_USER_SEARCH = "USER_SEARCH";
-
-    //    TODO - Не реализованны.
     public static final String COMMAND_ADMIN_STATISTICS = "STATISTICS";
 
     //    Commands for User role
@@ -55,9 +52,9 @@ public final class CommandName {
                     COMMAND_ADMIN_TARIFF_ADD,
                     COMMAND_ADMIN_TARIFF_EDIT,
                     COMMAND_ADMIN_CARD_ADD,
-                    COMMAND_ADMIN_CARD_SEARCH
+                    COMMAND_ADMIN_CARD_SEARCH,
+                    COMMAND_ADMIN_STATISTICS
             ));
-
 
     public static Set<String> userCommands = new HashSet<String>
             (Arrays.asList(

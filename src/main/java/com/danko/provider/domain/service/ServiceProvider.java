@@ -2,7 +2,13 @@ package com.danko.provider.domain.service;
 
 import com.danko.provider.domain.dao.DaoProvider;
 import com.danko.provider.domain.dao.TransactionManager;
-import com.danko.provider.domain.service.impl.*;
+import com.danko.provider.domain.service.impl.AccountTransactionServiceImpl;
+import com.danko.provider.domain.service.impl.EmailServiceImpl;
+import com.danko.provider.domain.service.impl.PaymentCardServiceImpl;
+import com.danko.provider.domain.service.impl.StatisticServiceImpl;
+import com.danko.provider.domain.service.impl.TariffServiceImpl;
+import com.danko.provider.domain.service.impl.UserActionServiceImpl;
+import com.danko.provider.domain.service.impl.UserServiceImpl;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -15,6 +21,7 @@ public class ServiceProvider {
     private final UserActionService userActionService;
     private final PaymentCardService paymentCardService;
     private final EmailService emailService;
+    private final StatisticService statisticService;
 
     private ServiceProvider() {
         DaoProvider daoProvider = DaoProvider.getInstance();
@@ -26,11 +33,15 @@ public class ServiceProvider {
                 daoProvider.getPaymentCardDao(),
                 daoProvider.getAccountTransactionDao(),
                 transactionManager);
-        this.tariffService = new TariffServiceImpl(daoProvider.getTariffDao(), transactionManager);
+        this.tariffService = new TariffServiceImpl(
+                daoProvider.getTariffDao(),
+                transactionManager);
         this.accountTransactionService = new AccountTransactionServiceImpl(
                 daoProvider.getAccountTransactionDao(),
                 transactionManager);
-        this.userActionService = new UserActionServiceImpl(daoProvider.getUserActionDao(), transactionManager);
+        this.userActionService = new UserActionServiceImpl(
+                daoProvider.getUserActionDao(),
+                transactionManager);
         this.paymentCardService = new PaymentCardServiceImpl(
                 daoProvider.getPaymentCardDao(),
                 daoProvider.getPaymentCardSerialDao(),
@@ -38,6 +49,10 @@ public class ServiceProvider {
                 transactionManager);
         this.emailService = new EmailServiceImpl();
 
+        this.statisticService = new StatisticServiceImpl(
+                daoProvider.getPaymentCardCountStatisticDao(),
+                daoProvider.getUserCountStatisticDao(),
+                transactionManager);
     }
 
     public static ServiceProvider getInstance() {
@@ -71,5 +86,9 @@ public class ServiceProvider {
 
     public PaymentCardService getPaymentCardService() {
         return paymentCardService;
+    }
+
+    public StatisticService getStatisticService() {
+        return statisticService;
     }
 }
