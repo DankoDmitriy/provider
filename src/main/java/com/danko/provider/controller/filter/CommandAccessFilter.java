@@ -21,6 +21,9 @@ import static com.danko.provider.controller.command.PageUrl.ACCESS_ERROR_403_PAG
 import static com.danko.provider.controller.command.ParamName.COMMAND;
 import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
 
+/**
+ * The filter checks the role and status of the user and then allows access to the allowed commands.
+ */
 public class CommandAccessFilter implements Filter {
     private static Logger logger = LogManager.getLogger();
     private final static String ACCESS_COMMAND_FOR_BANNED_USER = COMMAND_HOME;

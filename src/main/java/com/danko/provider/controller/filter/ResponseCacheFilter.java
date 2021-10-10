@@ -13,6 +13,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * The filter disabled process of cache in browse.
+ */
 public class ResponseCacheFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

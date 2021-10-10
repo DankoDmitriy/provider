@@ -12,6 +12,9 @@ import static com.danko.provider.controller.command.SessionAttribute.DEFAULT_LOC
 import static com.danko.provider.controller.command.SessionAttribute.SESSION_LOCAL;
 import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
 
+/**
+ * The listener installed the default user role in the session.
+ */
 @WebListener
 public class HttpSessionListenerImpl implements HttpSessionListener {
 

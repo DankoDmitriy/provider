@@ -7,16 +7,22 @@ import com.danko.provider.controller.command.impl.common.LoginCommand;
 import com.danko.provider.controller.command.impl.common.LogoutCommand;
 import com.danko.provider.controller.command.impl.user.*;
 
+/**
+ * Enum containing all available command types and returns the required command object.
+ */
 public enum CommandType {
-
-    //    Common
+    /**
+     * Common commands
+     */
     LOGIN(new LoginCommand()),
     LOGOUT(new LogoutCommand()),
     HOME(new HomeCommand()),
     LOCAL(new ChangeLocalCommand()),
     ACTIVATION(new ActivationCommand()),
 
-    //User
+    /**
+     * User commands
+     */
     USER_CHANGE_PASSWORD(new ChangePasswordCommand()),
     USER_CHANGE_TARIFF(new ChangeTariffCommand()),
     USER_TARIFF_LIST(new TariffListCommand()),
@@ -24,7 +30,9 @@ public enum CommandType {
     PERSONAL_FINANCE_OPERATIONS(new PersonalFinanceOperationsCommand()),
     PAY(new PayCommand()),
 
-    //    Admin
+    /**
+     * Admin commands
+     */
     USERS_LIST(new AdminUsersListCommand()),
     USER_SEARCH(new AdminUserSearch()),
     USER_ADD(new AdminUserAddCommand()),

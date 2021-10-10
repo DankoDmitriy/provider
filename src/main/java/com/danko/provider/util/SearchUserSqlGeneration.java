@@ -13,6 +13,9 @@ import static com.danko.provider.controller.command.ParamName.USER_SEARCH_LAST_N
 import static com.danko.provider.controller.command.ParamName.USER_SEARCH_PATRONYMIC;
 import static com.danko.provider.domain.dao.ColumnName.*;
 
+/**
+ * The type Search user sql generation.
+ */
 public class SearchUserSqlGeneration {
     private static final String SQL_LIKE = "LIKE";
     private static final String SQL_PERCENT = "%";
@@ -28,6 +31,11 @@ public class SearchUserSqlGeneration {
         this.validator = InputDataValidator.getInstance();
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static SearchUserSqlGeneration getInstance() {
         while (instance == null) {
             if (isCreated.compareAndSet(false, true)) {
@@ -37,6 +45,12 @@ public class SearchUserSqlGeneration {
         return instance;
     }
 
+    /**
+     * Generate search sql criteria string.
+     *
+     * @param inputCriteriaMap the input criteria map
+     * @return the string
+     */
     public String generateSearchSqlCriteria(Map<String, String[]> inputCriteriaMap) {
         String[] firstName = inputCriteriaMap.get(USER_SEARCH_FIRST_NAME);
         String[] lastName = inputCriteriaMap.get(USER_SEARCH_LAST_NAME);

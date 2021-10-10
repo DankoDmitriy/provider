@@ -4,9 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Pagination calculate.
+ */
 public class PaginationCalculate {
+    /**
+     * The constant START_POSITION.
+     */
     public static final String START_POSITION = "startPosition";
+    /**
+     * The constant NEXT_PAGE.
+     */
     public static final String NEXT_PAGE = "nextPage";
+    /**
+     * The constant PREVIEW_PAGE.
+     */
     public static final String PREVIEW_PAGE = "previewPage";
     private static final AtomicBoolean isCreated = new AtomicBoolean(false);
     private static PaginationCalculate instance;
@@ -14,6 +26,11 @@ public class PaginationCalculate {
     private PaginationCalculate() {
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static PaginationCalculate getInstance() {
         while (instance == null) {
             if (isCreated.compareAndSet(false, true)) {
@@ -23,6 +40,14 @@ public class PaginationCalculate {
         return instance;
     }
 
+    /**
+     * Calculate next and preview page value map.
+     *
+     * @param nextPage    the next page
+     * @param rowsInTable the rows in table
+     * @param rowsOnPage  the rows on page
+     * @return the map
+     */
     public Map<String, Long> calculateNextAndPreviewPageValue(long nextPage, long rowsInTable, long rowsOnPage) {
         Map<String, Long> result = new HashMap<>();
         long previewPage;

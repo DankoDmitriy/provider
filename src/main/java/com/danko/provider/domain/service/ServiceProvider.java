@@ -12,6 +12,9 @@ import com.danko.provider.domain.service.impl.UserServiceImpl;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * The type Service provider.
+ */
 public class ServiceProvider {
     private static ServiceProvider instance;
     private static final AtomicBoolean isServiceProviderCreated = new AtomicBoolean(false);
@@ -55,6 +58,11 @@ public class ServiceProvider {
                 transactionManager);
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static ServiceProvider getInstance() {
         while (instance == null) {
             if (isServiceProviderCreated.compareAndSet(false, true)) {
@@ -64,30 +72,65 @@ public class ServiceProvider {
         return instance;
     }
 
+    /**
+     * Gets user service.
+     *
+     * @return the user service
+     */
     public UserService getUserService() {
         return userService;
     }
 
+    /**
+     * Gets tariff service.
+     *
+     * @return the tariff service
+     */
     public TariffService getTariffService() {
         return tariffService;
     }
 
+    /**
+     * Gets account transaction service.
+     *
+     * @return the account transaction service
+     */
     public AccountTransactionService getAccountTransactionService() {
         return accountTransactionService;
     }
 
+    /**
+     * Gets email service.
+     *
+     * @return the email service
+     */
     public EmailService getEmailService() {
         return emailService;
     }
 
+    /**
+     * Gets user action service.
+     *
+     * @return the user action service
+     */
     public UserActionService getUserActionService() {
         return userActionService;
     }
 
+    /**
+     * Gets payment card service.
+     *
+     * @return the payment card service
+     */
     public PaymentCardService getPaymentCardService() {
         return paymentCardService;
     }
 
+    /**
+     * Gets statistic service.
+     *
+     * @return the statistic service
+     */
     public StatisticService getStatisticService() {
         return statisticService;
     }

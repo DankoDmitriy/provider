@@ -17,6 +17,15 @@ import javax.servlet.annotation.WebListener;
 public class ContextListener implements ServletContextListener {
     private static Logger logger = LogManager.getLogger();
 
+    /**
+     * Initializes {@link ConnectionPool}
+     * Initializes {@link TransactionManager}
+     * Initializes {@link DaoProvider}
+     * Initializes {@link ServiceProvider}
+     * Initializes {@link InputDataValidator}
+     *
+     * @param sce servlet context initialization event
+     */
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         TransactionManager.getInstance();
@@ -24,9 +33,14 @@ public class ContextListener implements ServletContextListener {
         DaoProvider.getInstance();
         ServiceProvider.getInstance();
         InputDataValidator.getInstance();
-        logger.log(Level.INFO, "Context was created. Created: ConnectionPool,ServiceProvider,InputDataValidator.");
+        logger.log(Level.INFO, "Context was created. Created: TransactionManager, ConnectionPool, ServiceProvider, DaoProvider, InputDataValidator.");
     }
 
+    /**
+     * Destroys {@link ConnectionPool}
+     *
+     * @param sce servlet context destroy event
+     */
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         ConnectionPool.getInstance().destroyConnectionPool();

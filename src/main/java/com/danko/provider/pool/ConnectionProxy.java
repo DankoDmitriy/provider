@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
+/**
+ * Proxy connection for {@link ConnectionPool}
+ */
 class ConnectionProxy implements Connection {
     private Connection connection;
 
@@ -14,6 +17,9 @@ class ConnectionProxy implements Connection {
         this.connection = connection;
     }
 
+    /**
+     * Returns connection to {@link ConnectionPool} instead of closing it
+     */
     @Override
     public void close() throws SQLException {
         try {
@@ -23,6 +29,9 @@ class ConnectionProxy implements Connection {
         }
     }
 
+    /**
+     * Closes connection
+     */
     void reallyClose() throws SQLException {
         connection.close();
     }

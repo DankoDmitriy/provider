@@ -17,6 +17,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Database connection pool
+ */
 public class ConnectionPool {
     private static Logger logger = LogManager.getLogger();
     private static ConnectionPool instance;
@@ -75,6 +78,11 @@ public class ConnectionPool {
         }
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static ConnectionPool getInstance() {
         while (instance == null) {
             if (isConnectionPoolCreated.compareAndSet(false, true)) {
@@ -84,6 +92,12 @@ public class ConnectionPool {
         return instance;
     }
 
+    /**
+     * Gets connection.
+     *
+     * @return the connection
+     * @throws DatabaseConnectionException the database connection exception
+     */
     public Connection getConnection() throws DatabaseConnectionException {
         if (!poolCloseFlag) {
             ConnectionProxy connection;
@@ -106,6 +120,13 @@ public class ConnectionPool {
         return null;
     }
 
+    /**
+     * Release connection boolean.
+     *
+     * @param connection the connection
+     * @return the boolean
+     * @throws DatabaseConnectionException the database connection exception
+     */
     public boolean releaseConnection(Connection connection) throws DatabaseConnectionException {
         boolean result = false;
         if (connection instanceof ConnectionProxy & busyConnections.contains(connection) & busyConnections.remove(connection) & !poolCloseFlag) {
@@ -122,6 +143,9 @@ public class ConnectionPool {
         return result;
     }
 
+    /**
+     * Destroy connection pool.
+     */
     public void destroyConnectionPool() {
         poolCloseFlag = true;
         destroyConnectionQueue(freeConnections);

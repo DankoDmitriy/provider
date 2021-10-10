@@ -1,5 +1,8 @@
 package com.danko.provider.controller;
 
+/**
+ * Result of command work containing routing type and page path
+ */
 public class Router {
     public enum RouteType {
         FORWARD, REDIRECT;

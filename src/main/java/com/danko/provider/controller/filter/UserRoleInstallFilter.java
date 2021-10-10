@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-
+/**
+ * The filter installed the user role in the session.
+ */
 @WebFilter(urlPatterns = {"/*"})
 public class UserRoleInstallFilter implements Filter {
     private static Logger logger = LogManager.getLogger();

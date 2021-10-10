@@ -1,10 +1,13 @@
 package com.danko.provider.domain.dao;
 
+/**
+ * The class provides string constants that represent database column names and tables names
+ */
 public final class ColumnName {
-    private ColumnName() {
-    }
 
-    //    Tables:
+    /**
+     * Tables names
+     */
     public static final String TABLE_USERS = "users";
     public static final String TABLE_USER_STATUSES = "user_statuses";
     public static final String TABLE_USER_ROLES = "user_roles";
@@ -20,7 +23,9 @@ public final class ColumnName {
     public static final String TABLE_EXPRESS_PAYMENT_CARDS = "express_payment_cards";
     public static final String TABLE_EXPRESS_PAYMENT_CARDS_SERIALS = "express_payment_cards_series";
 
-    //    Table: "users"
+    /**
+     * Table users. Columns names
+     */
     public static final String USER_ID = "user_id";
     public static final String USER_FIRST_NAME = "first_name";
     public static final String USER_LAST_NAME = "last_name";
@@ -38,15 +43,21 @@ public final class ColumnName {
     public static final String USER_STATUS = "user_statuses_status_id";
     public static final String USER_TARIFF_ID = "tariffs_tariff_id";
 
-    //    Table: "user_statuses"
+    /**
+     * Table user_statuses. Columns names
+     */
     public static final String USER_STATUSES_STATUS_ID = "status_id";
     public static final String USER_STATUSES_STATUS = "status";
 
-    //    Table: "user_roles"
+    /**
+     * Table user_roles. Columns names
+     */
     public static final String USER_ROLES_ROLE_ID = "role_id";
     public static final String USER_ROLES_ROLE = "role";
 
-    //    Table: "tariffs"
+    /**
+     * Table tariffs. Columns names
+     */
     public static final String TARIFF_TARIFF_ID = "tariff_id";
     public static final String TARIFF_DESCRIPTION = "description";
     public static final String TARIFF_MAX_SPEED = "max_speed";
@@ -56,42 +67,58 @@ public final class ColumnName {
     public static final String TARIFF_STATUS = "tariff_statuses_status_id";
     public static final String TARIFF_PERIOD = "periodicity_write_off_write_off_id";
 
-    //    Table: "tariff_statuses"
+    /**
+     * Table tariff_statuses. Columns names
+     */
     public static final String TARIFF_STATUSES_STATUS_ID = "status_id";
     public static final String TARIFF_STATUSES_STATUS = "status";
 
-    //    Table: "periodicity_write_off"
+    /**
+     * Table periodicity_write_off. Columns names
+     */
     public static final String PERIODICITY_WRITE_OFF_ID = "write_off_id";
     public static final String PERIODICITY_PERIOD = "period";
 
-    //    Table: "transaction_type"
+    /**
+     * Table transaction_type. Columns names
+     */
     public static final String TRANSACTION_TYPE_TYPE_ID = "type_id";
     public static final String TRANSACTION_TYPE_TYPE = "type";
     public static final String TRANSACTION_TYPE_DESCRIPTION = "description";
 
-    //    Table: "account_transactions"
+    /**
+     * Table account_transactions. Columns names
+     */
     public static final String TRANSACTION_ID = "transaction_id";
     public static final String TRANSACTION_SUM = "sum";
     public static final String TRANSACTION_DATE = "date";
     public static final String TRANSACTION_TYPE_ID = "transaction_type_type_id";
     public static final String TRANSACTION_USER_ID = "users_user_id";
 
-    //    Table: "action_type"
+    /**
+     * Table action_type. Columns names
+     */
     public static final String ACTION_TYPE_ACTION_TYPE_ID = "action_type_id";
     public static final String ACTION_TYPE_ACTION_TYPE = "type";
 
-    //    Table: "actions"
+    /**
+     * Table actions. Columns names
+     */
     public static final String ACTION_ID = "action_id";
     public static final String ACTION_DATE = "date";
     public static final String ACTION_TYPE_ID = "action_type_type_id";
     public static final String ACTION_USER_ID = "users_user_id";
     public static final String ACTION_TARIFF_ID = "tariffs_tariff_id";
 
-    //    Table: "card_status"
+    /**
+     * Table card_status. Columns names
+     */
     public static final String CARD_STATUS_STATUS_ID = "card_status_id";
     public static final String CARD_STATUS_STATUS = "status";
 
-    //    Table: "express_payment_cards"
+    /**
+     * Table express_payment_cards. Columns names
+     */
     public static final String PAYMENT_CARD_ID = "card_id";
     public static final String PAYMENT_CARD_AMOUNT = "amount";
     public static final String PAYMENT_CARD_NUMBER = "card_number";
@@ -100,9 +127,12 @@ public final class ColumnName {
     public static final String PAYMENT_CARD_STATUS_ID = "card_status_card_status_id";
     public static final String PAYMENT_CARD_USER_ID = "users_user_id";
 
-    //    Table: "express_payment_cards_series"
+    /**
+     * Table express_payment_cards_series. Columns names
+     */
     public static final String PAYMENT_CARD_SERIAL_ID = "series_id";
     public static final String PAYMENT_CARD_SERIAL_SERIAL = "series";
 
-
+    private ColumnName() {
+    }
 }

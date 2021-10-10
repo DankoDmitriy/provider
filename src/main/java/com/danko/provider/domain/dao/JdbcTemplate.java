@@ -16,6 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class implements basic query operations
+ *
+ * @param <T> entity type extend AbstractEntity
+ */
 public class JdbcTemplate<T extends AbstractEntity> {
     private static Logger logger = LogManager.getLogger();
     private static final String COUNT_LINES_PARAMETER = "line";
@@ -27,6 +32,12 @@ public class JdbcTemplate<T extends AbstractEntity> {
         this.transactionManager = TransactionManager.getInstance();
     }
 
+    /**
+     * @param sqlQuery   sql query line
+     * @param parameters for sql query
+     * @return list of entity or empty list
+     * @throws DaoException is thrown when error while query execution occurs
+     */
     public List<T> executeSelectQuery(String sqlQuery, Object... parameters) throws DaoException {
         List<T> list = new ArrayList<>();
         Connection connection = transactionManager.getConnection();
@@ -44,6 +55,12 @@ public class JdbcTemplate<T extends AbstractEntity> {
         return list;
     }
 
+    /**
+     * @param sqlQuery   sql query line
+     * @param parameters for sql query
+     * @return optional of entity
+     * @throws DaoException is thrown when error while query execution occurs
+     */
     public Optional<T> executeSelectQueryForSingleResult(String sqlQuery, Object... parameters) throws DaoException {
         List<T> list = executeSelectQuery(sqlQuery, parameters);
         if (!list.isEmpty()) {
@@ -53,6 +70,12 @@ public class JdbcTemplate<T extends AbstractEntity> {
         }
     }
 
+    /**
+     * @param sqlQuery   sql query line
+     * @param parameters for sql query
+     * @return true when update process finish correct
+     * @throws DaoException is thrown when error while query execution occurs
+     */
     public boolean executeUpdateQuery(String sqlQuery, Object... parameters) throws DaoException {
         int result = 0;
         Connection connection = transactionManager.getConnection();
@@ -66,6 +89,12 @@ public class JdbcTemplate<T extends AbstractEntity> {
         return result == 1;
     }
 
+    /**
+     * @param sqlQuery   sql query line
+     * @param parameters for sql query
+     * @return auto increment id
+     * @throws DaoException is thrown when error while query execution occurs
+     */
     public long executeInsertQuery(String sqlQuery, Object... parameters) throws DaoException {
         long generatedId = 0;
         Connection connection = transactionManager.getConnection();
@@ -82,6 +111,12 @@ public class JdbcTemplate<T extends AbstractEntity> {
         return generatedId;
     }
 
+    /**
+     * @param sqlQuery   sql query line
+     * @param parameters for sql query
+     * @return count of found rows
+     * @throws DaoException is thrown when error while query execution occurs
+     */
     public long executeCountRows(String sqlQuery, Object... parameters) throws DaoException {
         long rowsCount = 0;
         Connection connection = transactionManager.getConnection();

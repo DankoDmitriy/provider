@@ -9,9 +9,18 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+/**
+ * The class generated URL for Email service
+ */
 public class UrlUtil {
     private static Logger logger = LogManager.getLogger();
 
+    /**
+     * Request url to domain string.
+     *
+     * @param requestUrl the request url
+     * @return the string
+     */
     public static String requestUrlToDomain(String requestUrl) {
         try {
             URL url = new URL(requestUrl);

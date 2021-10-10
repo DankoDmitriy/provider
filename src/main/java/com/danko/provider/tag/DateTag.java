@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * The custom Date tag.
+ */
 public class DateTag extends TagSupport {
     private static final Logger logger = LogManager.getLogger();
     private static final String DATE_FORMAT_PATTERN = "dd-MM-yyyy HH:mm";
@@ -19,10 +22,20 @@ public class DateTag extends TagSupport {
     private LocalDateTime localDateTime;
     private boolean isFullFormat;
 
+    /**
+     * Sets local date time.
+     *
+     * @param localDateTime the local date time
+     */
     public void setLocalDateTime(LocalDateTime localDateTime) {
         this.localDateTime = localDateTime;
     }
 
+    /**
+     * Sets full format.
+     *
+     * @param fullFormat the full format
+     */
     public void setFullFormat(String fullFormat) {
         isFullFormat = Boolean.parseBoolean(fullFormat);
     }

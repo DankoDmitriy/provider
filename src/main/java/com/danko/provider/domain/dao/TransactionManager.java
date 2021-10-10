@@ -11,6 +11,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * The class manages the process of conducting transactions.
+ */
 public class TransactionManager {
     private static Logger logger = LogManager.getLogger();
     private ThreadLocal<Connection> connectionThreadLocal = new ThreadLocal<>();
@@ -40,6 +43,11 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * The method receives the connection from the connection poll and begins the transaction process.
+     *
+     * @throws DaoException is thrown when error while query execution occurs
+     */
     public void startTransaction() throws DaoException {
         if (connectionThreadLocal.get() == null) {
             initialValue();
@@ -53,6 +61,11 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * The method remove connection from the connection poll and finishing the transaction process.
+     *
+     * @throws DaoException is thrown when error while query execution occurs
+     */
     public void endTransaction() throws DaoException {
         Connection connection = connectionThreadLocal.get();
         try {
@@ -66,6 +79,11 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * The method commit the transaction.
+     *
+     * @throws DaoException is thrown when error while query execution occurs
+     */
     public void commit() throws DaoException {
         Connection connection = connectionThreadLocal.get();
         try {
@@ -74,9 +92,13 @@ public class TransactionManager {
             logger.log(Level.ERROR, "SQL exception in method commit: {}", e);
             throw new DaoException("SQL exception in method commit.", e);
         }
-
     }
 
+    /**
+     * The method rollback the transaction.
+     *
+     * @throws DaoException is thrown when error while query execution occurs
+     */
     public void rollback() throws DaoException {
         Connection connection = connectionThreadLocal.get();
         try {

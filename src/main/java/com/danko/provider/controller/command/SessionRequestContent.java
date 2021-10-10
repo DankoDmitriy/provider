@@ -4,8 +4,14 @@ import com.danko.provider.controller.Router;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+/**
+ * The data transfer class between the command object and the service object.
+ */
 public class SessionRequestContent {
     private final HashMap<String, Object> requestAttributes;
     private final Map<String, String[]> requestParameters;
@@ -79,7 +85,7 @@ public class SessionRequestContent {
         sessionAttributes.forEach((s, o) -> {
             session.setAttribute(s, o);
         });
-        
+
         if (isRedirect()) {
             router.setRouteType(Router.RouteType.REDIRECT);
             router.setPageUrl(request.getContextPath() + pageUrl);

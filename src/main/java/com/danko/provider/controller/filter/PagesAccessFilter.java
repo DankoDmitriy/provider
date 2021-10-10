@@ -5,6 +5,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The filter is blocking direct access to JSP pages. Exception made only for error pages.
+ */
 public class PagesAccessFilter implements Filter {
     private static final String INDEX_PAGE_PARAMETER = "page";
     private String indexPath;
