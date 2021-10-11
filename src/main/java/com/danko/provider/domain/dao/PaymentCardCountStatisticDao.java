@@ -1,6 +1,6 @@
 package com.danko.provider.domain.dao;
 
-import com.danko.provider.domain.entity.statisticEntity.PaymentCardCountStatistic;
+import com.danko.provider.domain.entity.PaymentCardCountStatistic;
 import com.danko.provider.exception.DaoException;
 
 import java.util.List;

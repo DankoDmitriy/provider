@@ -1,8 +1,8 @@
 package com.danko.provider.domain.dao.mapper.impl;
 
 import com.danko.provider.domain.dao.mapper.ResultSetHandler;
-import com.danko.provider.domain.entity.statisticEntity.PaymentCardCountStatistic;
-import com.danko.provider.domain.entity.statisticEntity.UserCountStatistic;
+import com.danko.provider.domain.entity.PaymentCardCountStatistic;
+import com.danko.provider.domain.entity.UserCountStatistic;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

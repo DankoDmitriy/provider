@@ -1,6 +1,4 @@
-package com.danko.provider.domain.entity.statisticEntity;
-
-import com.danko.provider.domain.entity.AbstractEntity;
+package com.danko.provider.domain.entity;
 
 public class UserCountStatistic extends AbstractEntity {
     private String parameterName;

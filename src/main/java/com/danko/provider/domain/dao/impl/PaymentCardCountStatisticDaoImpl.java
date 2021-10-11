@@ -3,7 +3,7 @@ package com.danko.provider.domain.dao.impl;
 import com.danko.provider.domain.dao.JdbcTemplate;
 import com.danko.provider.domain.dao.PaymentCardCountStatisticDao;
 import com.danko.provider.domain.dao.mapper.impl.PaymentCardCountStatisticResultSetHandler;
-import com.danko.provider.domain.entity.statisticEntity.PaymentCardCountStatistic;
+import com.danko.provider.domain.entity.PaymentCardCountStatistic;
 import com.danko.provider.exception.DaoException;
 
 import java.util.List;

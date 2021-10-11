@@ -1,8 +1,5 @@
 package com.danko.provider.domain.entity;
 
-import com.danko.provider.domain.entity.statisticEntity.PaymentCardCountStatistic;
-import com.danko.provider.domain.entity.statisticEntity.UserCountStatistic;
-
 import java.util.List;
 
 public class BaseStatistic extends AbstractEntity {

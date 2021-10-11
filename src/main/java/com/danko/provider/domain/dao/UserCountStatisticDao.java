@@ -1,6 +1,6 @@
 package com.danko.provider.domain.dao;
 
-import com.danko.provider.domain.entity.statisticEntity.UserCountStatistic;
+import com.danko.provider.domain.entity.UserCountStatistic;
 import com.danko.provider.exception.DaoException;
 
 import java.util.List;

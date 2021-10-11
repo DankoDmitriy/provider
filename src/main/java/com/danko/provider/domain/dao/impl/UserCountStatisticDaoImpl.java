@@ -3,7 +3,7 @@ package com.danko.provider.domain.dao.impl;
 import com.danko.provider.domain.dao.JdbcTemplate;
 import com.danko.provider.domain.dao.UserCountStatisticDao;
 import com.danko.provider.domain.dao.mapper.impl.UserCountStatisticResultSetHandler;
-import com.danko.provider.domain.entity.statisticEntity.UserCountStatistic;
+import com.danko.provider.domain.entity.UserCountStatistic;
 import com.danko.provider.exception.DaoException;
 
 import java.util.List;

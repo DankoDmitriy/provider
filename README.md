@@ -55,44 +55,6 @@ Statistic
 - View total cards issued for all time
 - View total not activated payment cards in the system
 
-Architecture:
-```
-MVC
-```
-Technologies:
-
-Front end
-```
-Java JSP
-JSTL
-Taglib (custom tag)
-HTML
-Bootstrap
-CSS
-```
-Back end:
-```
-Java servlet
-Java JDBC
-SQL
-Transactions
-ThreadLocal
-```
-Test:
-```
-TestNG
-Mockito
-Easymock
-```
-Logging:
-```
-Log4j2
-```
-Data base
-```
-Mysql
-```
-
 Database structure
 ![database](sql/database.png)
 
