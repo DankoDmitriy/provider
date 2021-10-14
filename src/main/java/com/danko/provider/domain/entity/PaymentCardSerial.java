@@ -27,6 +27,33 @@ public class PaymentCardSerial extends AbstractEntity {
         return new Builder();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PaymentCardSerial that = (PaymentCardSerial) o;
+
+        if (serialId != that.serialId) return false;
+        return serial != null ? serial.equals(that.serial) : that.serial == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (serialId ^ (serialId >>> 32));
+        result = 31 * result + (serial != null ? serial.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("PaymentCardSerial{");
+        sb.append("serialId=").append(serialId);
+        sb.append(", serial='").append(serial).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
+
     public static class Builder {
         private PaymentCardSerial paymentCardSerial;
 

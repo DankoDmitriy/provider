@@ -1,3 +1,3 @@
-2021-10-08 16:03:29 [main] [<clinit>] [46] INFO  com.danko.provider.pool.ConnectionFactory - Properties for database have loaded...
-2021-10-08 16:03:30 [main] [<init>] [71] INFO  com.danko.provider.pool.ConnectionPool - Connection pool created.
-2021-10-08 16:03:30 [main] [releaseConnection] [120] ERROR com.danko.provider.pool.ConnectionPool - Input connection is not instanceof ConnectionProxy or not included in the connection pool
+2021-10-13 13:20:18 [main] [<clinit>] [49] INFO  com.danko.provider.pool.ConnectionFactory - Properties for database have loaded...
+2021-10-13 13:20:18 [main] [<init>] [74] INFO  com.danko.provider.pool.ConnectionPool - Connection pool created.
+2021-10-13 13:20:18 [main] [releaseConnection] [141] ERROR com.danko.provider.pool.ConnectionPool - Input connection is not instanceof ConnectionProxy or not included in the connection pool

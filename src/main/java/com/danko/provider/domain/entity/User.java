@@ -254,11 +254,6 @@ public class User extends AbstractEntity {
             return this;
         }
 
-//        public Builder setActivationCode(String activationCode) {
-//            user.setActivationCode(activationCode);
-//            return this;
-//        }
-
         public Builder setRole(UserRole role) {
             user.setRole(role);
             return this;
@@ -268,11 +263,6 @@ public class User extends AbstractEntity {
             user.setStatus(status);
             return this;
         }
-
-//        public Builder setActivationCodeUsed(boolean activationCodeUsed) {
-//            user.setActivationCodeUsed(activationCodeUsed);
-//            return this;
-//        }
 
         public Builder setTraffic(BigDecimal traffic) {
             user.setTraffic(traffic);
