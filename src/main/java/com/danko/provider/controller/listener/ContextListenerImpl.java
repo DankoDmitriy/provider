@@ -14,7 +14,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 @WebListener
-public class ContextListener implements ServletContextListener {
+public class ContextListenerImpl implements ServletContextListener {
     private static Logger logger = LogManager.getLogger();
 
     /**

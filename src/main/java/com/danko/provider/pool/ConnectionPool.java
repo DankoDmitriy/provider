@@ -99,8 +99,8 @@ public class ConnectionPool {
      * @throws DatabaseConnectionException the database connection exception
      */
     public Connection getConnection() throws DatabaseConnectionException {
+        ConnectionProxy connection = null;
         if (!poolCloseFlag) {
-            ConnectionProxy connection;
             try {
                 connection = freeConnections.take();
                 try {
@@ -115,9 +115,8 @@ public class ConnectionPool {
                 logger.log(Level.ERROR, "This thread has interrupted {} {}", e.getMessage(), e.getStackTrace());
                 throw new DatabaseConnectionException(e.getMessage() + " " + e.getStackTrace());
             }
-            return connection;
         }
-        return null;
+        return connection;
     }
 
     /**
