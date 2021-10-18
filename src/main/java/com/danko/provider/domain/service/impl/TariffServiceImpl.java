@@ -19,13 +19,11 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.util.*;
 
-//import static com.danko.provider.controller.command.PageUrl.*;
 import static com.danko.provider.controller.command.PageUrl.ADMIN_TARIFFS_LIST_PAGE;
 import static com.danko.provider.controller.command.PageUrl.ADMIN_TARIFFS_LIST_PAGE_REDIRECT;
 import static com.danko.provider.controller.command.PageUrl.ADMIN_TARIFF_ADD_PAGE;
 import static com.danko.provider.controller.command.PageUrl.ADMIN_TARIFF_EDIT_PAGE;
 import static com.danko.provider.controller.command.PageUrl.USER_TARIFFS_LIST;
-//import static com.danko.provider.controller.command.ParamName.*;
 import static com.danko.provider.controller.command.ParamName.TARIFF_ADD_MAX_SPEED;
 import static com.danko.provider.controller.command.ParamName.TARIFF_ADD_MIN_SPEED;
 import static com.danko.provider.controller.command.ParamName.TARIFF_ADD_NAME;
@@ -53,7 +51,6 @@ import static com.danko.provider.controller.command.RequestAttribute.PAGINATION_
 import static com.danko.provider.controller.command.RequestAttribute.PAGINATION_PREVIEW_PAGE;
 import static com.danko.provider.controller.command.RequestAttribute.PAGINATION_RESULT_LIST;
 import static com.danko.provider.controller.command.RequestAttribute.USER_TARIFF_LIST;
-//import static com.danko.provider.controller.command.RequestAttribute.*;
 
 public class TariffServiceImpl implements TariffService {
     private static final Logger logger = LogManager.getLogger();

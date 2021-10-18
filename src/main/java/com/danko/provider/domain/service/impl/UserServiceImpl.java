@@ -88,10 +88,6 @@ import static com.danko.provider.controller.command.RequestAttribute.USER_RESULT
 import static com.danko.provider.controller.command.SessionAttribute.IS_LOGIN_ERROR;
 import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
 
-//import static com.danko.provider.controller.command.PageUrl.*;
-//import static com.danko.provider.controller.command.ParamName.*;
-//import static com.danko.provider.controller.command.RequestAttribute.*;
-
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger();
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
