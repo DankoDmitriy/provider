@@ -15,7 +15,6 @@ import static com.danko.provider.controller.command.ParamName.USER_CHANGE_LOCAL;
 import static com.danko.provider.controller.command.SessionAttribute.DEFAULT_LOCAL;
 import static com.danko.provider.controller.command.SessionAttribute.ENGLISH_LOCAL;
 import static com.danko.provider.controller.command.SessionAttribute.SESSION_LOCAL;
-//import static com.danko.provider.controller.command.SessionAttribute.*;
 
 public class ChangeLocalCommand implements Command {
     private static final Logger logger = LogManager.getLogger();

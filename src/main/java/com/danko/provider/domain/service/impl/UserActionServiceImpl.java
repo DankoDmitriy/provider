@@ -11,8 +11,6 @@ import com.danko.provider.exception.DaoException;
 import com.danko.provider.exception.ServiceException;
 import com.danko.provider.util.PaginationCalculate;
 import com.danko.provider.validator.InputDataValidator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -28,7 +26,6 @@ import static com.danko.provider.controller.command.RequestAttribute.PAGINATION_
 import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
 
 public class UserActionServiceImpl implements UserActionService {
-    private static final Logger logger = LogManager.getLogger();
     private final UserActionDao userActionDao;
     private final TransactionManager transactionManager;
     private final PaginationCalculate paginationCalculate;

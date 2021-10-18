@@ -7,13 +7,10 @@ import com.danko.provider.domain.service.ServiceProvider;
 import com.danko.provider.domain.service.TariffService;
 import com.danko.provider.exception.CommandException;
 import com.danko.provider.exception.ServiceException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class TariffListCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
     private final TariffService tariffService = ServiceProvider.getInstance().getTariffService();
 
     @Override

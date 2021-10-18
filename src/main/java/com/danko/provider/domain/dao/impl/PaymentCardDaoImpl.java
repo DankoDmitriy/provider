@@ -19,8 +19,8 @@ import java.util.Optional;
 import static com.danko.provider.domain.dao.ColumnName.PAYMENT_CARD_USER_ID;
 
 public class PaymentCardDaoImpl implements PaymentCardDao {
+
     private static Logger logger = LogManager.getLogger();
-    private JdbcTemplate<PaymentCard> jdbcTemplate;
     private static final String SQL_FIND_ALL_PAYMENT_CARDS = """
             SELECT
             card_id, amount, activation_date, cs.status
@@ -29,14 +29,12 @@ public class PaymentCardDaoImpl implements PaymentCardDao {
             JOIN
             card_status AS cs ON express_payment_cards.card_status_card_status_id = cs.card_status_id
             """;
-
     private static final String SQL_ADD_PAYMENT_CARD = """
             INSERT INTO express_payment_cards 
             (amount, card_number, card_pin, activation_date, card_status_card_status_id)
             VALUES (?,?,?,?,
             (select card_status_id from card_status where status=?))
             """;
-
     private static final String SQL_FIND_PAYMENT_CARD_BY_NUMBER_AND_PIN = """
             SELECT
             card_id, amount, activation_date, cs.status
@@ -47,7 +45,6 @@ public class PaymentCardDaoImpl implements PaymentCardDao {
             WHERE
             card_number=? AND card_pin=?
             """;
-
     private static final String SQL_FIND_PAYMENT_CARD_BY_NUMBER = """
             SELECT
             card_id, amount, activation_date, cs.status
@@ -58,7 +55,6 @@ public class PaymentCardDaoImpl implements PaymentCardDao {
             WHERE
             card_number=?
             """;
-
     private static final String SQL_ACTIVATE_PAYMENT_CARD = """
             UPDATE express_payment_cards SET
             users_user_id=?, activation_date=?,
@@ -66,7 +62,6 @@ public class PaymentCardDaoImpl implements PaymentCardDao {
             WHERE 
             card_id=?
             """;
-
     private static final String SQL_GET_USER_ID_ACTIVATED_THIS_CARD = """
             SELECT
             users_user_id
@@ -75,6 +70,8 @@ public class PaymentCardDaoImpl implements PaymentCardDao {
             WHERE
             card_id=?
             """;
+
+    private JdbcTemplate<PaymentCard> jdbcTemplate;
 
     public PaymentCardDaoImpl() {
         jdbcTemplate = new JdbcTemplate<PaymentCard>(new PaymentCardResultSetHandler());

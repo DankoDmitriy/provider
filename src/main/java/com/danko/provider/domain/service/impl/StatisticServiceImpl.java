@@ -8,14 +8,11 @@ import com.danko.provider.domain.entity.BaseStatistic;
 import com.danko.provider.domain.service.StatisticService;
 import com.danko.provider.exception.DaoException;
 import com.danko.provider.exception.ServiceException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import static com.danko.provider.controller.command.PageUrl.ADMIN_BASE_STATISTIC;
 import static com.danko.provider.controller.command.RequestAttribute.ADMIN_BASE_STATISTIC_RESULT;
 
 public class StatisticServiceImpl implements StatisticService {
-    private static final Logger logger = LogManager.getLogger();
     private final PaymentCardCountStatisticDao paymentCardCountStatisticDao;
     private final UserCountStatisticDao userCountStatisticDao;
     private final TransactionManager transactionManager;

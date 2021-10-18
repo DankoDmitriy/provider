@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class DaoProvider {
     private static DaoProvider instance;
     private static final AtomicBoolean isDaoProviderCreated = new AtomicBoolean(false);
+
     private AccountTransactionDao accountTransactionDao = new AccountTransactionDaoImpl();
     private PaymentCardDao paymentCardDao = new PaymentCardDaoImpl();
     private TariffDao tariffDao = new TariffDaoImpl();

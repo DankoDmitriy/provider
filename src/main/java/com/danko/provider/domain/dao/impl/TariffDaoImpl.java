@@ -2,18 +2,16 @@ package com.danko.provider.domain.dao.impl;
 
 import com.danko.provider.domain.dao.JdbcTemplate;
 import com.danko.provider.domain.dao.TariffDao;
+import com.danko.provider.domain.dao.mapper.impl.TariffResultSetHandler;
 import com.danko.provider.domain.entity.Tariff;
 import com.danko.provider.domain.entity.TariffStatus;
-import com.danko.provider.domain.dao.mapper.impl.TariffResultSetHandler;
 import com.danko.provider.exception.DaoException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
 
 public class TariffDaoImpl implements TariffDao {
-    private static Logger logger = LogManager.getLogger();
+
     private static final String SQL_FIND_ALL_TARIFFS = """
             SELECT
             tariff_id, description, max_speed, min_speed, traffic, price, ts.status, pwo.period
@@ -26,7 +24,6 @@ public class TariffDaoImpl implements TariffDao {
             ORDER BY
             tariff_statuses_status_id
             """;
-
     private static final String SQL_FIND_TARIFF_BY_ID = """
             SELECT
             tariff_id, description, max_speed, min_speed, traffic, price, ts.status, pwo.period
@@ -39,7 +36,6 @@ public class TariffDaoImpl implements TariffDao {
             WHERE
             tariff_id=?
             """;
-
     private static final String SQL_FIND_TARIFF_BY_STATUS = """
             SELECT
             tariff_id, description, max_speed, min_speed, traffic, price, ts.status, pwo.period
@@ -52,7 +48,6 @@ public class TariffDaoImpl implements TariffDao {
             WHERE
             tariff_statuses_status_id=(SELECT status_id from tariff_statuses where status = ?)
             """;
-
     private static final String SQL_ADD_TARIFF = """
             INSERT INTO tariffs 
             (description, max_speed, min_speed, traffic, price, 
@@ -62,7 +57,6 @@ public class TariffDaoImpl implements TariffDao {
             (select write_off_id from periodicity_write_off where period=?)
             )
             """;
-
     private static final String SQL_UPDATE_TARIFF = """
             UPDATE  tariffs SET
             description=?, max_speed=?, min_speed=?, traffic=?, price=?, 
@@ -71,12 +65,10 @@ public class TariffDaoImpl implements TariffDao {
             WHERE 
             tariff_id=?
             """;
-
     private static final String SQL_COUNT_ROWS = """
             SELECT count(*) as line 
             FROM tariffs
             """;
-
     private static final String SQL_FIND_TARIFF_BY_PAGE_NUMBER = """
             SELECT
             tariff_id, description, max_speed, min_speed, traffic, price, ts.status, pwo.period
@@ -90,6 +82,7 @@ public class TariffDaoImpl implements TariffDao {
             tariff_statuses_status_id
             LIMIT ?,?            
             """;
+
     private JdbcTemplate<Tariff> jdbcTemplate;
 
     public TariffDaoImpl() {

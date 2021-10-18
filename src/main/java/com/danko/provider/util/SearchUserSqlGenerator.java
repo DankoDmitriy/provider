@@ -5,7 +5,6 @@ import com.danko.provider.validator.InputDataValidator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-//import static com.danko.provider.controller.command.ParamName.*;
 import static com.danko.provider.controller.command.ParamName.USER_SEARCH_CONTRACT_NUMBER;
 import static com.danko.provider.controller.command.ParamName.USER_SEARCH_E_MAIL;
 import static com.danko.provider.controller.command.ParamName.USER_SEARCH_FIRST_NAME;
@@ -16,7 +15,7 @@ import static com.danko.provider.domain.dao.ColumnName.*;
 /**
  * The type Search user sql generation.
  */
-public class SearchUserSqlGeneration {
+public class SearchUserSqlGenerator {
     private static final String SQL_LIKE = "LIKE";
     private static final String SQL_PERCENT = "%";
     private static final String SQL_SPACE = " ";
@@ -24,10 +23,10 @@ public class SearchUserSqlGeneration {
     private static final String SQL_AND = "and";
     private static final String SQL_WHERE = " where ";
     private static final AtomicBoolean isCreated = new AtomicBoolean(false);
-    private static SearchUserSqlGeneration instance;
+    private static SearchUserSqlGenerator instance;
     private final InputDataValidator validator;
 
-    private SearchUserSqlGeneration() {
+    private SearchUserSqlGenerator() {
         this.validator = InputDataValidator.getInstance();
     }
 
@@ -36,10 +35,10 @@ public class SearchUserSqlGeneration {
      *
      * @return the instance
      */
-    public static SearchUserSqlGeneration getInstance() {
+    public static SearchUserSqlGenerator getInstance() {
         while (instance == null) {
             if (isCreated.compareAndSet(false, true)) {
-                instance = new SearchUserSqlGeneration();
+                instance = new SearchUserSqlGenerator();
             }
         }
         return instance;

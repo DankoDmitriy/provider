@@ -6,14 +6,15 @@ import com.danko.provider.domain.entity.AccountTransaction;
 import com.danko.provider.domain.entity.Tariff;
 import com.danko.provider.domain.entity.User;
 import com.danko.provider.domain.entity.UserAction;
-import com.danko.provider.domain.service.*;
+import com.danko.provider.domain.service.AccountTransactionService;
+import com.danko.provider.domain.service.ServiceProvider;
+import com.danko.provider.domain.service.TariffService;
+import com.danko.provider.domain.service.UserActionService;
+import com.danko.provider.domain.service.UserService;
 import com.danko.provider.exception.CommandException;
 import com.danko.provider.exception.ServiceException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -23,10 +24,8 @@ import static com.danko.provider.controller.command.ParamName.USER_PROFILE_ID;
 import static com.danko.provider.controller.command.RequestAttribute.ADMIN_USER_PROFILE_ACTIONS;
 import static com.danko.provider.controller.command.RequestAttribute.ADMIN_USER_PROFILE_TRANSACTIONS;
 import static com.danko.provider.controller.command.RequestAttribute.ADMIN_USER_PROFILE_USER;
-//import static com.danko.provider.controller.command.RequestAttribute.*;
 
 public class AdminUserProfileCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
     private static final String ID_CHECK_REGEX = "^[1-9]{1}[0-9]{0,15}$";
     private final TariffService tariffService = ServiceProvider.getInstance().getTariffService();
     private final UserService userService = ServiceProvider.getInstance().getUserService();

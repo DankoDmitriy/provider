@@ -11,8 +11,6 @@ import com.danko.provider.domain.service.UserService;
 import com.danko.provider.exception.CommandException;
 import com.danko.provider.exception.ServiceException;
 import com.danko.provider.validator.InputDataValidator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -26,7 +24,6 @@ import static com.danko.provider.controller.command.RequestAttribute.USER_TARIFF
 import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
 
 public class ChangeTariffCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
     private final InputDataValidator validator = InputDataValidator.getInstance();
     private final UserService userService = ServiceProvider.getInstance().getUserService();
     private final TariffService tariffService = ServiceProvider.getInstance().getTariffService();

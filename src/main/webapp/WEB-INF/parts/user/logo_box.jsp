@@ -14,7 +14,6 @@
             <div class="mt-3">
                 <h4><fmt:message key="label.user.logobox.isp"/></h4>
                 <p class="text-secondary mb-1"><fmt:message key="label.user.logobox.moto"/></p>
-                <button class="btn btn-outline-primary"><fmt:message key="label.user.logobox.msg"/></button>
             </div>
         </div>
     </div>

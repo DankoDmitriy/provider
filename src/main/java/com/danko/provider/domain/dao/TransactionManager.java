@@ -16,9 +16,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class TransactionManager {
     private static Logger logger = LogManager.getLogger();
-    private ThreadLocal<Connection> connectionThreadLocal = new ThreadLocal<>();
-    private static TransactionManager instance;
     private static final AtomicBoolean isTransactionManagerCreated = new AtomicBoolean(false);
+    private static TransactionManager instance;
+    private ThreadLocal<Connection> connectionThreadLocal = new ThreadLocal<>();
+
     private ConnectionPool connectionPool;
 
     private TransactionManager(ConnectionPool connectionPool) {

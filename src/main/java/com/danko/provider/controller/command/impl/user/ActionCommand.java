@@ -7,13 +7,10 @@ import com.danko.provider.domain.service.ServiceProvider;
 import com.danko.provider.domain.service.UserActionService;
 import com.danko.provider.exception.CommandException;
 import com.danko.provider.exception.ServiceException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class ActionCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
     private final static long ROWS_ON_PAGE = 5;
     private final UserActionService userActionService = ServiceProvider.getInstance().getUserActionService();
 

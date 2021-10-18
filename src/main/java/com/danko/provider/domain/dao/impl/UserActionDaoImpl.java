@@ -5,14 +5,12 @@ import com.danko.provider.domain.dao.UserActionDao;
 import com.danko.provider.domain.dao.mapper.impl.UserActionResultSetHandler;
 import com.danko.provider.domain.entity.UserAction;
 import com.danko.provider.exception.DaoException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
 
 public class UserActionDaoImpl implements UserActionDao {
-    private static Logger logger = LogManager.getLogger();
+
     private static final String SQL_FIND_ALL_ACTIONS = """
             SELECT
             action_id, date, at.type, tp.description
@@ -24,7 +22,6 @@ public class UserActionDaoImpl implements UserActionDao {
             tariffs AS tp ON actions.tariffs_tariff_id = tp.tariff_id
             ORDER BY date DESC
             """;
-
     private static final String SQL_FIND_ACTION_BY_ID = """
             SELECT
             action_id, date, at.type, tp.description
@@ -37,7 +34,6 @@ public class UserActionDaoImpl implements UserActionDao {
             WHERE
             action_id=?
             """;
-
     private static final String SQL_FIND_ALL_ACTIONS_BY_USER_ID_LIMIT_5 = """
             SELECT
             action_id, date, at.type, tp.description
@@ -52,7 +48,6 @@ public class UserActionDaoImpl implements UserActionDao {
             ORDER BY date DESC
             LIMIT 5
             """;
-
     private static final String SQL_ADD_ACTION = """
             INSERT INTO actions 
             (date, users_user_id, tariffs_tariff_id, action_type_type_id )
@@ -60,13 +55,11 @@ public class UserActionDaoImpl implements UserActionDao {
             (select action_type_id from action_type where type=?)
             )
             """;
-
     private static final String SQL_COUNT_ROWS_FOR_USER = """
             SELECT count(*) as line 
             FROM actions
             WHERE users_user_id=?
             """;
-
     private static final String SQL_FIND_ACTIONS_BY_USER_ID_AND_PAGE_NUMBER = """
             SELECT
             action_id, date, at.type, tp.description

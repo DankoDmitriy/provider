@@ -14,8 +14,6 @@ import com.danko.provider.exception.ServiceException;
 import com.danko.provider.util.PasswordGenerator;
 import com.danko.provider.util.StringHasher;
 import com.danko.provider.validator.InputDataValidator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -40,7 +38,6 @@ import static com.danko.provider.controller.command.RequestAttribute.ADMIN_SEARC
 import static com.danko.provider.controller.command.RequestAttribute.ADMIN_SEARCH_PAYMENT_CARD_USER;
 
 public class PaymentCardServiceImpl implements PaymentCardService {
-    private static final Logger logger = LogManager.getLogger();
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN);
     private static final int PAYMENT_CARD_NUMBER_LENGTH = 7;

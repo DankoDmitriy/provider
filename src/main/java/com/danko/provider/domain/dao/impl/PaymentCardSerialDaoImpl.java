@@ -5,22 +5,17 @@ import com.danko.provider.domain.dao.PaymentCardSerialDao;
 import com.danko.provider.domain.dao.mapper.impl.PaymentCardSerialResultSetHandler;
 import com.danko.provider.domain.entity.PaymentCardSerial;
 import com.danko.provider.exception.DaoException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
 
 public class PaymentCardSerialDaoImpl implements PaymentCardSerialDao {
-    private static Logger logger = LogManager.getLogger();
-    private JdbcTemplate<PaymentCardSerial> jdbcTemplate;
 
     private static final String SQL_ADD_PAYMENT_CARD_SERIAL = """
             INSERT INTO express_payment_cards_series 
             (series)
             VALUES (?)
             """;
-
     private static final String SQL_FIND_BY_SERIAL = """
             SELECT
             series_id, series
@@ -29,6 +24,8 @@ public class PaymentCardSerialDaoImpl implements PaymentCardSerialDao {
             WHERE
             series=?
             """;
+
+    private JdbcTemplate<PaymentCardSerial> jdbcTemplate;
 
     public PaymentCardSerialDaoImpl() {
         jdbcTemplate = new JdbcTemplate<PaymentCardSerial>(new PaymentCardSerialResultSetHandler());

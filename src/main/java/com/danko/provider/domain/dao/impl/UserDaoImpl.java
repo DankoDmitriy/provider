@@ -2,19 +2,19 @@ package com.danko.provider.domain.dao.impl;
 
 import com.danko.provider.domain.dao.JdbcTemplate;
 import com.danko.provider.domain.dao.UserDao;
-import com.danko.provider.domain.entity.*;
 import com.danko.provider.domain.dao.mapper.impl.UserResultSetHandler;
+import com.danko.provider.domain.entity.User;
+import com.danko.provider.domain.entity.UserRole;
+import com.danko.provider.domain.entity.UserStatus;
 import com.danko.provider.exception.DaoException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
 public class UserDaoImpl implements UserDao {
-    private static Logger logger = LogManager.getLogger();
+
     private static final String SQL_FIND_ALL_USERS = """
             SELECT
             user_id, first_name, last_name, patronymic, contract_number, contract_date, balance, name, email, 
@@ -26,7 +26,6 @@ public class UserDaoImpl implements UserDao {
             JOIN
             user_statuses AS us ON users.user_statuses_status_id = us.status_id
             """;
-
     private static final String SQL_FIND_USER_BY_ID = """
             SELECT
             user_id, first_name, last_name, patronymic, contract_number, contract_date, balance, name, email, 
@@ -55,7 +54,6 @@ public class UserDaoImpl implements UserDao {
             AND
             password=?
             """;
-
     private static final String SQL_ADD_USER = """
             INSERT INTO USERS 
             (first_name, last_name, patronymic, contract_date, balance, password, email, 
@@ -66,7 +64,6 @@ public class UserDaoImpl implements UserDao {
             ?
             )
             """;
-
     private static final String SQL_UPDATE_USER = """
             UPDATE USERS SET
             first_name=?, last_name=?, patronymic=?, contract_number=?, contract_date=?, balance=?, name=?, email=?, 
@@ -76,7 +73,6 @@ public class UserDaoImpl implements UserDao {
             WHERE 
             user_id=?
             """;
-
     private static final String SQL_VERIFICATION_OF_ACTIVATION_CODE = """
             SELECT
             user_id, first_name, last_name, patronymic, contract_number, contract_date, balance, name, email, 
@@ -92,7 +88,6 @@ public class UserDaoImpl implements UserDao {
             AND 
             activation_code_used=0
             """;
-
     private static final String SQL_UPDATE_ACTIVATION_CODE_STATUS = """
             UPDATE USERS SET
             activation_code_used=?,
@@ -100,7 +95,6 @@ public class UserDaoImpl implements UserDao {
             WHERE 
             activation_code=?
             """;
-
     private static final String SQL_UPDATE_PASSWORD = """
             UPDATE USERS SET
             password=?,
@@ -110,7 +104,6 @@ public class UserDaoImpl implements UserDao {
             WHERE 
             user_id=?
             """;
-
     private static final String SQL_UPDATE_TARIFF_AND_TRAFFIC_AND_BALANCE = """
             UPDATE USERS SET
             tariffs_tariff_id=?,
@@ -119,69 +112,59 @@ public class UserDaoImpl implements UserDao {
             WHERE 
             user_id=?
             """;
-
     private static final String SQL_UPDATE_BALANCE = """
             UPDATE USERS SET
             balance=?
             WHERE 
             user_id=?
             """;
-
     private static final String SQL_UPDATE_CONTRACT_NUMBER_AND_USER_NAME = """
             UPDATE USERS SET
             contract_number=?, name=?
             WHERE 
             user_id=?
             """;
-
     private static final String SQL_UPDATE_FIRST_NAME = """
             UPDATE USERS SET
             first_name=?
             WHERE 
             user_id=?
             """;
-
     private static final String SQL_UPDATE_LAST_NAME = """
             UPDATE USERS SET
             last_name=?
             WHERE 
             user_id=?
             """;
-
     private static final String SQL_UPDATE_PATRONYMIC = """
             UPDATE USERS SET
             patronymic=?
             WHERE 
             user_id=?
             """;
-
     private static final String SQL_UPDATE_EMAIL = """
             UPDATE USERS SET
             email=?
             WHERE 
             user_id=?
             """;
-
     private static final String SQL_UPDATE_STATUS = """
             UPDATE USERS SET
             user_statuses_status_id=(select status_id from user_statuses where status=?)
             WHERE 
             user_id=?
             """;
-
     private static final String SQL_UPDATE_ROLE = """
             UPDATE USERS SET
             user_roles_role_id=(select role_id from user_roles where role=?)
             WHERE 
             user_id=?
             """;
-
     private static final String SQL_COUNT_ROWS_BY_USER_ROLE = """
             SELECT count(*) as line 
             FROM USERS
             WHERE user_roles_role_id=(select role_id from user_roles where role=?)
             """;
-
     private static final String SQL_FIND_USERS_BY_ROLE_AND_PAGE_NUMBER = """
             SELECT
             user_id, first_name, last_name, patronymic, contract_number, contract_date, balance, name, email, 

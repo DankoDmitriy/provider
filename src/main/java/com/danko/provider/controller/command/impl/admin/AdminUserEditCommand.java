@@ -7,14 +7,10 @@ import com.danko.provider.domain.service.ServiceProvider;
 import com.danko.provider.domain.service.UserService;
 import com.danko.provider.exception.CommandException;
 import com.danko.provider.exception.ServiceException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 public class AdminUserEditCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
     private final UserService userService = ServiceProvider.getInstance().getUserService();
 
     @Override

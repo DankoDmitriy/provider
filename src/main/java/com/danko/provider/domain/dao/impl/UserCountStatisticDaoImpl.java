@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserCountStatisticDaoImpl implements UserCountStatisticDao {
-    private JdbcTemplate<UserCountStatistic> jdbcTemplate;
 
     private static final String USERS_ON_TARIFF_SQL = """
                 SELECT 
@@ -21,7 +20,6 @@ public class UserCountStatisticDaoImpl implements UserCountStatisticDao {
                 GROUP BY 
                 description 
             """;
-
     private static final String USERS_BY_STATUS_SQL = """
             SELECT 
             status as parameterName, 
@@ -33,6 +31,8 @@ public class UserCountStatisticDaoImpl implements UserCountStatisticDao {
             GROUP BY 
             status            
             """;
+
+    private JdbcTemplate<UserCountStatistic> jdbcTemplate;
 
     public UserCountStatisticDaoImpl() {
         jdbcTemplate = new JdbcTemplate<UserCountStatistic>(new UserCountStatisticResultSetHandler());

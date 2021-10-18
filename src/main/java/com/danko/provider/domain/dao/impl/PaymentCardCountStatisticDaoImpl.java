@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class PaymentCardCountStatisticDaoImpl implements PaymentCardCountStatisticDao {
-    private JdbcTemplate<PaymentCardCountStatistic> jdbcTemplate;
 
     private static final String PAYMENT_CARD_GENERATED_ALL_SQL = """
             SELECT 
@@ -21,7 +20,6 @@ public class PaymentCardCountStatisticDaoImpl implements PaymentCardCountStatist
             GROUP BY 
             amount;
             """;
-
     private static final String PAYMENT_CARDS_NOT_USED_SQL = """
             SELECT 
             amount as amount, 
@@ -32,6 +30,8 @@ public class PaymentCardCountStatisticDaoImpl implements PaymentCardCountStatist
             GROUP BY 
             amount;
             """;
+
+    private JdbcTemplate<PaymentCardCountStatistic> jdbcTemplate;
 
     public PaymentCardCountStatisticDaoImpl() {
         jdbcTemplate = new JdbcTemplate<PaymentCardCountStatistic>(new PaymentCardCountStatisticResultSetHandler());

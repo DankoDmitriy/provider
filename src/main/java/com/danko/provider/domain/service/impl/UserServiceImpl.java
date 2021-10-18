@@ -24,7 +24,7 @@ import com.danko.provider.exception.DaoException;
 import com.danko.provider.exception.ServiceException;
 import com.danko.provider.util.PaginationCalculate;
 import com.danko.provider.util.PasswordGenerator;
-import com.danko.provider.util.SearchUserSqlGeneration;
+import com.danko.provider.util.SearchUserSqlGenerator;
 import com.danko.provider.util.StringHasher;
 import com.danko.provider.util.UniqueStringGenerator;
 import com.danko.provider.util.UrlUtil;
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
     private final TransactionManager transactionManager;
     private final InputDataValidator inputDataValidator;
     private final PaginationCalculate paginationCalculate;
-    private final SearchUserSqlGeneration searchUserSqlGeneration;
+    private final SearchUserSqlGenerator searchUserSqlGeneration;
 
 
     public UserServiceImpl(UserDao userDao,
@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
         this.transactionManager = transactionManager;
         this.inputDataValidator = InputDataValidator.getInstance();
         this.paginationCalculate = PaginationCalculate.getInstance();
-        this.searchUserSqlGeneration = SearchUserSqlGeneration.getInstance();
+        this.searchUserSqlGeneration = SearchUserSqlGenerator.getInstance();
     }
 
     @Override
@@ -168,6 +168,7 @@ public class UserServiceImpl implements UserService {
         String[] password = content.getRequestParameter(LOGIN_FORM_PASSWORD);
         try {
             try {
+//                TODO: Add password and login check in validator
                 if (name != null && password != null) {
                     String passwordHash = StringHasher.hashString(password[0]);
                     transactionManager.startTransaction();

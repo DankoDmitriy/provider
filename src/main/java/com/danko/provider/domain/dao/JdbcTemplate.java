@@ -24,6 +24,7 @@ import java.util.Optional;
 public class JdbcTemplate<T extends AbstractEntity> {
     private static Logger logger = LogManager.getLogger();
     private static final String COUNT_LINES_PARAMETER = "line";
+
     private ResultSetHandler<T> resultSetHandler;
     private TransactionManager transactionManager;
 

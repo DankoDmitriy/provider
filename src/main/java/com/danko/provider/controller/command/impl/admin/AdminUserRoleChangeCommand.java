@@ -6,8 +6,6 @@ import com.danko.provider.domain.service.ServiceProvider;
 import com.danko.provider.domain.service.UserService;
 import com.danko.provider.exception.CommandException;
 import com.danko.provider.exception.ServiceException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,7 +14,6 @@ import static com.danko.provider.controller.command.PageUrl.ADMIN_USER_PROFILE_P
 import static com.danko.provider.controller.command.ParamName.USER_PROFILE_ID;
 
 public class AdminUserRoleChangeCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
     private static final String ID_CHECK_REGEX = "^[1-9]{1}[0-9]{0,15}$";
     private final UserService userService = ServiceProvider.getInstance().getUserService();
 
