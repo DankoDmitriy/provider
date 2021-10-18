@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 public class ActionFactory {
     private static Logger logger = LogManager.getLogger();
 
-//    FIXME - дефолтную команду в ENUM - и уменьшить ретурны на 1 шт.
     public static Command getCommand(String commandStr) {
         Command command = new DefaultCommand();
         if (commandStr == null || commandStr.isEmpty()) {
@@ -21,6 +20,5 @@ public class ActionFactory {
             logger.log(Level.ERROR, e);
             return command;
         }
-
     }
 }

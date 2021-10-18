@@ -1,27 +1,53 @@
 package com.danko.provider.domain.service.impl;
 
 import com.danko.provider.controller.command.SessionRequestContent;
-import com.danko.provider.domain.dao.*;
-import com.danko.provider.domain.entity.*;
+import com.danko.provider.domain.dao.AccountTransactionDao;
+import com.danko.provider.domain.dao.PaymentCardDao;
+import com.danko.provider.domain.dao.TariffDao;
+import com.danko.provider.domain.dao.TransactionManager;
+import com.danko.provider.domain.dao.UserActionDao;
+import com.danko.provider.domain.dao.UserDao;
+import com.danko.provider.domain.entity.AccountTransaction;
+import com.danko.provider.domain.entity.PaymentCard;
+import com.danko.provider.domain.entity.Tariff;
+import com.danko.provider.domain.entity.TariffStatus;
+import com.danko.provider.domain.entity.TransactionType;
+import com.danko.provider.domain.entity.TransferObject;
+import com.danko.provider.domain.entity.User;
+import com.danko.provider.domain.entity.UserAction;
+import com.danko.provider.domain.entity.UserRole;
+import com.danko.provider.domain.entity.UserStatus;
 import com.danko.provider.domain.service.EmailService;
 import com.danko.provider.domain.service.ServiceProvider;
 import com.danko.provider.domain.service.UserService;
 import com.danko.provider.exception.DaoException;
 import com.danko.provider.exception.ServiceException;
-import com.danko.provider.util.*;
+import com.danko.provider.util.PaginationCalculate;
+import com.danko.provider.util.PasswordGenerator;
+import com.danko.provider.util.SearchUserSqlGeneration;
+import com.danko.provider.util.StringHasher;
+import com.danko.provider.util.UniqueStringGenerator;
+import com.danko.provider.util.UrlUtil;
 import com.danko.provider.validator.InputDataValidator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-//import static com.danko.provider.controller.command.PageUrl.*;
 import static com.danko.provider.controller.command.PageUrl.ADMIN_USERS_LIST_PAGE;
 import static com.danko.provider.controller.command.PageUrl.ADMIN_USERS_LIST_PAGE_REDIRECT;
 import static com.danko.provider.controller.command.PageUrl.ADMIN_USER_ADD_CARD;
@@ -31,7 +57,6 @@ import static com.danko.provider.controller.command.PageUrl.ADMIN_USER_SEARCH;
 import static com.danko.provider.controller.command.PageUrl.HOME_PAGE;
 import static com.danko.provider.controller.command.PageUrl.START_PAGE;
 import static com.danko.provider.controller.command.PageUrl.USER_ACTIVATE_PAYMENT_CARD;
-//import static com.danko.provider.controller.command.ParamName.*;
 import static com.danko.provider.controller.command.ParamName.CARD_NUMBER;
 import static com.danko.provider.controller.command.ParamName.CARD_PIN;
 import static com.danko.provider.controller.command.ParamName.COMMAND;
@@ -49,7 +74,6 @@ import static com.danko.provider.controller.command.ParamName.USER_EDIT_ID;
 import static com.danko.provider.controller.command.ParamName.USER_EDIT_LAST_NAME;
 import static com.danko.provider.controller.command.ParamName.USER_EDIT_ORIGIN;
 import static com.danko.provider.controller.command.ParamName.USER_EDIT_PATRONYMIC;
-//import static com.danko.provider.controller.command.RequestAttribute.*;
 import static com.danko.provider.controller.command.RequestAttribute.ADMIN_NEW_USER_CARD_TRANSFER_OBJECT;
 import static com.danko.provider.controller.command.RequestAttribute.ADMIN_TARIFFS_LIST_FOR_NEW_USER;
 import static com.danko.provider.controller.command.RequestAttribute.ADMIN_USERS_LIST;
@@ -63,6 +87,10 @@ import static com.danko.provider.controller.command.RequestAttribute.PAGINATION_
 import static com.danko.provider.controller.command.RequestAttribute.USER_RESULT_ACTION;
 import static com.danko.provider.controller.command.SessionAttribute.IS_LOGIN_ERROR;
 import static com.danko.provider.controller.command.SessionAttribute.SESSION_USER;
+
+//import static com.danko.provider.controller.command.PageUrl.*;
+//import static com.danko.provider.controller.command.ParamName.*;
+//import static com.danko.provider.controller.command.RequestAttribute.*;
 
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger();
@@ -196,8 +224,7 @@ public class UserServiceImpl implements UserService {
 
                     EmailService emailService = ServiceProvider.getInstance().getEmailService();
                     String domain = UrlUtil.requestUrlToDomain(requestUrl) + contextPath;
-//                TODO - Расскомментировать отправку почты. Убрарно что бы не спамить самому себе.
-                    //                emailService.sendActivateMail(email, domain, newActivateCode);
+                    emailService.sendActivateMail(email, domain, newActivateCode);
                 } else {
                     result = false;
                 }
@@ -211,7 +238,6 @@ public class UserServiceImpl implements UserService {
         } catch (DaoException | ServiceException e1) {
             throw new ServiceException(e1);
         }
-
     }
 
     @Override
@@ -520,14 +546,14 @@ public class UserServiceImpl implements UserService {
                         content.putRequestAttribute(ADMIN_USERS_LIST_RESULT_WORK_FOR_MESSAGE, true);
                         content.setPageUrl(ADMIN_USERS_LIST_PAGE);
                     } else {
-//              TODO - тут, если подмени ID пользователя
+//              TODO - if spoofing user ID
                         content.putRequestAttribute(ADMIN_USERS_LIST, Arrays.asList(user));
                         content.putRequestAttribute(ADMIN_USERS_LIST_RESULT_WORK_FOR_MESSAGE, false);
                         content.setPageUrl(ADMIN_USERS_LIST_PAGE);
                     }
                 } else {
                     if (userIdStr != null && inputDataValidator.isIdValid(userIdStr[0])) {
-//                TODO Тут выбираем пользователя для редакирования и необходимые данные для формы
+//                TODO select the user for editing and the necessary data for the form
                         transactionManager.startTransaction();
                         Optional<User> optionalUser = userDao.findById(Long.parseLong(userIdStr[0]));
                         if (!optionalUser.isEmpty()) {
@@ -537,12 +563,12 @@ public class UserServiceImpl implements UserService {
                             content.putRequestAttribute(ADMIN_USER_EDIT, user);
                             content.setPageUrl(ADMIN_USER_EDIT_PAGE);
                         } else {
-//                   TODO Тут если Пользователя нет. отправляем на страницу пользователей.
+//                   TODO Here if there is no User. send to the users page.
                             content.setRedirect(true);
                             content.setPageUrl(ADMIN_USERS_LIST_PAGE_REDIRECT);
                         }
                     } else {
-//                TODO    Некорректный ID Пользователя на страницу с пользователями.
+//                TODO    Invalid User ID for the page with users.
                         content.setRedirect(true);
                         content.setPageUrl(ADMIN_USERS_LIST_PAGE_REDIRECT);
                     }
