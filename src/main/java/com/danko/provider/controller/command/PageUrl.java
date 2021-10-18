@@ -44,6 +44,7 @@ public final class PageUrl {
     public static final String HOME_PAGE = "/controller?command=home";
     public static final String LOGOUT_PAGE = "/controller?command=logout";
     public static final String ACTIVATE_PAGE = "/controller?command=ACTIVATION&activationCode=";
+    public static final String START_PAGE = "";
 
     /**
      * User page paths

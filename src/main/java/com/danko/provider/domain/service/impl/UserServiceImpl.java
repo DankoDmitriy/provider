@@ -29,6 +29,7 @@ import static com.danko.provider.controller.command.PageUrl.ADMIN_USER_ADD_PAGE;
 import static com.danko.provider.controller.command.PageUrl.ADMIN_USER_EDIT_PAGE;
 import static com.danko.provider.controller.command.PageUrl.ADMIN_USER_SEARCH;
 import static com.danko.provider.controller.command.PageUrl.HOME_PAGE;
+import static com.danko.provider.controller.command.PageUrl.START_PAGE;
 import static com.danko.provider.controller.command.PageUrl.USER_ACTIVATE_PAYMENT_CARD;
 //import static com.danko.provider.controller.command.ParamName.*;
 import static com.danko.provider.controller.command.ParamName.CARD_NUMBER;
@@ -157,7 +158,7 @@ public class UserServiceImpl implements UserService {
                     } else {
                         content.putSessionAttribute(IS_LOGIN_ERROR, true);
                         content.setRedirect(true);
-                        content.setPageUrl("");
+                        content.setPageUrl(START_PAGE);
                     }
                 }
             } catch (DaoException e) {
