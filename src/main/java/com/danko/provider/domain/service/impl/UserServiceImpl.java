@@ -168,10 +168,9 @@ public class UserServiceImpl implements UserService {
         String[] password = content.getRequestParameter(LOGIN_FORM_PASSWORD);
         try {
             try {
-//                TODO: Add password and login check in validator
-                if (name != null && password != null) {
+                transactionManager.startTransaction();
+                if (name != null && password != null && inputDataValidator.singInParametersValid(name[0], password[0])) {
                     String passwordHash = StringHasher.hashString(password[0]);
-                    transactionManager.startTransaction();
                     Optional<User> optionalUser = userDao.findByNameAndPassword(name[0], passwordHash);
                     if (optionalUser.isPresent()) {
                         User user = optionalUser.get();
@@ -181,10 +180,10 @@ public class UserServiceImpl implements UserService {
                         content.putSessionAttribute(IS_LOGIN_ERROR, false);
                         content.setPageUrl(HOME_PAGE);
                     } else {
-                        content.putSessionAttribute(IS_LOGIN_ERROR, true);
-                        content.setRedirect(true);
-                        content.setPageUrl(START_PAGE);
+                        forwardToLoginPage(content);
                     }
+                } else {
+                    forwardToLoginPage(content);
                 }
             } catch (DaoException e) {
                 throw new ServiceException(e);
@@ -194,6 +193,12 @@ public class UserServiceImpl implements UserService {
         } catch (DaoException | ServiceException e1) {
             throw new ServiceException(e1);
         }
+    }
+
+    private void forwardToLoginPage(SessionRequestContent content) {
+        content.putSessionAttribute(IS_LOGIN_ERROR, true);
+        content.setRedirect(true);
+        content.setPageUrl(START_PAGE);
     }
 
     @Override

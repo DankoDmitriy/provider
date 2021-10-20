@@ -35,7 +35,8 @@
                             <h6 class="mb-0"><fmt:message key="label.user.changePassword.newPassword"/></h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <input type="password" class="form-control" name="password">
+                            <input type="password" class="form-control" name="password" pattern="[0-9a-zA-Z]{8,20}"
+                                   required>
                         </div>
                     </div>
 

@@ -33,7 +33,8 @@ public class InputDataValidatorTest {
                 {"123456789011111111111", false},
                 {"фывфвфывувфы", false},
                 {"asdmlj3S3r4ak", true},
-                {"<sdaksjdnedeee", false}
+                {"<sdaksjdnedeee", false},
+                {"qwerty123", true}
         };
     }
 

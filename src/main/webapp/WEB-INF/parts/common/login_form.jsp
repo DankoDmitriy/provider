@@ -7,13 +7,17 @@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label"> <fmt:message key="label.login.login"/>:</label>
         <div class="col-sm-4">
-            <input type="text" name="name" placeholder="<fmt:message key="label.login.login"/>" class="form-control"/ >
+            <input type="text" name="name" placeholder="<fmt:message key="label.login.login"/>"
+                   pattern="[0-9]{15}" required
+                   class="form-control">
         </div>
     </div>
     <div class="form-group row">
         <label class="col-sm-2 col-form-label"> <fmt:message key="label.login.password"/>: </label>
         <div class="col-sm-4">
-            <input type="password" name="password" class="form-control"
+            <input type="password" name="password"
+                   pattern="[0-9a-zA-Z]{8,20}" required
+                   class="form-control"
                    placeholder="<fmt:message key="label.login.password"/>"/>
         </div>
     </div>

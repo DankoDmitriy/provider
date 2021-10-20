@@ -7,6 +7,7 @@ import com.danko.provider.domain.service.ServiceProvider;
 import com.danko.provider.domain.service.UserService;
 import com.danko.provider.exception.CommandException;
 import com.danko.provider.exception.ServiceException;
+import com.danko.provider.validator.InputDataValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,6 +20,7 @@ import static com.danko.provider.controller.command.SessionAttribute.SESSION_USE
 
 public class ChangePasswordCommand implements Command {
     private final UserService userService = ServiceProvider.getInstance().getUserService();
+    private final InputDataValidator validator = InputDataValidator.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -29,7 +31,7 @@ public class ChangePasswordCommand implements Command {
         String contextPath = request.getContextPath();
         String requestUrl = request.getRequestURL().toString();
         try {
-            if (newPassword != null) {
+            if (newPassword != null && validator.isPasswordValid(newPassword)) {
                 if (userService.updatePassword(user.getUserId(),
                         newPassword,
                         user.getEmail(),
